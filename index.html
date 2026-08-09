@@ -55,6 +55,68 @@ ul { margin: 6px 0 0; padding-left: 18px; }
 li { margin: 4px 0; }
 .foot { margin-top: 34px; padding-top: 14px; border-top: 1px solid #e6e6ea; color: #76767c; font-size: 12.5px; }
 .foot p { margin: 7px 0; }
+
+.calrow { display: flex; gap: 10px; }
+.axis { width: 34px; flex: 0 0 34px; }
+.axis .spacer { height: 64px; }
+.axis .track { position: relative; height: 432px; }
+.axis .hr { position: absolute; left: 0; right: 0; font-size: 10.5px; color: #9a9aa0; transform: translateY(-6px); }
+.daycol { flex: 1; min-width: 0; }
+.daytitle { font-size: 13px; font-weight: 650; margin-bottom: 2px; height: 18px; }
+.dayweather { font-size: 11.5px; color: #6b6b70; margin-bottom: 8px; height: 14px; }
+.lanes { display: flex; gap: 6px; }
+.lane { flex: 1; min-width: 0; }
+.lanehead { font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; color: #9a9aa0; margin-bottom: 4px; height: 14px; }
+.track {
+  position: relative; height: 432px; border-radius: 8px;
+  background-image: repeating-linear-gradient(to bottom, #f1f1f3 0, #f1f1f3 1px, transparent 1px, transparent 36px);
+  background-color: #fbfbfc; border: 1px solid #eeeeef;
+}
+.ev {
+  position: absolute; left: 3px; right: 3px; border-radius: 6px;
+  padding: 3px 6px; font-size: 10px; line-height: 1.2; overflow: hidden;
+  border-left: 3px solid; cursor: pointer; transition: box-shadow .12s, opacity .12s;
+}
+.ev:hover { box-shadow: 0 0 0 1px rgba(28,28,30,0.25) inset; }
+.ev.selected { box-shadow: 0 0 0 2px #1c1c1e inset; opacity: 1 !important; z-index: 90 !important; }
+.ev .ti { font-weight: 650; font-size: 10.5px; display: block; }
+.ev .ve { display: block; font-weight: 650; opacity: 0.75; }
+.ev .tm { display: block; opacity: 0.85; }
+.ev.teatro { background: rgba(124, 92, 209, 0.34); border-left-color: #6a4fc0; color: #3a2d70; }
+.ev.jazz { background: rgba(10, 88, 202, 0.30); border-left-color: #0a58ca; color: #0a3f78; }
+.ev.cine { background: rgba(208, 135, 0, 0.32); border-left-color: #b57300; color: #6e4700; }
+.ev.futbol { background: rgba(46, 125, 50, 0.32); border-left-color: #2e7d32; color: #1e5222; }
+.ev.tango { background: rgba(212, 83, 126, 0.32); border-left-color: #b3396a; color: #72243e; }
+.ev.rock { background: rgba(216, 90, 48, 0.32); border-left-color: #b3491f; color: #712b13; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 14px; font-size: 12px; color: #46464b; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.legend .lteatro { background: #7c5cd1; }
+.legend .ljazz { background: #0a58ca; }
+.legend .lcine { background: #d08700; }
+.legend .lfutbol { background: #2e7d32; }
+.legend .ltango { background: #d4537e; }
+.legend .lrock { background: #d85a30; }
+.cap { font-size: 12px; color: #8a8a8f; margin-top: 12px; }
+.btnrow { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.btnrow a {
+  display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: #1c1c1e;
+  text-decoration: none; border: 1px solid #e6e6ea; border-radius: 8px; padding: 9px 14px; background: #fcfcfd;
+}
+.btnrow a:hover { background: #f1f1f3; border-color: #d8d8dc; }
+.detail {
+  margin-top: 20px; border: 1px solid #e6e6ea; border-radius: 12px; padding: 16px 18px;
+  background: #fcfcfd; min-height: 140px;
+}
+.detail.empty { color: #9a9aa0; font-size: 13.5px; display: flex; align-items: center; justify-content: center; text-align: center; }
+.detail h3 { margin: 0 0 2px; font-size: 16.5px; }
+.detail .venue-line { font-size: 13.5px; color: #46464b; margin-bottom: 10px; }
+.detail .venue-line b { color: #1c1c1e; }
+.detail .grid { display: grid; grid-template-columns: 110px 1fr; gap: 6px 10px; font-size: 13.5px; margin-bottom: 10px; }
+.detail .grid .k { color: #76767c; font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; padding-top: 2px; }
+.detail .note { font-size: 13.5px; color: #33333a; padding-top: 10px; border-top: 1px dashed #e6e6ea; }
+.detail a.src { display: inline-block; margin-top: 10px; font-size: 13px; color: #0a58ca; text-decoration: none; }
+.detail a.src:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -199,8 +261,8 @@ li { margin: 4px 0; }
 
 <div class="card">
   <div class="t">Javier Malosetti Full Band</div>
-  <div class="row"><div class="k">Cuándo</div><div class="v">📅 Sábado 8/8 &middot; 🕗 20:00 &middot; 📍 Desafinado Club, La Plata &middot; 💵 a confirmar <span class="tag tbc">TBC</span></div></div>
-  <div class="note">La opción de jazz/fusión platense del sábado. También ese día: <i>Guarany x Guaraní</i> (homenaje a Horacio Guarany por su hijo) 20:30 en el Pasaje Dardo Rocha, y Pedro Saborido con <i>Felicidad + Terapia Peronística</i> 21:00 en CICOP. 🔗 <a href="https://agendalaplata.ar/?fecha=2026-08-08">agendalaplata.ar</a></div>
+  <div class="row"><div class="k">Cuándo</div><div class="v">📅 Sábado 8/8 &middot; 🕗 22:30 &middot; 📍 Desafinado Club, City Bell, La Plata &middot; 💵 a confirmar <span class="tag tbc">TBC</span></div></div>
+  <div class="note">La opción de jazz/fusión platense del sábado. Horario confirmado en agendalaplata.ar (22:30, no a las 20:00 como se estimaba antes). También ese día: <i>Guarany x Guaraní</i> (homenaje a Horacio Guarany por su hijo) 20:30 en el Pasaje Dardo Rocha, y Pedro Saborido con <i>Felicidad + Terapia Peronística</i> 21:00 en CICOP. 🔗 <a href="https://agendalaplata.ar/?fecha=2026-08-08">agendalaplata.ar</a></div>
 </div>
 
 <div class="card ok">
@@ -340,6 +402,120 @@ li { margin: 4px 0; }
   🔗 <a href="https://www.lanoticia1.com/noticia/fiestas-populares-en-la-provincia-de-buenos-aires-2026-eventos-turisticos-gratuitos-del-6-al-13-de-agosto">Fiestas populares PBA 6–13/8</a></div>
 </div>
 
+<h2>📆 Calendario del finde</h2>
+
+<div class="calrow">
+  <div class="axis">
+    <div class="spacer"></div>
+    <div class="track">
+      <div class="hr" style="top:0px">12</div>
+      <div class="hr" style="top:36px">13</div>
+      <div class="hr" style="top:72px">14</div>
+      <div class="hr" style="top:108px">15</div>
+      <div class="hr" style="top:144px">16</div>
+      <div class="hr" style="top:180px">17</div>
+      <div class="hr" style="top:216px">18</div>
+      <div class="hr" style="top:252px">19</div>
+      <div class="hr" style="top:288px">20</div>
+      <div class="hr" style="top:324px">21</div>
+      <div class="hr" style="top:360px">22</div>
+      <div class="hr" style="top:396px">23</div>
+      <div class="hr" style="top:432px">24</div>
+    </div>
+  </div>
+
+  <div class="daycol">
+    <div class="daytitle">Viernes 7/8</div>
+    <div class="dayweather">☀️ 4° / 13° · sin lluvia</div>
+    <div class="lanes">
+      <div class="lane">
+        <div class="lanehead">CABA</div>
+        <div class="track">
+          <div class="ev cine" data-key="vie-cine" style="top:180px; height:108px; z-index:1;"><span class="ti">Rocco y sus hermanos</span><span class="ve">Sala Lugones</span><span class="tm">17:00–20:00 · $9.000</span></div>
+          <div class="ev teatro" data-key="vie-teatro1" style="top:216px; height:36px; z-index:2;"><span class="ti">Lenguajes del adiós</span><span class="ve">T. Cervantes</span><span class="tm">18:00–19:00 · $20.000</span></div>
+          <div class="ev rock" data-key="vie-rock" style="top:288px; height:72px; z-index:3;"><span class="ti">Mujer Cebra</span><span class="ve">Niceto Club</span><span class="tm">20:00–22:00 · $20.000</span></div>
+          <div class="ev teatro" data-key="vie-teatro2" style="top:324px; height:54px; left:2%; width:47%; z-index:4;"><span class="ti">Un joven golondrina</span><span class="ve">T. Cervantes</span><span class="tm">21:00–22:30</span></div>
+          <div class="ev tango" data-key="vie-tango" style="top:351px; height:72px; left:51%; width:47%; z-index:4;"><span class="ti">La Viruta — cierre Semana de las Milongas</span><span class="ve">La Viruta</span><span class="tm">21:45–23:45</span></div>
+        </div>
+      </div>
+      <div class="lane">
+        <div class="lanehead">La Plata</div>
+        <div class="track">
+          <div class="ev teatro" data-key="vie-lp1" style="top:324px; height:54px; z-index:1;"><span class="ti">La Chirichota</span><span class="ve">Coliseo Podestá</span><span class="tm">21:00–22:30</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="daycol">
+    <div class="daytitle">Sábado 8/8</div>
+    <div class="dayweather">⛅ 7° / 13° · sin lluvia</div>
+    <div class="lanes">
+      <div class="lane">
+        <div class="lanehead">CABA</div>
+        <div class="track">
+          <div class="ev cine" data-key="sab-cine" style="top:180px; height:111px; z-index:1;"><span class="ti">El gatopardo</span><span class="ve">Sala Lugones</span><span class="tm">17:00–20:05 · $9.000</span></div>
+          <div class="ev rock" data-key="sab-rock" style="top:252px; height:72px; z-index:2;"><span class="ti">Los Calzones</span><span class="ve">El Teatrito</span><span class="tm">19:00–21:00 · TBC</span></div>
+          <div class="ev teatro" data-key="sab-teatro1" style="top:270px; height:36px; z-index:3;"><span class="ti">Manifestum</span><span class="ve">T. San Martín</span><span class="tm">19:30–20:30 · $21.000</span></div>
+          <div class="ev jazz" data-key="sab-jazz1" style="top:288px; height:72px; z-index:4;"><span class="ti">Falú &amp; Loiácono</span><span class="ve">Bebop Club</span><span class="tm">20:00–22:00 · desde $18.000</span></div>
+          <div class="ev teatro" data-key="sab-teatro2" style="top:324px; height:36px; z-index:5;"><span class="ti">Un joven golondrina</span><span class="ve">T. Cervantes</span><span class="tm">21:00–22:00</span></div>
+          <div class="ev tango" data-key="sab-tango" style="top:306px; height:72px; z-index:5;"><span class="ti">Mirta Godoy y Hugo Figueroa</span><span class="ve">Los Laureles</span><span class="tm">20:30–22:30 · a la gorra</span></div>
+        </div>
+      </div>
+      <div class="lane">
+        <div class="lanehead">La Plata</div>
+        <div class="track">
+          <div class="ev teatro" data-key="sab-lp1" style="top:324px; height:54px; z-index:1;"><span class="ti">La Nona</span><span class="ve">Teatro UNLP</span><span class="tm">21:00–22:30 · gratis</span></div>
+          <div class="ev teatro" data-key="sab-lp2" style="top:324px; height:36px; z-index:2; left:42%;"><span class="ti">Bajo la tormenta</span><span class="ve">Sala Discépolo</span><span class="tm">21:00–22:00 · gratis</span></div>
+          <div class="ev jazz" data-key="sab-lp3" style="top:378px; height:54px; z-index:3;"><span class="ti">Javier Malosetti Full Band</span><span class="ve">Desafinado Club</span><span class="tm">22:30 · City Bell</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="daycol">
+    <div class="daytitle">Domingo 9/8</div>
+    <div class="dayweather">☀️ 4° / 13° · sin lluvia</div>
+    <div class="lanes">
+      <div class="lane">
+        <div class="lanehead">CABA</div>
+        <div class="track">
+          <div class="ev jazz" data-key="dom-jazz1" style="top:36px; height:72px; z-index:1;"><span class="ti">Getz &amp; Gilberto</span><span class="ve">Bebop Club</span><span class="tm">13:00–15:00 · desde $18.000</span></div>
+          <div class="ev teatro" data-key="dom-teatro1" style="top:234px; height:36px; z-index:2;"><span class="ti">Manifestum</span><span class="ve">T. San Martín</span><span class="tm">18:30–19:30 · $21.000</span></div>
+          <div class="ev cine" data-key="dom-cine1" style="top:288px; height:127px; left:1%; width:48%; z-index:3;"><span class="ti">El príncipe de Nanawa</span><span class="ve">MALBA</span><span class="tm">20:00–23:32 · $8.000</span></div>
+          <div class="ev rock" data-key="dom-rock" style="top:288px; height:90px; left:51%; width:48%; z-index:3;"><span class="ti">Serú Girán por Lebón y Aznar</span><span class="ve">Movistar Arena</span><span class="tm">20:00–22:30 · desde $65.000</span></div>
+          <div class="ev teatro" data-key="dom-teatro2" style="top:324px; height:54px; left:2%; width:47%; z-index:4;"><span class="ti">Un joven golondrina</span><span class="ve">T. Cervantes</span><span class="tm">21:00–22:30</span></div>
+          <div class="ev tango" data-key="dom-tango" style="top:324px; height:72px; left:51%; width:47%; z-index:4;"><span class="ti">De Caravana — Orq. Misteriosa Bs. Aires</span><span class="ve">Marabú</span><span class="tm">21:00–23:00 · reservar</span></div>
+        </div>
+      </div>
+      <div class="lane">
+        <div class="lanehead">La Plata</div>
+        <div class="track">
+          <div class="ev futbol" data-key="dom-lp1" style="top:207px; height:72px; z-index:1;"><span class="ti">Gimnasia–Barracas</span><span class="ve">Estadio Zerillo</span><span class="tm">17:45–19:45</span></div>
+          <div class="ev teatro" data-key="dom-lp2" style="top:288px; height:36px; z-index:2;"><span class="ti">Bajo la tormenta</span><span class="ve">Sala Discépolo</span><span class="tm">20:00–21:00 · gratis</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <span><i class="lteatro"></i>Teatro</span>
+  <span><i class="ljazz"></i>Jazz / música</span>
+  <span><i class="lcine"></i>Cine</span>
+  <span><i class="lfutbol"></i>Fútbol</span>
+  <span><i class="ltango"></i>Tango</span>
+  <span><i class="lrock"></i>Rock</span>
+</div>
+<div class="cap">Los bloques semitransparentes se mezclan donde hay superposición de horario. Tocá cualquier bloque para ver el detalle abajo. Es una selección curada de lo más destacado — el resto de las opciones completas está en las secciones de arriba.</div>
+
+<div class="btnrow">
+  <a href="https://www.alternativateatral.com/cartelera.asp" target="_blank" rel="noopener">🎭 Cartelera de espectáculos CABA — Alternativa Teatral ↗</a>
+  <a href="https://agendalaplata.ar/" target="_blank" rel="noopener">🏙️ Agenda de espectáculos La Plata — agendalaplata.ar ↗</a>
+</div>
+
+<div class="detail empty" id="detail">Tocá una entrada del calendario para ver el detalle completo: dirección, precio, cuánto antes llegar y la fuente.</div>
+
 <h2>ℹ️ Fuentes y notas</h2>
 
 <div class="card">
@@ -350,7 +526,7 @@ li { margin: 4px 0; }
     <li><b>Jazz:</b> <a href="https://ticketera.bebopclub.com.ar/">Bebop Club</a>, <a href="https://jazzvoyeur.com.ar/agenda-de-shows/">Jazz Voyeur Club</a>, <a href="https://cafevinilo.com.ar/">Café Vinilo</a></li>
     <li><b>Teatro:</b> <a href="https://complejoteatral.gob.ar/">Complejo Teatral de Buenos Aires</a>, <a href="https://www.teatrocervantes.gob.ar/">Teatro Nacional Cervantes</a>, <a href="https://www.alternativateatral.com/">Alternativa Teatral</a></li>
     <li><b>Cine:</b> <a href="https://complejoteatral.gob.ar/ver/Luchino-Visconti:-viajes-en-Italia">Sala Lugones</a>, <a href="https://malba.org.ar/">MALBA Cine</a>; ratings verificados en IMDb</li>
-    <li><b>Tango:</b> <a href="https://caff.ar/">CAFF</a></li>
+    <li><b>Tango:</b> <a href="https://caff.ar/">CAFF</a>, <a href="https://lavirutatangoar.com/en/">La Viruta</a>, <a href="https://www.instagram.com/barloslaureles/">Los Laureles</a>, <a href="https://www.hoy-milonga.com/">Marabú / hoy-milonga.com</a></li>
     <li><b>La Plata:</b> <a href="https://agendalaplata.ar/?fecha=2026-08-08">agendalaplata.ar</a>, <a href="https://www.0221.com.ar/que-hago">0221</a>, <a href="https://teatroargentino.gba.gob.ar/">Teatro Argentino</a>, <a href="https://unlp.edu.ar/">Teatro UNLP</a>, <a href="http://www.alternativateatral.com/">Alternativa Teatral (salas platenses)</a>, <a href="https://www.puntocapitalnoticias.com/">Punto Capital Noticias</a>, <a href="https://www.pagina12.com.ar/">Página/12</a></li>
     <li><b>CABA general:</b> <a href="https://buenosaires.gob.ar/gcaba_historico/noticias/los-imperdibles-para-disfrutar-el-fin-de-semana-en-la-ciudad-mas-linda-del">Agenda GCBA</a>, <a href="https://entradasba.buenosaires.gob.ar/">Entradas BA</a></li>
   </ul>
@@ -361,7 +537,7 @@ li { margin: 4px 0; }
   <ul>
     <li><b>Virasoro Bar, Thelonious Club y Notorious:</b> sus sitios no devuelven programación a herramientas automáticas. No pude confirmar si tienen show el 8 o el 9 — <b>no significa que no lo tengan</b>. Thelonious se mudó a Nicaragua 5549 (ya no está en Salguero).</li>
     <li><b>Folclore en CABA:</b> no hay ningún recital verificable el 8 ni el 9. Las peñas (Los Cardones, La Peña del Colorado) publican sólo por Instagram. Jorge Fandermole tiene entradas en venta en el Konex, pero sin fecha confirmada.</li>
-    <li><b>Milongas:</b> no relevadas (hoy-milonga.com pide login). La Semana de las Milongas 2026 terminó el 7/8.</li>
+    <li><b>Milongas:</b> relevadas puntualmente para el calendario (La Viruta viernes, Los Laureles sábado, Marabú domingo). Otras milongas de la agenda semanal no fueron relevadas en forma exhaustiva (hoy-milonga.com pide login para el listado completo).</li>
     <li><b>Café Vinilo se mudó:</b> hoy está en Estados Unidos 2483, San Cristóbal, no en Gorriti 3780.</li>
     <li><b>Precios de La Plata:</b> agendalaplata.ar no los publica. Casi todos quedan a confirmar.</li>
   </ul>
@@ -371,6 +547,221 @@ li { margin: 4px 0; }
   <p><b>Excluidos por preferencia:</b> Raúl Lavié (estaba el domingo 9 a las 19:00 en Bebop con «Astor y yo»), Leo García, Adrián Barilari, «Forasteros» e «Invasiones I – No bombardeen Buenos Aires» (esta última está en cartel en la Sala Martín Coronado).</p>
   <p>Relevamiento asistido por Claude a partir de fuentes públicas argentinas. <b>Confirmar precios y horarios en boletería</b> antes de comprar o viajar. Lo marcado «a confirmar» / «TBC» no está verificado en fuente primaria.</p>
 </div>
+
+<script>
+const EVENTS = {
+  "vie-cine": {
+    title: "Rocco y sus hermanos", venue: "Sala Leopoldo Lugones (Teatro San Martín)",
+    address: "Av. Corrientes 1530, piso 10, CABA", when: "Viernes 7/8, 17:00–20:00",
+    duration: "177 min", price: "$9.000 general / $5.000 estudiantes y jubilados",
+    arrival: "45–60 min antes: no hay venta online, funciones puntuales",
+    note: "Visconti, 1960. IMDb 8.2 — la mejor nota del ciclo \"Luchino Visconti: viajes en Italia\". Es función de tarde, no de noche.",
+    url: "https://complejoteatral.gob.ar/ver/Luchino-Visconti:-viajes-en-Italia"
+  },
+  "vie-teatro1": {
+    title: "Lenguajes del adiós", venue: "Sala Luisa Vehil (Teatro Nacional Cervantes)",
+    address: "Libertad 815, CABA", when: "Viernes 7/8, 18:00–19:00",
+    duration: "60 min", price: "$20.000",
+    arrival: "20 min antes",
+    note: "Unipersonal escrito, dirigido y actuado por Patricio Abadi. Última función el domingo 9/8.",
+    url: "https://www.teatrocervantes.gob.ar/obra/lenguajes-del-adios/"
+  },
+  "vie-teatro2": {
+    title: "Un joven golondrina", venue: "Sala Orestes Caviglia (Teatro Nacional Cervantes)",
+    address: "Libertad 815, CABA", when: "Viernes 7/8, 21:00–22:30",
+    duration: "90 min", price: "a confirmar",
+    arrival: "25 min antes",
+    note: "De Laura Santos. Se repite sábado y domingo (última función el domingo).",
+    url: "https://www.teatrocervantes.gob.ar/obra/un-joven-golondrina/"
+  },
+  "vie-rock": {
+    title: "Mujer Cebra", venue: "Niceto Club",
+    address: "Niceto Vega 5510, Palermo, CABA", when: "Viernes 7/8, 20:00–22:00 (estimado)",
+    duration: "~2h", price: "$20.000 (20% off con Comunidad Indie Hoy)",
+    arrival: "30 min antes",
+    note: "Trío de rock alternativo con trayectoria (Lollapalooza, Quilmes Rock, giras por Chile/Uruguay/México/Perú, 3 nominaciones al Gardel). Presenta su disco \"Inhibidor\".",
+    url: "https://indiehoy.com/agenda/mujer-cebra-en-niceto-club-agosto-2026/"
+  },
+  "vie-tango": {
+    title: "La Viruta — cierre Semana de las Milongas", venue: "La Viruta Tango",
+    address: "Armenia 1366, Palermo, CABA", when: "Viernes 7/8, 21:45",
+    duration: "~2h", price: "a confirmar (milonga con entrada + clase)",
+    arrival: "30 min antes",
+    note: "Show en vivo de Esteban Morgado Cuarteto con exhibición de Julio Seffino y Aldana Tade, cerrando la Semana de las Milongas. Alternativa la misma noche: Dúo Ranas & el Chino Laborde en CAFF, 21:00, $15.000 (versiones tangueras de Patricio Rey y los Redonditos de Ricota).",
+    url: "https://lavirutatangoar.com/en/"
+  },
+  "vie-lp1": {
+    title: "La Chirichota — Vuelven los Clásicos", venue: "Teatro Municipal Coliseo Podestá",
+    address: "Calle 10 Nº 733 e/46 y 47, La Plata", when: "Viernes 7/8, 21:00–22:30 (estimado)",
+    duration: "—", price: "a confirmar (boletería y Plateanet)",
+    arrival: "30 min antes",
+    note: "Última semana de funciones antes de que el teatro cierre por obras.",
+    url: "https://coliseopodesta.laplata.gob.ar/actividad/stand-humoristico/la-chirichota-vuelven-los-clasicos"
+  },
+  "sab-cine": {
+    title: "El gatopardo", venue: "Sala Leopoldo Lugones (Teatro San Martín)",
+    address: "Av. Corrientes 1530, piso 10, CABA", when: "Sábado 8/8, 17:00–20:05",
+    duration: "185 min", price: "$9.000 general / $5.000 estudiantes y jubilados",
+    arrival: "45–60 min antes: no hay venta online",
+    note: "Visconti, 1963, IMDb 7.9. Termina justo cuando arranca Falú en Bebop — hay que elegir entre los dos.",
+    url: "https://complejoteatral.gob.ar/ver/Luchino-Visconti:-viajes-en-Italia"
+  },
+  "sab-teatro1": {
+    title: "Manifestum", venue: "Sala Casacuberta (Teatro San Martín)",
+    address: "Av. Corrientes 1530, CABA", when: "Sábado 8/8, 19:30–20:30",
+    duration: "60 min, +16", price: "$21.000 platea",
+    arrival: "25–30 min antes, comprar online",
+    note: "Con Marilú Marini y Franco Torchia. Se solapa con el final de \"El gatopardo\" y el arranque de Falú.",
+    url: "https://complejoteatral.gob.ar/ver/manifestum"
+  },
+  "sab-jazz1": {
+    title: "Juan Falú & Mariano Loiácono", venue: "Bebop Club",
+    address: "Uriarte 1658, Palermo Soho, CABA", when: "Sábado 8/8, 20:00–22:00 (estimado)",
+    duration: "~2h", price: "desde $18.000 + consumición mínima $15.000",
+    arrival: "30–40 min antes, mesas por orden de llegada, comprar anticipado",
+    note: "Guitarra tucumana y trompeta de jazz en diálogo. El cruce más fuerte de la noche.",
+    url: "https://ticketera.bebopclub.com.ar/evento/bad7ce13-52f3-423f-8568-457680190399"
+  },
+  "sab-teatro2": {
+    title: "Un joven golondrina", venue: "Sala Orestes Caviglia (Teatro Nacional Cervantes)",
+    address: "Libertad 815, CABA", when: "Sábado 8/8, 21:00–22:30",
+    duration: "90 min", price: "$20.000",
+    arrival: "25 min antes",
+    note: "No compite con nada tan fuerte como el domingo. El domingo es la última función.",
+    url: "https://www.teatrocervantes.gob.ar/obra/un-joven-golondrina/"
+  },
+  "sab-rock": {
+    title: "Los Calzones", venue: "El Teatrito",
+    address: "Sarmiento 1752, San Nicolás, CABA", when: "Sábado 8/8, 19:00–21:00 (estimado)",
+    duration: "~2h", price: "desde $35.000 (dato de agregadores, no confirmado en la ticketera oficial)",
+    arrival: "30 min antes",
+    note: "Banda de ska/rock con 38 años de trayectoria. Presentan su décimo disco, \"Huella\". Alternativa la misma noche: Boom Boom Kid en Niceto Club, 20:00.",
+    url: "https://www.passline.com/eventos/los-calzones-8-agosto-2026"
+  },
+  "sab-tango": {
+    title: "Mirta Godoy y Hugo Figueroa — \"Tangos con gotitas de folklore y algo más\"", venue: "Los Laureles",
+    address: "Av. Iriarte 2290, Barracas, CABA", when: "Sábado 8/8, 20:30",
+    duration: "~2h (estimado)", price: "Entrada a la gorra (a voluntad)",
+    arrival: "Reservar antes por tel. 15-1092-2932: el bar recién evitó cerrar esta semana y suele llenarse",
+    note: "Bar notable histórico de Barracas, bien barrial y sin maquillaje turístico. Alternativa la misma noche: Orquesta Típica Fernández Fierro en CAFF, 21:00 (puerta 20:00), $27.000 / $20.000 en puerta.",
+    url: "https://www.instagram.com/barloslaureles/"
+  },
+  "sab-lp1": {
+    title: "La Nona", venue: "Teatro UNLP",
+    address: "Calle 10 Nº 1076 e/54 y 55, La Plata", when: "Sábado 8/8, 21:00–22:30 (estimado)",
+    duration: "~90 min", price: "Entrada libre, colaboración sugerida (leche larga vida)",
+    arrival: "20 min antes",
+    note: "Roberto Cossa, dirección Norberto Barruti. Clásico del teatro argentino, gratis.",
+    url: "https://unlp.edu.ar/arte/practicas_artisticas/teatro/vuelve_en_agosto_la_nona-7466-12466/"
+  },
+  "sab-lp3": {
+    title: "Javier Malosetti Full Band", venue: "Desafinado Club",
+    address: "Diagonal 93 Nº 52, City Bell, La Plata", when: "Sábado 8/8, 22:30",
+    duration: "~2h (estimado)", price: "a confirmar",
+    arrival: "30 min antes, suele llenarse",
+    note: "Confirmado en agendalaplata.ar (no en el sitio propio del club, que tiene el dominio desconectado). No aparece programación de Desafinado ni el viernes ni el domingo.",
+    url: "https://agendalaplata.ar/?fecha=2026-08-08"
+  },
+  "sab-lp2": {
+    title: "Bajo la tormenta", venue: "Sala Armando Discépolo (Comedia de la Provincia)",
+    address: "Calle 12 e/62 y 63, La Plata", when: "Sábado 8/8, 21:00–22:00 (estimado)",
+    duration: "~60 min", price: "Entrada libre y gratuita",
+    arrival: "Retirar localidad 1 hora antes",
+    note: "Estreno de la Comedia de la Provincia. Repite el domingo a las 20:00.",
+    url: "https://www.pagina12.com.ar/2026/06/11/la-comedia-de-la-provincia-estrena-bajo-la-tormenta-en-la-sala-armando-discepolo/"
+  },
+  "dom-jazz1": {
+    title: "Getz & Gilberto", venue: "Bebop Club",
+    address: "Uriarte 1658, Palermo Soho, CABA", when: "Domingo 9/8, 13:00–15:00 (estimado)",
+    duration: "~2h", price: "desde $18.000 + consumición mínima $15.000",
+    arrival: "30 min antes, formato brunch, reservar mesa",
+    note: "Reversión del disco de Stan Getz y João Gilberto. A mediodía: no compite con el partido.",
+    url: "https://ticketera.bebopclub.com.ar/evento/18466de1-d43d-4bd6-92df-3c5f8f5af0f2"
+  },
+  "dom-teatro1": {
+    title: "Manifestum", venue: "Sala Casacuberta (Teatro San Martín)",
+    address: "Av. Corrientes 1530, CABA", when: "Domingo 9/8, 18:30–19:30",
+    duration: "60 min, +16", price: "$21.000 platea",
+    arrival: "25–30 min antes",
+    note: "Pisa el horario de Gimnasia–Barracas (17:45–19:45). Última función el 16/8.",
+    url: "https://complejoteatral.gob.ar/ver/manifestum"
+  },
+  "dom-cine1": {
+    title: "El príncipe de Nanawa", venue: "Auditorio MALBA",
+    address: "Av. Figueroa Alcorta 3415, CABA", when: "Domingo 9/8, 20:00–23:32",
+    duration: "212 min (3h32)", price: "$8.000 general / $4.000 estudiantes y jubilados",
+    arrival: "30 min antes",
+    note: "Clarisa Navas, 2025. IMDb 8.3 — la mejor calificada del finde. Grand Prix Visions du Réel.",
+    url: "https://malba.org.ar/wp-content/uploads/2026/08/malba-cine-2026-08.pdf"
+  },
+  "dom-tango": {
+    title: "De Caravana — con Orquesta Misteriosa Buenos Aires", venue: "Marabú",
+    address: "Maipú 365, CABA", when: "Domingo 9/8, 21:00–2:00 (clase 20:00–21:00)",
+    duration: "~2h de show (milonga sigue después)", price: "reservar (milonga con show en vivo)",
+    arrival: "30–40 min antes, reserva aconsejada",
+    note: "Milonga con código de vestimenta prolija. Alternativas más tempranas: \"Almuerzo y Tango en Vivo\" con Los Casanovas, dom 13:00 en Pasaje de la Luna (San Lorenzo 365, San Telmo); o Guitarras del Once + Hugo Rivas Trío, dom 20:00, CAFF, $15.000.",
+    url: "https://www.hoy-milonga.com/buenos-aires/en/milonga/482196/De-Caravana-Milonga"
+  },
+  "dom-rock": {
+    title: "Serú Girán por Lebón y Aznar", venue: "Movistar Arena",
+    address: "Humboldt 450, Villa Crespo, CABA", when: "Domingo 9/8, 20:00–22:30 (estimado)",
+    duration: "~2h30", price: "desde $65.000",
+    arrival: "45–60 min antes por el tamaño del predio",
+    note: "David Lebón y Pedro Aznar, miembros originales de Serú Girán, recorriendo el repertorio de la banda.",
+    url: "https://indiehoy.com/agenda/seru-giran-lebon-aznar-movistar-arena-agosto/"
+  },
+  "dom-teatro2": {
+    title: "Un joven golondrina (última función)", venue: "Sala Orestes Caviglia (Teatro Nacional Cervantes)",
+    address: "Libertad 815, CABA", when: "Domingo 9/8, 21:00–22:30",
+    duration: "90 min", price: "$20.000",
+    arrival: "25 min antes, reservar ya: es la última función",
+    note: "Arranca después del partido (que termina 19:45): combinación limpia.",
+    url: "https://www.alternativateatral.com/obra101076-un-joven-golondrina"
+  },
+  "dom-lp1": {
+    title: "Gimnasia y Esgrima La Plata vs Barracas Central", venue: "Estadio Juan Carmelo Zerillo (El Bosque)",
+    address: "Calle 60 y 118, La Plata", when: "Domingo 9/8, 17:45–19:45 (estimado)",
+    duration: "~2h", price: "TNT Sports (TV) / entrada según sector si va a la cancha",
+    arrival: "60–75 min antes si va a la cancha; por TV, 15 min antes",
+    note: "Torneo Clausura, fecha 4. Bloquea la agenda platense de esa tarde.",
+    url: "https://www.ligaprofesional.ar/notas/primera/2026/08/03/programacion-de-la-fecha-4-3"
+  },
+  "dom-lp2": {
+    title: "Bajo la tormenta", venue: "Sala Armando Discépolo (Comedia de la Provincia)",
+    address: "Calle 12 e/62 y 63, La Plata", when: "Domingo 9/8, 20:00–21:00",
+    duration: "~60 min", price: "Entrada libre y gratuita",
+    arrival: "Retirar localidad 1 hora antes",
+    note: "Arranca 15 minutos después de que termina el partido: no se solapan.",
+    url: "https://www.pagina12.com.ar/2026/06/11/la-comedia-de-la-provincia-estrena-bajo-la-tormenta-en-la-sala-armando-discepolo/"
+  }
+};
+
+function renderDetail(key) {
+  const d = EVENTS[key];
+  const panel = document.getElementById("detail");
+  if (!d) return;
+  panel.classList.remove("empty");
+  panel.innerHTML =
+    '<h3>' + d.title + '</h3>' +
+    '<div class="venue-line"><b>' + d.venue + '</b> · ' + d.address + '</div>' +
+    '<div class="grid">' +
+      '<div class="k">Día y hora</div><div>' + d.when + '</div>' +
+      '<div class="k">Duración</div><div>' + d.duration + '</div>' +
+      '<div class="k">Precio</div><div>' + d.price + '</div>' +
+      '<div class="k">Llegar</div><div>' + d.arrival + '</div>' +
+    '</div>' +
+    '<div class="note">' + d.note + '</div>' +
+    '<a class="src" href="' + d.url + '" target="_blank" rel="noopener">Ver fuente ↗</a>';
+}
+
+document.querySelectorAll(".ev").forEach(function (el) {
+  el.addEventListener("click", function () {
+    document.querySelectorAll(".ev.selected").forEach(function (s) { s.classList.remove("selected"); });
+    el.classList.add("selected");
+    renderDetail(el.dataset.key);
+  });
+});
+</script>
 
 </body>
 </html>
