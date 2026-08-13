@@ -68,6 +68,59 @@ li { margin: 4px 0; }
   text-decoration: none; border: 1px solid #e6e6ea; border-radius: 8px; padding: 9px 14px; background: #fcfcfd;
 }
 .btnrow a:hover { background: #f1f1f3; border-color: #d8d8dc; }
+
+.calrow { display: flex; gap: 10px; }
+.axis { width: 34px; flex: 0 0 34px; }
+.axis .spacer { height: 64px; }
+.axis .track { position: relative; height: 432px; }
+.axis .hr { position: absolute; left: 0; right: 0; font-size: 10.5px; color: #9a9aa0; transform: translateY(-6px); }
+.daycol { flex: 1; min-width: 0; }
+.daytitle { font-size: 13px; font-weight: 650; margin-bottom: 2px; height: 18px; }
+.dayweather { font-size: 11.5px; color: #6b6b70; margin-bottom: 8px; height: 14px; }
+.lanes { display: flex; gap: 6px; }
+.lane { flex: 1; min-width: 0; }
+.lanehead { font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; color: #9a9aa0; margin-bottom: 4px; height: 14px; }
+.track {
+  position: relative; height: 432px; border-radius: 8px;
+  background-image: repeating-linear-gradient(to bottom, #f1f1f3 0, #f1f1f3 1px, transparent 1px, transparent 36px);
+  background-color: #fbfbfc; border: 1px solid #eeeeef;
+}
+.ev {
+  position: absolute; left: 3px; right: 3px; border-radius: 6px;
+  padding: 3px 6px; font-size: 10px; line-height: 1.2; overflow: hidden;
+  border-left: 3px solid; cursor: pointer; transition: box-shadow .12s, opacity .12s;
+}
+.ev:hover { box-shadow: 0 0 0 1px rgba(28,28,30,0.25) inset; }
+.ev.selected { box-shadow: 0 0 0 2px #1c1c1e inset; opacity: 1 !important; z-index: 90 !important; }
+.ev .ti { font-weight: 650; font-size: 10.5px; display: block; }
+.ev .ve { display: block; font-weight: 650; opacity: 0.75; }
+.ev .tm { display: block; opacity: 0.85; }
+.ev.teatro { background: rgba(124, 92, 209, 0.34); border-left-color: #6a4fc0; color: #3a2d70; }
+.ev.jazz { background: rgba(10, 88, 202, 0.30); border-left-color: #0a58ca; color: #0a3f78; }
+.ev.cine { background: rgba(208, 135, 0, 0.32); border-left-color: #b57300; color: #6e4700; }
+.ev.futbol { background: rgba(46, 125, 50, 0.32); border-left-color: #2e7d32; color: #1e5222; }
+.ev.tango { background: rgba(212, 83, 126, 0.32); border-left-color: #b3396a; color: #72243e; }
+.ev.rock { background: rgba(216, 90, 48, 0.32); border-left-color: #b3491f; color: #712b13; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.legend .lteatro { background: #7c5cd1; }
+.legend .ljazz { background: #0a58ca; }
+.legend .lcine { background: #d08700; }
+.legend .lfutbol { background: #2e7d32; }
+.cap { font-size: 12px; color: #8a8a8f; margin-top: 12px; }
+.detail {
+  margin-top: 20px; border: 1px solid #e6e6ea; border-radius: 12px; padding: 16px 18px;
+  background: #fcfcfd; min-height: 140px;
+}
+.detail.empty { color: #9a9aa0; font-size: 13.5px; display: flex; align-items: center; justify-content: center; text-align: center; }
+.detail h3 { margin: 0 0 2px; font-size: 16.5px; }
+.detail .venue-line { font-size: 13.5px; color: #46464b; margin-bottom: 10px; }
+.detail .venue-line b { color: #1c1c1e; }
+.detail .grid { display: grid; grid-template-columns: 110px 1fr; gap: 6px 10px; font-size: 13.5px; margin-bottom: 10px; }
+.detail .grid .k { color: #76767c; font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; padding-top: 2px; }
+.detail .note { font-size: 13.5px; color: #33333a; padding-top: 10px; border-top: 1px dashed #e6e6ea; }
+.detail a.src { display: inline-block; margin-top: 10px; font-size: 13px; color: #0a58ca; text-decoration: none; }
+.detail a.src:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -217,49 +270,109 @@ li { margin: 4px 0; }
 
 <h2>📆 Calendario del finde</h2>
 
-<div class="daybox">
-  <h3>Viernes 14/8 — CABA</h3>
-  <div class="ev2"><span class="cat cine">Cine</span><b>Rocco y sus hermanos</b> — Sala Lugones · 20:00–22:57 · $9.000</div>
-  <div class="ev2"><span class="cat teatro">Teatro</span><b>Manifestum</b> — T. San Martín (Casacuberta) · 19:30–20:30 · $21.000</div>
-  <div class="ev2"><span class="cat teatro">Teatro</span><b>El centésimo mono</b> — Timbre 4 · 20:30–21:55 · TBC vigencia</div>
-</div>
+<div class="calrow">
+  <div class="axis">
+    <div class="spacer"></div>
+    <div class="track">
+      <div class="hr" style="top:0px">12</div>
+      <div class="hr" style="top:36px">13</div>
+      <div class="hr" style="top:72px">14</div>
+      <div class="hr" style="top:108px">15</div>
+      <div class="hr" style="top:144px">16</div>
+      <div class="hr" style="top:180px">17</div>
+      <div class="hr" style="top:216px">18</div>
+      <div class="hr" style="top:252px">19</div>
+      <div class="hr" style="top:288px">20</div>
+      <div class="hr" style="top:324px">21</div>
+      <div class="hr" style="top:360px">22</div>
+      <div class="hr" style="top:396px">23</div>
+      <div class="hr" style="top:432px">24</div>
+    </div>
+  </div>
 
-<div class="daybox">
-  <h3>Sábado 15/8 — CABA</h3>
-  <div class="ev2"><span class="cat teatro">Teatro</span><b>Manifestum</b> — T. San Martín (Casacuberta) · 19:30–20:30 · $21.000</div>
-  <div class="ev2"><span class="cat teatro">Teatro</span><b>La Paciencia (fatídica sindical)</b> — El Camarín de las Musas · 20:00–21:15 · TBC</div>
-</div>
-<div class="daybox">
-  <h3>Sábado 15/8 — La Plata</h3>
-  <div class="ev2"><span class="cat futbol">Fútbol</span><b>Estudiantes–Gimnasia</b> — Estadio UNO (Gimnasia visitante) · 16:45–18:45 · ESPN Premium</div>
-  <div class="ev2"><span class="cat jazz">Música</span>Joaquín Oliva Uberuaga (piano) — T. Argentino, Sala Piazzolla · 18:00 · GRATIS con reserva</div>
-  <div class="ev2"><span class="cat jazz">Música</span><b>Quinteto Revolucionario</b> (Piazzolla, Grammy Latino) — T. de Cámara City Bell · 20:00 · <span class="tag clash">pisa el partido si se extiende</span></div>
-  <div class="ev2"><span class="cat teatro">Teatro</span>«La Nona» — Teatro UNLP · 21:00 · GRATIS</div>
-  <div class="ev2"><span class="cat teatro">Teatro</span>«Bajo la tormenta» — Sala Discépolo · 21:00 · GRATIS</div>
-</div>
+  <div class="daycol">
+    <div class="daytitle">Viernes 14/8</div>
+    <div class="dayweather">Clima: a confirmar</div>
+    <div class="lanes">
+      <div class="lane">
+        <div class="lanehead">CABA</div>
+        <div class="track">
+          <div class="ev cine" data-key="vie-cine" style="top:288px; height:106px; left:2%; width:47%; z-index:1;"><span class="ti">Rocco y sus hermanos</span><span class="ve">Sala Lugones</span><span class="tm">20:00–22:57 · $9.000</span></div>
+          <div class="ev teatro" data-key="vie-teatro1" style="top:270px; height:36px; left:51%; width:47%; z-index:2;"><span class="ti">Manifestum</span><span class="ve">T. San Martín</span><span class="tm">19:30–20:30 · $21.000</span></div>
+          <div class="ev teatro" data-key="vie-teatro2" style="top:306px; height:51px; left:51%; width:47%; z-index:2;"><span class="ti">El centésimo mono</span><span class="ve">Timbre 4</span><span class="tm">20:30–21:55</span></div>
+        </div>
+      </div>
+      <div class="lane">
+        <div class="lanehead">La Plata</div>
+        <div class="track">
+          <div class="ev jazz" data-key="vie-lp1" style="top:306px; height:54px; z-index:1;"><span class="ti">Hernán Cassibba 4teto</span><span class="ve">Pasaje Dardo Rocha</span><span class="tm">20:30 · $15.000</span></div>
+          <div class="ev jazz" data-key="vie-lp2" style="top:378px; height:54px; z-index:2;"><span class="ti">Lito Epumer Cuarteto</span><span class="ve">Desafinado Club</span><span class="tm">22:30 · City Bell</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div class="daybox">
-  <h3>Domingo 16/8 — CABA</h3>
-  <div class="ev2"><span class="cat teatro">Teatro</span><b>Manifestum</b> — T. San Martín (Casacuberta) · 18:30–19:30 · $21.000</div>
-  <div class="ev2"><span class="cat teatro">Teatro</span>«La omisión de la familia Coleman» — Timbre 4 · 19:00–20:40 · TBC</div>
-  <div class="ev2"><span class="cat cine">Cine</span><b>El príncipe de Nanawa</b> — MALBA Cine · 20:00 (+3h) · $8.000</div>
-</div>
-<div class="daybox">
-  <h3>Domingo 16/8 — La Plata</h3>
-  <div class="ev2"><span class="cat cine">Cine</span>«Chinatown» — T. de Cámara City Bell · 18:00 · $6.000</div>
-  <div class="ev2"><span class="cat teatro">Teatro</span>«Bajo la tormenta» — Sala Discépolo · 20:00 · GRATIS</div>
+  <div class="daycol">
+    <div class="daytitle">Sábado 15/8</div>
+    <div class="dayweather">Clima: a confirmar</div>
+    <div class="lanes">
+      <div class="lane">
+        <div class="lanehead">CABA</div>
+        <div class="track">
+          <div class="ev teatro" data-key="sab-teatro1" style="top:270px; height:36px; left:2%; width:47%; z-index:1;"><span class="ti">Manifestum</span><span class="ve">T. San Martín</span><span class="tm">19:30–20:30 · $21.000</span></div>
+          <div class="ev teatro" data-key="sab-teatro2" style="top:288px; height:45px; left:51%; width:47%; z-index:2;"><span class="ti">La Paciencia</span><span class="ve">El Camarín de las Musas</span><span class="tm">20:00–21:15</span></div>
+        </div>
+      </div>
+      <div class="lane">
+        <div class="lanehead">La Plata</div>
+        <div class="track">
+          <div class="ev futbol" data-key="sab-lp1" style="top:171px; height:72px; left:2%; width:47%; z-index:1;"><span class="ti">Estudiantes–Gimnasia</span><span class="ve">Estadio UNO</span><span class="tm">16:45–18:45 · ESPN Premium</span></div>
+          <div class="ev jazz" data-key="sab-lp2" style="top:216px; height:36px; left:51%; width:47%; z-index:2;"><span class="ti">Joaquín Oliva (piano)</span><span class="ve">T. Argentino</span><span class="tm">18:00 · gratis</span></div>
+          <div class="ev jazz" data-key="sab-lp3" style="top:288px; height:54px; left:2%; width:47%; z-index:3;"><span class="ti">Quinteto Revolucionario</span><span class="ve">T. Cámara City Bell</span><span class="tm">20:00 · Piazzolla</span></div>
+          <div class="ev teatro" data-key="sab-lp4" style="top:324px; height:54px; left:51%; width:47%; z-index:4;"><span class="ti">La Nona</span><span class="ve">Teatro UNLP</span><span class="tm">21:00 · gratis</span></div>
+          <div class="ev teatro" data-key="sab-lp5" style="top:324px; height:36px; left:51%; width:47%; z-index:5; opacity:0.85;"><span class="ti">Bajo la tormenta</span><span class="ve">Sala Discépolo</span><span class="tm">21:00 · gratis</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="daycol">
+    <div class="daytitle">Domingo 16/8</div>
+    <div class="dayweather">Clima: a confirmar</div>
+    <div class="lanes">
+      <div class="lane">
+        <div class="lanehead">CABA</div>
+        <div class="track">
+          <div class="ev teatro" data-key="dom-teatro1" style="top:234px; height:36px; left:2%; width:47%; z-index:1;"><span class="ti">Manifestum</span><span class="ve">T. San Martín</span><span class="tm">18:30–19:30 · $21.000</span></div>
+          <div class="ev teatro" data-key="dom-teatro2" style="top:252px; height:60px; left:51%; width:47%; z-index:2;"><span class="ti">La omisión de la familia Coleman</span><span class="ve">Timbre 4</span><span class="tm">19:00–20:40</span></div>
+          <div class="ev cine" data-key="dom-cine1" style="top:288px; height:127px; left:2%; width:47%; z-index:3;"><span class="ti">El príncipe de Nanawa</span><span class="ve">MALBA</span><span class="tm">20:00–23:32 · $8.000</span></div>
+        </div>
+      </div>
+      <div class="lane">
+        <div class="lanehead">La Plata</div>
+        <div class="track">
+          <div class="ev cine" data-key="dom-lp1" style="top:216px; height:78px; left:2%; width:47%; z-index:1;"><span class="ti">Chinatown</span><span class="ve">T. Cámara City Bell</span><span class="tm">18:00 · $6.000</span></div>
+          <div class="ev teatro" data-key="dom-lp2" style="top:288px; height:36px; left:51%; width:47%; z-index:2;"><span class="ti">Bajo la tormenta</span><span class="ve">Sala Discépolo</span><span class="tm">20:00 · gratis</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="legend">
-  <span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#6a4fc0"></i> Teatro</span>
-  <span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#0a58ca"></i> Jazz / música</span>
-  <span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#b57300"></i> Cine</span>
-  <span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#2e7d32"></i> Fútbol</span>
+  <span><i class="lteatro"></i>Teatro</span>
+  <span><i class="ljazz"></i>Jazz / música</span>
+  <span><i class="lcine"></i>Cine</span>
+  <span><i class="lfutbol"></i>Fútbol</span>
 </div>
+<div class="cap">Los bloques semitransparentes se mezclan donde hay superposición de horario. Tocá cualquier bloque para ver el detalle abajo.</div>
+
 <div class="btnrow">
   <a href="https://www.alternativateatral.com/cartelera.asp" target="_blank" rel="noopener">🎭 Cartelera de espectáculos CABA — Alternativa Teatral ↗</a>
   <a href="https://agendalaplata.ar/" target="_blank" rel="noopener">🏙️ Agenda de espectáculos La Plata — agendalaplata.ar ↗</a>
 </div>
+
+<div class="detail empty" id="detail">Tocá una entrada del calendario para ver el detalle completo: dirección, precio, cuánto antes llegar y la fuente.</div>
 
 <h2>ℹ️ Fuentes y notas</h2>
 
@@ -287,6 +400,54 @@ li { margin: 4px 0; }
   <p><b>Excluidos por preferencia:</b> Raúl Lavié, Leo García, Adrián Barilari, «Forasteros» e «Invasiones I – No bombardeen Buenos Aires».</p>
   <p>Relevamiento asistido por Claude a partir de fuentes públicas argentinas. <b>Confirmar precios y horarios en boletería</b> antes de comprar o viajar. Lo marcado «a confirmar» / «TBC» no está verificado en fuente primaria.</p>
 </div>
+
+<script>
+const EVENTS = {
+  "vie-cine": { title: "Rocco y sus hermanos", venue: "Sala Leopoldo Lugones (Teatro San Martín)", address: "Av. Corrientes 1530, piso 10, CABA", when: "Viernes 14/8, 20:00–22:57", duration: "177 min", price: "$9.000 general / $5.000 estudiantes y jubilados", arrival: "45–60 min antes: no hay venta online, funciones puntuales", note: "Visconti, 1960. IMDb 8.2 — la mejor nota del ciclo \"Luchino Visconti: viajes en Italia\".", url: "https://complejoteatral.gob.ar/pdf/programa-luchino-visconti-viajes-en-italia.pdf" },
+  "vie-teatro1": { title: "Manifestum", venue: "Sala Casacuberta (Teatro San Martín)", address: "Av. Corrientes 1530, CABA", when: "Viernes 14/8, 19:30–20:30", duration: "60 min, +16", price: "Platea $21.000", arrival: "25–30 min antes", note: "Con Marilú Marini y Franco Torchia. Dirección e idea de Oria Puppo.", url: "https://complejoteatral.gob.ar/ver/manifestum" },
+  "vie-teatro2": { title: "El centésimo mono", venue: "Timbre 4", address: "México 3554, Boedo, CABA", when: "Viernes 14/8, 20:30–21:55", duration: "85 min", price: "No verificado", arrival: "20–25 min antes; confirmar vigencia con la sala", note: "Osqui Guzmán. La Nación: \"MUY BUENA\". Premiada en la Fiesta Nacional del Teatro 2013.", url: "https://www.alternativateatral.com/obra19804-el-centesimo-mono" },
+  "vie-lp1": { title: "Hernán Cassibba 4teto — Homenaje a Sonny Rollins", venue: "Auditorio del Pasaje Dardo Rocha", address: "Calle 50 e/6 y 7, La Plata", when: "Viernes 14/8, 20:30", duration: "No verificado", price: "$15.000", arrival: "20–25 min antes", note: "Ciclo Música en El Pasaje.", url: "https://agendalaplata.ar/evento/homenaje-a-sonny-rollins-pasaje-dardo-rocha-20260810214817" },
+  "vie-lp2": { title: "Lito Epumer Cuarteto", venue: "Desafinado Club", address: "Diagonal 93 Nº52, City Bell, La Plata", when: "Viernes 14/8, 22:30", duration: "No verificado", price: "No publicado — reservas 221-5065713", arrival: "25–30 min antes", note: "Jazz fusión / rock. Ex Madre Atómica, Spinetta Jade.", url: "https://agendalaplata.ar/evento/lito-epumer-cuarteto-desafinado-club-20260801144513" },
+  "sab-teatro1": { title: "Manifestum", venue: "Sala Casacuberta (Teatro San Martín)", address: "Av. Corrientes 1530, CABA", when: "Sábado 15/8, 19:30–20:30", duration: "60 min, +16", price: "Platea $21.000", arrival: "25–30 min antes", note: "No choca con el clásico platense (16:45–18:45).", url: "https://complejoteatral.gob.ar/ver/manifestum" },
+  "sab-teatro2": { title: "La Paciencia (fatídica sindical)", venue: "El Camarín de las Musas", address: "Mario Bravo 960, CABA", when: "Sábado 15/8, 20:00–21:15", duration: "75 min", price: "A confirmar", arrival: "20–25 min antes; sala chica, colma cada sábado", note: "Macarena García Lenzi. Nominada a Mejor Dramaturgia, Premios María Guerrero.", url: "https://www.alternativateatral.com/obra84051-la-paciencia-fatidica-sindical" },
+  "sab-lp1": { title: "Estudiantes de La Plata vs Gimnasia (clásico platense)", venue: "Estadio Ciudad de La Plata (UNO)", address: "Cancha de Estudiantes, La Plata", when: "Sábado 15/8, 16:45–18:45 (estimado)", duration: "~2h", price: "ESPN Premium (TV) / entrada según sector si va a la cancha", arrival: "Por TV: 15 min antes", note: "Clausura fecha 5. Gimnasia de visitante. Bloquea la tarde platense.", url: "https://www.ligaprofesional.ar/notas/primera/2026/08/10/agenda-de-la-fecha-5-5/" },
+  "sab-lp2": { title: "Joaquín Oliva Uberuaga — concierto de piano", venue: "Sala Astor Piazzolla (Teatro Argentino)", address: "Av. 51 e/9 y 10, La Plata", when: "Sábado 15/8, 18:00", duration: "No verificado", price: "Gratis con reserva online (desde jueves 13, 12:00)", arrival: "20 min antes", note: "Beethoven (Waldstein), Ravel (Miroirs), Ginastera (Sonata Nº1).", url: "https://teatroargentino.gba.gob.ar/section/1/publication/184" },
+  "sab-lp3": { title: "Quinteto Revolucionario — la música de Astor Piazzolla", venue: "Teatro de Cámara de City Bell", address: "Diagonal 4 (Urquiza) 327 e/462 y 464, City Bell, La Plata", when: "Sábado 15/8, 20:00", duration: "No verificado", price: "Bono contribución (venta por Eventbrite)", arrival: "25–30 min antes", note: "Único conjunto reconocido por la Fundación Astor Piazzolla. Grammy Latino 2019.", url: "https://lumenartis.org/?post_type=funcion&p=2581" },
+  "sab-lp4": { title: "La Nona", venue: "Teatro UNLP", address: "Calle 10 e/54 y 55, La Plata", when: "Sábado 15/8, 21:00", duration: "No verificado", price: "Entrada libre — reservas 221 656 1712", arrival: "20 min antes", note: "Roberto Cossa, dirección Norberto Barruti. Arranca después del clásico platense.", url: "https://unlp.edu.ar/arte/practicas_artisticas/teatro/vuelve_en_agosto_la_nona-7466-12466/" },
+  "sab-lp5": { title: "Bajo la tormenta", venue: "Sala Armando Discépolo (Comedia de la Provincia)", address: "Calle 12 e/62 y 63, La Plata", when: "Sábado 15/8, 21:00", duration: "No verificado", price: "Entrada libre y gratuita", arrival: "Retirar localidad 1 hora antes", note: "Estreno con nota propia en Página/12.", url: "https://www.pagina12.com.ar/2026/06/11/la-comedia-de-la-provincia-estrena-bajo-la-tormenta-en-la-sala-armando-discepolo/" },
+  "dom-teatro1": { title: "Manifestum", venue: "Sala Casacuberta (Teatro San Martín)", address: "Av. Corrientes 1530, CABA", when: "Domingo 16/8, 18:30–19:30", duration: "60 min, +16", price: "Platea $21.000", arrival: "25–30 min antes", note: "Última función del horario domingo de esta semana.", url: "https://complejoteatral.gob.ar/ver/manifestum" },
+  "dom-teatro2": { title: "La omisión de la familia Coleman", venue: "Timbre 4", address: "México 3554, Boedo, CABA", when: "Domingo 16/8, 19:00–20:40", duration: "100 min", price: "No verificado", arrival: "20–25 min antes", note: "Claudio Tolcachir. Clásico del off argentino desde 2005, gira por 22 países. Sigue el 23 y 30/8.", url: "https://www.alternativateatral.com/obra4926-la-omision-de-la-familia-coleman" },
+  "dom-cine1": { title: "El príncipe de Nanawa", venue: "MALBA Cine", address: "Av. Figueroa Alcorta 3415, CABA", when: "Domingo 16/8, 20:00–23:32 (estimado)", duration: "Documental, +3h", price: "$8.000 general / $4.000 estudiantes y jubilados", arrival: "30–40 min antes", note: "Clarisa Navas, 2025. IMDb 8.3. Gran Premio del Jurado en Visions du Réel.", url: "https://malba.org.ar/wp-content/uploads/2026/08/malba-cine-2026-08.pdf" },
+  "dom-lp1": { title: "Chinatown", venue: "Teatro de Cámara de City Bell", address: "Diagonal 4 (Urquiza) 327, City Bell, La Plata", when: "Domingo 16/8, 18:00", duration: "130 min (estimado)", price: "Bono contribución $6.000, sin reserva", arrival: "20 min antes", note: "Polanski, 1974. Ciclo Encuentros con el 7º arte. Presenta el crítico Pepo Garay.", url: "https://lumenartis.org/?post_type=funcion&p=2585" },
+  "dom-lp2": { title: "Bajo la tormenta", venue: "Sala Armando Discépolo (Comedia de la Provincia)", address: "Calle 12 e/62 y 63, La Plata", when: "Domingo 16/8, 20:00", duration: "No verificado", price: "Entrada libre y gratuita", arrival: "Retirar localidad 1 hora antes", note: "Cierra el finde de la Comedia de la Provincia en esta sala.", url: "https://www.pagina12.com.ar/2026/06/11/la-comedia-de-la-provincia-estrena-bajo-la-tormenta-en-la-sala-armando-discepolo/" }
+};
+
+function renderDetail(key) {
+  const d = EVENTS[key];
+  const panel = document.getElementById("detail");
+  if (!d) return;
+  panel.classList.remove("empty");
+  panel.innerHTML =
+    '<h3>' + d.title + '</h3>' +
+    '<div class="venue-line"><b>' + d.venue + '</b> · ' + d.address + '</div>' +
+    '<div class="grid">' +
+      '<div class="k">Día y hora</div><div>' + d.when + '</div>' +
+      '<div class="k">Duración</div><div>' + d.duration + '</div>' +
+      '<div class="k">Precio</div><div>' + d.price + '</div>' +
+      '<div class="k">Llegar</div><div>' + d.arrival + '</div>' +
+    '</div>' +
+    '<div class="note">' + d.note + '</div>' +
+    '<a class="src" href="' + d.url + '" target="_blank" rel="noopener">Ver fuente ↗</a>';
+}
+
+document.querySelectorAll(".ev").forEach(function (el) {
+  el.addEventListener("click", function () {
+    document.querySelectorAll(".ev.selected").forEach(function (s) { s.classList.remove("selected"); });
+    el.classList.add("selected");
+    renderDetail(el.dataset.key);
+  });
+});
+</script>
 
 </body>
 </html>
