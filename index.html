@@ -1,471 +1,364 @@
-<!DOCTYPE html><script type="application/json" id="cowork-artifact-meta">
-{
-  "name": "Propuestas Finde",
-  "schemaVersion": 1,
-  "description": "Agenda cultural del fin de semana en CABA y La Plata: fútbol (Gimnasia y Selección), clima, Top 5 de jazz/teatro/cine/folclore, teatro off, tango, La Plata y escapada corta. Se reescribe cada jueves con la tarea programada \"sugerencias-finde\"."
-}
-</script>
+<!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Propuestas Finde</title>
 <style>
-:root { color-scheme: light; }
-* { box-sizing: border-box; }
-body {
-  margin: 0 auto; padding: 24px 20px 60px;
-  background: #ffffff; color: #1c1c1e;
-  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif;
-  max-width: 860px;
+/* Layout: una columna de tarjetas (máx 860px), calendario horario por día con carriles CABA / La Plata */
+:root{
+  color-scheme: light;
+  --bg:#f5f4f0; --card:#ffffff; --ink:#1f2328; --muted:#5f6670; --line:#e2e0da; --accent:#2f5d8a;
+  --teatro:#8e44ad; --jazz:#2f5d8a; --cine:#1f8a70; --futbol:#c0392b; --tango:#b9770e; --rock:#6d7a2a;
+  --tbc-bg:#fff4d6; --tbc-fg:#8a5a00; --last-bg:#fde2e0; --last-fg:#a8261b;
+  --free-bg:#dff3e4; --free-fg:#1f6b3a; --clash-bg:#ffe7d1; --clash-fg:#a14a00;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
-h1 { font-size: 26px; margin: 0 0 4px; letter-spacing: -0.4px; }
-.sub { color: #6b6b70; font-size: 13px; margin-bottom: 4px; }
-.disc { color: #8a8a8f; font-size: 11.5px; margin-bottom: 22px; }
-h2 {
-  font-size: 13px; letter-spacing: 0.9px; text-transform: uppercase;
-  color: #5a5a60; margin: 34px 0 12px; padding-bottom: 7px;
-  border-bottom: 1px solid #e6e6ea;
-}
-.card {
-  border: 1px solid #e6e6ea; border-radius: 10px;
-  padding: 14px 16px; margin-bottom: 12px; background: #fcfcfd;
-}
-.card.hi { border-left: 3px solid #1c1c1e; background: #fff; }
-.card.warn { border-left: 3px solid #d08700; background: #fffcf5; }
-.card.ok { border-left: 3px solid #2e7d32; background: #f7fcf7; }
-.t { font-weight: 650; font-size: 15.5px; margin-bottom: 8px; letter-spacing: -0.2px; }
-.t .n { color: #9a9aa0; font-weight: 500; margin-right: 5px; }
-.row { display: flex; gap: 9px; margin: 3px 0; align-items: baseline; }
-.k { flex: 0 0 96px; color: #76767c; font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.4px; padding-top: 1px; }
-.v { flex: 1; }
-.note { margin-top: 9px; padding-top: 9px; border-top: 1px dashed #e6e6ea; color: #46464b; font-size: 14px; }
-a { color: #0a58ca; text-decoration: none; }
-a:hover { text-decoration: underline; }
-.tag {
-  display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.6px;
-  padding: 2px 7px; border-radius: 4px; vertical-align: 2px; margin-left: 7px;
-}
-.tag.tbc { background: #fff2d6; color: #8a5a00; }
-.tag.last { background: #ffe0e0; color: #a11; }
-.tag.free { background: #dff2df; color: #1e6b22; }
-.tag.clash { background: #ffe6d6; color: #9a4b00; }
-b { font-weight: 650; }
-ul { margin: 6px 0 0; padding-left: 18px; }
-li { margin: 4px 0; }
-.foot { margin-top: 34px; padding-top: 14px; border-top: 1px solid #e6e6ea; color: #76767c; font-size: 12.5px; }
-.foot p { margin: 7px 0; }
-.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 14px; font-size: 12px; color: #46464b; }
-.btnrow { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
-.btnrow a {
-  display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: #1c1c1e;
-  text-decoration: none; border: 1px solid #e6e6ea; border-radius: 8px; padding: 9px 14px; background: #fcfcfd;
-}
-.btnrow a:hover { background: #f1f1f3; border-color: #d8d8dc; }
-
-.calrow { display: flex; gap: 10px; }
-.axis { width: 34px; flex: 0 0 34px; }
-.axis .spacer { height: 64px; }
-.axis .track { position: relative; height: 432px; }
-.axis .hr { position: absolute; left: 0; right: 0; font-size: 10.5px; color: #9a9aa0; transform: translateY(-6px); }
-.daycol { flex: 1; min-width: 0; }
-.daytitle { font-size: 13px; font-weight: 650; margin-bottom: 2px; height: 18px; }
-.dayweather { font-size: 11.5px; color: #6b6b70; margin-bottom: 8px; height: 14px; }
-.lanes { display: flex; gap: 6px; }
-.lane { flex: 1; min-width: 0; }
-.lanehead { font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; color: #9a9aa0; margin-bottom: 4px; height: 14px; }
-.track {
-  position: relative; height: 432px; border-radius: 8px;
-  background-image: repeating-linear-gradient(to bottom, #f1f1f3 0, #f1f1f3 1px, transparent 1px, transparent 36px);
-  background-color: #fbfbfc; border: 1px solid #eeeeef;
-}
-.ev {
-  position: absolute; left: 3px; right: 3px; border-radius: 6px;
-  padding: 3px 6px; font-size: 10px; line-height: 1.2; overflow: hidden;
-  border-left: 3px solid; cursor: pointer; transition: box-shadow .12s, opacity .12s;
-}
-.ev:hover { box-shadow: 0 0 0 1px rgba(28,28,30,0.25) inset; }
-.ev.selected { box-shadow: 0 0 0 2px #1c1c1e inset; opacity: 1 !important; z-index: 90 !important; }
-.ev .ti { font-weight: 650; font-size: 10.5px; display: block; }
-.ev .ve { display: block; font-weight: 650; opacity: 0.75; }
-.ev .tm { display: block; opacity: 0.85; }
-.ev.teatro { background: rgba(124, 92, 209, 0.34); border-left-color: #6a4fc0; color: #3a2d70; }
-.ev.jazz { background: rgba(10, 88, 202, 0.30); border-left-color: #0a58ca; color: #0a3f78; }
-.ev.cine { background: rgba(208, 135, 0, 0.32); border-left-color: #b57300; color: #6e4700; }
-.ev.futbol { background: rgba(46, 125, 50, 0.32); border-left-color: #2e7d32; color: #1e5222; }
-.ev.tango { background: rgba(212, 83, 126, 0.32); border-left-color: #b3396a; color: #72243e; }
-.ev.rock { background: rgba(216, 90, 48, 0.32); border-left-color: #b3491f; color: #712b13; }
-.legend span { display: inline-flex; align-items: center; gap: 6px; }
-.legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
-.legend .lteatro { background: #7c5cd1; }
-.legend .ljazz { background: #0a58ca; }
-.legend .lcine { background: #b57300; }
-.legend .lfutbol { background: #2e7d32; }
-.legend .ltango { background: #b3396a; }
-.legend .lrock { background: #b3491f; }
-.cap { font-size: 12px; color: #8a8a8f; margin-top: 12px; }
-.detail {
-  margin-top: 20px; border: 1px solid #e6e6ea; border-radius: 12px; padding: 16px 18px;
-  background: #fcfcfd; min-height: 140px;
-}
-.detail.empty { color: #9a9aa0; font-size: 13.5px; display: flex; align-items: center; justify-content: center; text-align: center; }
-.detail h3 { margin: 0 0 2px; font-size: 16.5px; }
-.detail .venue-line { font-size: 13.5px; color: #46464b; margin-bottom: 10px; }
-.detail .venue-line b { color: #1c1c1e; }
-.detail .grid { display: grid; grid-template-columns: 110px 1fr; gap: 6px 10px; font-size: 13.5px; margin-bottom: 10px; }
-.detail .grid .k { color: #76767c; font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; padding-top: 2px; }
-.detail .note { font-size: 13.5px; color: #33333a; padding-top: 10px; border-top: 1px dashed #e6e6ea; }
-.detail a.src { display: inline-block; margin-top: 10px; font-size: 13px; color: #0a58ca; text-decoration: none; }
-.detail a.src:hover { text-decoration: underline; }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5;margin:0}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:24px 48px;display:flex;flex-direction:column;gap:18px}
+h1{font-size:1.9rem;margin:0;text-wrap:balance}
+h2{font-size:1.2rem;margin:0 0 10px;text-wrap:balance}
+h3{font-size:1.02rem;margin:0 0 8px;text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.item{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.items{display:flex;flex-direction:column;gap:12px}
+.row{display:grid;grid-template-columns:92px 1fr;gap:8px}
+.row .k{color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;padding-top:1px}
+.row .v{min-width:0}
+.note{color:var(--muted);font-size:.92rem;margin:4px 0 0}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;padding:2px 7px;border-radius:999px;vertical-align:middle;margin-left:4px}
+.tbc{background:var(--tbc-bg);color:var(--tbc-fg)}
+.last{background:var(--last-bg);color:var(--last-fg)}
+.free{background:var(--free-bg);color:var(--free-fg)}
+.clash{background:var(--clash-bg);color:var(--clash-fg)}
+.ok{background:#e8eef6;color:var(--accent)}
+ul{margin:6px 0 0;padding-left:20px}
+li{margin:3px 0}
+.weather{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.wday{border:1px solid var(--line);border-radius:12px;padding:12px}
+.wday b{display:block;margin-bottom:4px}
+@media (max-width:600px){.weather{grid-template-columns:1fr}.row{grid-template-columns:78px 1fr}}
+/* Calendario */
+.cal-scroll{overflow-x:auto}
+.cal{min-width:640px;display:flex;flex-direction:column;gap:14px}
+.cal-day{border:1px solid var(--line);border-radius:12px;padding:10px}
+.cal-day header{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;margin-bottom:6px}
+.cal-day header span{color:var(--muted);font-size:.88rem}
+.axis,.lane{position:relative;margin-left:70px}
+.axis{height:18px;font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.axis i{position:absolute;top:0;transform:translateX(-50%);font-style:normal}
+.lane{min-height:34px;border-top:1px dashed var(--line);margin-top:4px;padding-block:3px}
+.lane-label{position:absolute;left:-70px;top:6px;font-size:.78rem;font-weight:700;color:var(--muted)}
+.ev{position:absolute;height:28px;border-radius:7px;padding:2px 6px;font-size:.72rem;line-height:1.15;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;cursor:pointer;border:1px solid;color:var(--ink);text-align:left;font-family:var(--font)}
+.ev small{display:block;color:var(--muted)}
+.c-teatro{background:rgba(142,68,173,.20);border-color:var(--teatro)}
+.c-jazz{background:rgba(47,93,138,.20);border-color:var(--jazz)}
+.c-cine{background:rgba(31,138,112,.20);border-color:var(--cine)}
+.c-futbol{background:rgba(192,57,43,.22);border-color:var(--futbol)}
+.c-tango{background:rgba(185,119,14,.22);border-color:var(--tango)}
+.c-rock{background:rgba(109,122,42,.22);border-color:var(--rock)}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:.82rem;color:var(--muted);margin-top:10px}
+.legend span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-2px;border:1px solid}
+.l-teatro::before{background:rgba(142,68,173,.2);border-color:var(--teatro)!important}
+.l-jazz::before{background:rgba(47,93,138,.2);border-color:var(--jazz)!important}
+.l-cine::before{background:rgba(31,138,112,.2);border-color:var(--cine)!important}
+.l-futbol::before{background:rgba(192,57,43,.22);border-color:var(--futbol)!important}
+.l-tango::before{background:rgba(185,119,14,.22);border-color:var(--tango)!important}
+.l-rock::before{background:rgba(109,122,42,.22);border-color:var(--rock)!important}
+#detail{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fafaf7}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.btn{display:inline-block;padding:9px 14px;border-radius:10px;background:var(--accent);color:#fff;text-decoration:none;font-weight:600;font-size:.9rem}
+.disc{color:var(--muted);font-size:.85rem}
 </style>
 </head>
 <body>
 
-<h1>🎭 Propuestas Finde</h1>
-<div class="sub">Actualizado viernes 18/09/2026 &middot; Finde viernes 18, sábado 19 y domingo 20 de septiembre de 2026 &middot; CABA y La Plata</div>
-<div class="disc">Relevamiento asistido por Claude. Precios y horarios pueden cambiar — confirmar en boletería antes de comprar o viajar.</div>
 
-<h2>⚽ Prioridad fútbol</h2>
+<div class="wrap">
+<header>
+  <h1>🎭 Propuestas Finde</h1>
+  <p class="sub">Actualizado: miércoles 30/09/2026 — Finde viernes 2 al domingo 4 de octubre de 2026 · CABA y La Plata</p>
+</header>
 
-<div class="card hi">
-  <div class="t">Gimnasia y Esgrima La Plata vs Banfield</div>
-  <div class="row"><div class="k">Torneo</div><div class="v">Torneo Clausura 2026, <b>jornada 10</b></div></div>
-  <div class="row"><div class="k">Cuándo</div><div class="v">📅 <b>Sábado 19/9</b> — 🕗 <b>13:30</b> <span class="tag tbc">TBC</span> (BeSoccer, ficha en vivo, indica 13:30; otras búsquedas generales devolvieron horarios distintos por confundir con un partido de marzo ya jugado — conviene confirmar antes de salir)</div></div>
-  <div class="row"><div class="k">Dónde</div><div class="v">📍 Gimnasia <b>de local</b> — Estadio Juan Carmelo Zerillo, La Plata</div></div>
-  <div class="row"><div class="k">TV</div><div class="v">A confirmar <span class="tag tbc">TBC</span></div></div>
-  <div class="note"><b>Superposiciones:</b> partido al mediodía (~13:30, dura ~2 h). <b>Ningún plan del Top 5 se pisa</b> — todos son de noche.</div>
-  <div class="note">🔗 <a href="https://es.besoccer.com/partido/gimnasia-plata/ca-banfield/2026239914">BeSoccer — ficha del partido</a> · <a href="https://es.besoccer.com/equipo/partidos/gimnasia-plata">fixture completo</a></div>
-</div>
+<section id="futbol">
+  <h2>⚽ Prioridad fútbol</h2>
+  <div class="items">
+    <div class="item">
+      <h3>Independiente Rivadavia vs Gimnasia y Esgrima La Plata</h3>
+      <div class="row"><div class="k">Torneo</div><div class="v">Torneo Clausura 2026, fecha 11 (Zona B)</div></div>
+      <div class="row"><div class="k">Cuándo</div><div class="v">📅 <b>Viernes 2/10</b> · 🕗 <b>21:30</b> <span class="tag tbc">CONFIRMAR</span><br><span class="note">Diario UNO (cronograma oficial de la Liga, 26/9) da 21:30; el fixture de BeSoccer muestra 20:30. Chequeá antes de encender.</span></div></div>
+      <div class="row"><div class="k">Dónde</div><div class="v">📍 Gimnasia <b>de visitante</b>, en Mendoza (estadio de Independiente Rivadavia)</div></div>
+      <div class="row"><div class="k">TV</div><div class="v">📺 TNT Sports · encender 10 min antes</div></div>
+      <p class="note"><b>Superposiciones:</b> el viernes de 21:30 a ~23:30 queda libre. Del Top 5 <b>no se pisan</b> «El precipicio» (19:30, dura 50 min) ni los planes de sábado y domingo. <span class="tag clash">PISA EL PARTIDO</span> «Ella &amp; Louis» del viernes (20:00, termina cerca del arranque) y «A cielo abierto» si elegís la función del viernes. Para el viernes conviene El precipicio y después el partido en casa.</p>
+      <p class="note">🔗 <a href="https://www.diariouno.com.ar/ovacion/futbol/confirmadas-las-fechas-11-y-12-independiente-rivadavia-y-gimnasia-y-esgrima-n1600636">Diario UNO — fechas 11 y 12</a> · <a href="https://es.besoccer.com/partido/independiente-rivadavia/gimnasia-plata/2026239935">BeSoccer — ficha</a></p>
+    </div>
+    <div class="item">
+      <h3>Selección Argentina vs Burkina Faso (amistoso)</h3>
+      <div class="row"><div class="k">Cuándo</div><div class="v">📅 <b>Sábado 3/10</b> · 🕗 <b>21:00</b></div></div>
+      <div class="row"><div class="k">Dónde</div><div class="v">📍 Estadio Monumental, CABA · se juega con aforo completo</div></div>
+      <div class="row"><div class="k">TV</div><div class="v">📺 Telefe y TyC Sports <span class="tag tbc">A CONFIRMAR</span></div></div>
+      <p class="note">Segundo de tres amistosos de la fecha FIFA; el martes 6 a las 20 es la despedida de Messi ante Benín. <b>Se superpone</b> con toda la franja de 20:00–22:30 del sábado (teatro, jazz y cine). Si lo querés ver, el sábado conviene El precipicio a las 19:30 o La imaginación enferma a la tarde.</p>
+      <p class="note">🔗 <a href="https://www.lanacion.com.ar/deportes/futbol/horarios-de-los-partidos-de-la-seleccion-argentina-uno-por-uno-asi-se-juegan-los-amistosos-nid28092026/">La Nación — horarios oficiales AFA</a></p>
+    </div>
+  </div>
+</section>
 
-<h2>🌦️ Clima</h2>
+<section id="clima">
+  <h2>🌦️ Clima</h2>
+  <div class="weather">
+    <div class="wday"><b>Viernes 2</b>Máx 18°C, mayormente nublado, sin lluvia relevante.</div>
+    <div class="wday"><b>Sábado 3</b>11° / 19°C. 10–40% de chance de lluvia en la madrugada y la mañana; mejora a la tarde. <span class="tag tbc">VARIABLE</span></div>
+    <div class="wday"><b>Domingo 4</b>10° / 17°C, parcialmente nublado, sin lluvia prevista. Noche fresca.</div>
+  </div>
+  <p class="note">Pronóstico extendido del SMN (vía Infobae, 30/9) para AMBA. Algún pronóstico anterior hablaba de lluvias fuertes el sábado; mirá el SMN el viernes. Para La Plata no relevé pronóstico propio: por cercanía es esperable algo parecido. Sábado a la mañana, mejor plan bajo techo; todo lo sugerido es en sala, salvo la Fiesta del Inmigrante en Berisso (carpa).</p>
+  <p class="note">🔗 <a href="https://www.infobae.com/sociedad/2026/09/30/el-pronostico-del-tiempo-en-el-amba-cuando-llegan-las-lluvias-y-como-seguira-la-temperatura/">Infobae / SMN</a> · <a href="https://www.smn.gob.ar/">SMN</a></p>
+</section>
 
-<div class="card ok">
-  <div class="t">Buen finde para aire libre en CABA; La Plata más incierto</div>
-  <div class="row"><div class="k">CABA</div><div class="v"><b>Sáb 19:</b> 15°/23°C, parcialmente nublado, sin lluvia prevista · <b>Dom 20:</b> temperaturas algo más altas, viento de Este/Noreste con rachas de hasta 39 km/h</div></div>
-  <div class="row"><div class="k">La Plata</div><div class="v">Pronósticos contradictorios entre fuentes <span class="tag tbc">TBC</span> — una ubica lluvia moderada el sábado (9°/18°C), otra el domingo (14°/24°C, 50% de probabilidad). Por cercanía con CABA es esperable un patrón similar, pero conviene chequear el pronóstico actualizado antes de salir</div></div>
-  <div class="note">Con este panorama, buen finde para planes al aire libre en CABA (sin lluvia prevista, aunque con viento fuerte el domingo). En La Plata conviene tener un plan bajo techo de respaldo. Fuentes: <a href="https://www.canal26.com/clima/2026/09/16/aire-libre-o-planes-bajo-techo-como-estara-el-clima-este-fin-de-semana-en-el-amba/">Canal 26</a>, <a href="https://www.meteored.com.ar/fin-de-semana/tiempo-en_La+Plata-America+Sur-Argentina-Provincia+de+Buenos+Aires-SADL-1-16930.html">Meteored La Plata</a>.</div>
-</div>
+<section id="top5">
+  <h2>⭐ Top 5</h2>
+  <div class="items">
+    <div class="item">
+      <h3>1) 🎭 TEATRO — «El precipicio», con Leonor Manso y Paloma Contreras</h3>
+      <div class="row"><div class="k">Día</div><div class="v">📅 Viernes 2, sábado 3 y domingo 4</div></div>
+      <div class="row"><div class="k">Horario</div><div class="v">🕗 19:30 (50 min) <span class="tag ok">NO PISA NINGÚN PARTIDO</span></div></div>
+      <div class="row"><div class="k">Precio</div><div class="v">💵 $21.000</div></div>
+      <div class="row"><div class="k">Lugar</div><div class="v">📍 Sala Cunill Cabanellas, Teatro San Martín — Av. Corrientes 1530, CABA</div></div>
+      <div class="row"><div class="k">Llegar</div><div class="v">⏰ Entrada anticipada; llegar 20–25 min antes (sala chica)</div></div>
+      <p class="note">Dramaturgia y dirección de Sofía Wilhelmi. Dos mujeres frente a la vejez y la muerte, con humor. Por horario y duración es el plan que mejor se acomoda al partido del viernes y al del sábado. 🔗 <a href="https://complejoteatral.gob.ar/ver/el-precipicio">complejoteatral.gob.ar</a></p>
+    </div>
+    <div class="item">
+      <h3>2) 🎷 JAZZ — «Ella &amp; Louis» (Guadalupe Raventos, Martín Delp y banda)</h3>
+      <div class="row"><div class="k">Día</div><div class="v">📅 Viernes 2/10</div></div>
+      <div class="row"><div class="k">Horario</div><div class="v">🕗 20:00 <span class="tag clash">PISA EL PARTIDO</span> <span class="note">(termina cerca de las 21:30)</span></div></div>
+      <div class="row"><div class="k">Precio</div><div class="v">💵 Desde $20.000 + consumición mínima $15.000</div></div>
+      <div class="row"><div class="k">Lugar</div><div class="v">📍 Bebop Club — Uriarte 1658, Palermo, CABA</div></div>
+      <div class="row"><div class="k">Llegar</div><div class="v">⏰ Comprar anticipada en la ticketera; llegar 30 min antes para mesa</div></div>
+      <p class="note">Recrean el disco de Verve de 1956 de Ella Fitzgerald y Louis Armstrong, con Bruno Varela en la banda. 🔗 <a href="https://ticketera.bebopclub.com.ar/evento/b42297fb-21ee-456f-8581-d274ceee25b1">ticketera.bebopclub.com.ar</a></p>
+    </div>
+    <div class="item">
+      <h3>3) 🎭 TEATRO — «A cielo abierto» (David Hare, dir. Mey Scápola)</h3>
+      <div class="row"><div class="k">Día</div><div class="v">📅 Viernes 2, sábado 3 y domingo 4 (mejor el <b>domingo</b>)</div></div>
+      <div class="row"><div class="k">Horario</div><div class="v">🕗 20:00 <span class="note">(vie y sáb se superponen con los partidos)</span></div></div>
+      <div class="row"><div class="k">Precio</div><div class="v">💵 $18.000</div></div>
+      <div class="row"><div class="k">Lugar</div><div class="v">📍 Teatro Regio — Av. Córdoba 6056, Chacarita, CABA</div></div>
+      <div class="row"><div class="k">Llegar</div><div class="v">⏰ Entrada anticipada; llegar 20–30 min antes</div></div>
+      <p class="note">Con Luis Bermejo, Paula Reca y Felipe Saade. Un empresario y una maestra se reencuentran una noche helada, con visiones opuestas sobre la ambición y el compromiso social. Temporada hasta el 15/11. 🔗 <a href="https://complejoteatral.gob.ar/ver/a-cielo-abierto">complejoteatral.gob.ar</a></p>
+    </div>
+    <div class="item">
+      <h3>4) 🎬 CINE — «La patrulla de la muerte» (Kanal, Andrzej Wajda, 1957) — IMDb 7,9</h3>
+      <div class="row"><div class="k">Día</div><div class="v">📅 Sábado 3 y domingo 4 (mejor el <b>domingo</b>)</div></div>
+      <div class="row"><div class="k">Horario</div><div class="v">🕗 Sáb 21:00 <span class="tag clash">PISA LA SELECCIÓN</span> · Dom 18:00</div></div>
+      <div class="row"><div class="k">Precio</div><div class="v">💵 $9.000 · estudiantes y jubilados $5.000</div></div>
+      <div class="row"><div class="k">Lugar</div><div class="v">📍 Sala Leopoldo Lugones, Teatro San Martín — Av. Corrientes 1530, CABA</div></div>
+      <div class="row"><div class="k">Llegar</div><div class="v">⏰ Comprar con anticipación; llegar 20 min antes</div></div>
+      <p class="note">Ciclo «Andrzej Wajda: entre el mito y la historia». Soldados de la resistencia atrapados en las alcantarillas de Varsovia en 1944. 🔗 <a href="https://complejoteatral.gob.ar/ver/Andrzej-Wajda:-entre-el-mito-y-la-historia">complejoteatral.gob.ar</a> · <a href="https://www.imdb.com/title/tt0050585/">IMDb</a></p>
+    </div>
+    <div class="item">
+      <h3>5) 🎷 JAZZ — Yamile Burich, «Jazz Tango»</h3>
+      <div class="row"><div class="k">Día</div><div class="v">📅 Domingo 4/10</div></div>
+      <div class="row"><div class="k">Horario</div><div class="v">🕗 20:30 <span class="tag ok">NO PISA NINGÚN PARTIDO</span></div></div>
+      <div class="row"><div class="k">Precio</div><div class="v">💵 $11.000</div></div>
+      <div class="row"><div class="k">Lugar</div><div class="v">📍 Jazz Voyeur Club — Posadas 1557, Recoleta, CABA</div></div>
+      <div class="row"><div class="k">Llegar</div><div class="v">⏰ Reservar mesa; llegar 20–30 min antes</div></div>
+      <p class="note">Ciclo «Sunday Funday». Buen cierre de domingo, combinable con Kanal a las 18:00 en la Lugones. 🔗 <a href="https://jazzvoyeur.com.ar/agenda-de-shows/">jazzvoyeur.com.ar</a></p>
+    </div>
+  </div>
+</section>
 
-<h2>⭐ Top 5</h2>
+<section id="off">
+  <h2>🎟️ Teatro off</h2>
+  <div class="items">
+    <div class="item">
+      <h3>«Maldición eterna a quien lea estas páginas» (Manuel Puig; adapt. Claudia Piñeiro y Marcelo Moncarz)</h3>
+      <div class="row"><div class="k">Cuándo</div><div class="v">📅 Domingo 4 · 🕗 18:00 (90 min)</div></div>
+      <div class="row"><div class="k">Dónde</div><div class="v">📍 Hasta Trilce — Maza 177, Almagro, CABA (cerca de Caballito)</div></div>
+      <div class="row"><div class="k">Precio</div><div class="v">💵 <span class="tag tbc">A CONFIRMAR</span></div></div>
+      <div class="row"><div class="k">Llegar</div><div class="v">⏰ Reservar por Alternativa; llegar 20 min antes</div></div>
+      <p class="note">Con Luis Campos, Mateo Chiarino y Luz Miraldi. La Nación (2/9) la calificó «Muy buena». En cartel hasta el 29/11. 🔗 <a href="https://www.alternativateatral.com/obra100381-maldicion-eterna-a-quien-lea-estas-paginas">Alternativa Teatral</a> · <a href="https://www.lanacion.com.ar/espectaculos/teatro/maldicion-eterna-a-quien-lea-estas-paginas-una-entranable-adaptacion-al-teatro-de-la-novela-de-nid02092026/">crítica La Nación</a></p>
+    </div>
+    <div class="item">
+      <h3>«La imaginación enferma» (Marcelo Savignone, Compañía Cuerpos) <span class="tag last">ÚLTIMA FUNCIÓN</span></h3>
+      <div class="row"><div class="k">Cuándo</div><div class="v">📅 Sábado 3 · 🕗 16:30 (70 min)</div></div>
+      <div class="row"><div class="k">Dónde</div><div class="v">📍 Teatro del Pueblo — Lavalle 3636, Almagro, CABA</div></div>
+      <div class="row"><div class="k">Precio</div><div class="v">💵 Desde $15.000</div></div>
+      <div class="row"><div class="k">Llegar</div><div class="v">⏰ Última función: comprar anticipada</div></div>
+      <p class="note">Metateatro que irrumpe en una función de «Un enemigo del pueblo». No encontré crítica publicada en medios; la incluyo por ser la despedida y porque a la tarde no choca con nada. 🔗 <a href="https://www.alternativateatral.com/obra100102-la-imaginacion-enferma">Alternativa Teatral</a></p>
+    </div>
+  </div>
+</section>
 
-<div class="card hi">
-  <div class="t"><span class="n">1</span>🎷 JAZZ — Bruno Varela + Román Ostrowski + Pablo Raposo + Ricardo Cavalli</div>
-  <div class="row"><div class="k">Día</div><div class="v">📅 <b>Viernes 18/9</b></div></div>
-  <div class="row"><div class="k">Horario</div><div class="v">🕗 20:30</div></div>
-  <div class="row"><div class="k">Precio</div><div class="v">💵 $19.000</div></div>
-  <div class="row"><div class="k">Dónde</div><div class="v">📍 Virasoro Bar — Guatemala 4328, Palermo, CABA</div></div>
-  <div class="row"><div class="k">Llegar</div><div class="v">⏰ Capacidad limitada; conviene reservar con anticipación</div></div>
-  <div class="note">Batería, guitarra, piano y saxo. Buen arranque de finde con jazz en vivo. 🔗 <a href="https://virasorobar.com.ar/eventos.php">virasorobar.com.ar</a></div>
-</div>
+<section id="tango">
+  <h2>💃 Tango</h2>
+  <div class="item">
+    <h3>CAFF — Quena Taborda con Tango Machine + Yamile Burich presenta «Argentas»</h3>
+    <div class="row"><div class="k">Cuándo</div><div class="v">📅 Viernes 2 · 🕗 21:00 (abre 20:00) <span class="tag clash">PISA EL PARTIDO</span></div></div>
+    <div class="row"><div class="k">Dónde</div><div class="v">📍 Club Atlético Fernández Fierro — Sánchez de Bustamante 772, Almagro, CABA</div></div>
+    <div class="row"><div class="k">Precio</div><div class="v">💵 Anticipada $17.000 · general $20.000</div></div>
+    <div class="row"><div class="k">Llegar</div><div class="v">⏰ Comprar anticipada; llegar a la apertura</div></div>
+    <p class="note">Tango cruzado con electrónica y jazz sobre repertorio de folclore, tango y boleros. 🔗 <a href="https://caff.ar/shows/864">caff.ar</a></p>
+  </div>
+</section>
 
-<div class="card hi">
-  <div class="t"><span class="n">2</span>🎭 TEATRO — «La verdadera historia de Ricardo III» (Calixto Bieito sobre Shakespeare)</div>
-  <div class="row"><div class="k">Día</div><div class="v">📅 <b>Sábado 19</b> y <b>domingo 20</b></div></div>
-  <div class="row"><div class="k">Horario</div><div class="v">🕗 Sáb 20:00 · Dom 19:00</div></div>
-  <div class="row"><div class="k">Precio</div><div class="v">💵 A confirmar <span class="tag tbc">TBC</span> — entradas por Ticketek</div></div>
-  <div class="row"><div class="k">Dónde</div><div class="v">📍 Sala Martín Coronado, Teatro San Martín — Av. Corrientes 1530, CABA</div></div>
-  <div class="row"><div class="k">Llegar</div><div class="v">⏰ 25-30 min antes; conviene entrada anticipada</div></div>
-  <div class="note">Versión de Calixto Bieito sobre Shakespeare, programación del Complejo Teatral. 🔗 <a href="https://complejoteatral.gob.ar/">complejoteatral.gob.ar</a></div>
-</div>
+<section id="laplata">
+  <h2>🏙️ La Plata</h2>
+  <div class="items">
+    <div class="item">
+      <h3>Cuarteto UNNOBA + Helena Bugallo (piano): Shostakóvich y Ginastera</h3>
+      <div class="row"><div class="k">Cuándo</div><div class="v">📅 Sábado 3 · 🕗 20:00 <span class="tag clash">PISA LA SELECCIÓN</span></div></div>
+      <div class="row"><div class="k">Dónde</div><div class="v">📍 Teatro de Cámara City Bell — Diagonal 4 (Urquiza) 327 e/ 462 y 464</div></div>
+      <div class="row"><div class="k">Precio</div><div class="v">💵 Bono contribución <span class="tag tbc">MONTO A CONFIRMAR</span></div></div>
+      <p class="note">Festival de Primavera de Música de Cámara: Quinteto op. 57 de Shostakóvich y Cuarteto n.º 1 de Ginastera. El link de entradas de Eventbrite tiene otro título; verificalo. 🔗 <a href="https://lumenartis.org/?post_type=funcion&amp;p=2878">lumenartis.org</a></p>
+    </div>
+    <div class="item">
+      <h3>Patricio Palazzo, piano — «Joyas de América» <span class="tag free">GRATIS</span></h3>
+      <div class="row"><div class="k">Cuándo</div><div class="v">📅 Sábado 3 · 🕗 18:00</div></div>
+      <div class="row"><div class="k">Dónde</div><div class="v">📍 Sala Astor Piazzolla, Teatro Argentino — Av. 51 e/ 9 y 10</div></div>
+      <div class="row"><div class="k">Precio</div><div class="v">💵 Gratis con reserva online (desde el jueves 1/10, 12:00)</div></div>
+      <p class="note">Ginastera, Piazzolla, Lecuona, Ponce y otros. 🔗 <a href="https://teatroargentino.gba.gob.ar/section/1/publication/212">teatroargentino.gba.gob.ar</a></p>
+    </div>
+    <div class="item">
+      <h3>Canciones de Carlos Guastavino (voz y piano) <span class="tag free">GRATIS</span></h3>
+      <div class="row"><div class="k">Cuándo</div><div class="v">📅 Domingo 4 · 🕗 18:00</div></div>
+      <div class="row"><div class="k">Dónde</div><div class="v">📍 Sala Astor Piazzolla, Teatro Argentino — Av. 51 e/ 9 y 10</div></div>
+      <div class="row"><div class="k">Precio</div><div class="v">💵 Gratis con reserva online (desde el viernes 2/10, 12:00)</div></div>
+      <p class="note">Sergio Spina (tenor), Emiliano Bulacios (bajo-barítono), Eduviges Picone (piano). Canción argentina de raíz folclórica. 🔗 <a href="https://teatroargentino.gba.gob.ar/section/1/publication/213">teatroargentino.gba.gob.ar</a></p>
+    </div>
+    <div class="item">
+      <h3>Cine: «Fitzcarraldo» (Werner Herzog, 1982)</h3>
+      <div class="row"><div class="k">Cuándo</div><div class="v">📅 Domingo 4 · 🕗 18:00</div></div>
+      <div class="row"><div class="k">Dónde</div><div class="v">📍 Teatro de Cámara City Bell — Diagonal 4 (Urquiza) 327</div></div>
+      <div class="row"><div class="k">Precio</div><div class="v">💵 Bono $6.000, en boletería, sin reserva</div></div>
+      <p class="note">Ciclo «Encuentros con el 7º arte». IMDb <span class="tag tbc">A CONFIRMAR</span> 🔗 <a href="https://lumenartis.org/?post_type=funcion&amp;p=2890">lumenartis.org</a></p>
+    </div>
+    <div class="item">
+      <h3>Otras opciones relevadas</h3>
+      <ul>
+        <li>🎭 <b>Pajarita</b> (reescritura de «300 millones» de Arlt, dir. Guillermo Parodi) — vie 2 y sáb 3, 20:00, Sala Iris Scaccheri (TACEC), Teatro Argentino. Precio a confirmar, venta por Alternativa. <a href="https://teatroargentino.gba.gob.ar/section/1/publication/210">fuente</a></li>
+        <li>🎭 <b>1º Encuentro de Teatro y Memoria</b> — vie 2 a dom 4, desde las 19:00, Espacio Memoria Ex Comisaría 5ta (diag. 74 N° 2873). Gratis, 60 lugares por orden de llegada. <a href="https://www.0221.com.ar/que-hago/la-plata-sera-sede-del-primer-encuentro-teatro-y-memoria-la-ex-comisaria-quinta-n134824">fuente</a></li>
+        <li>🎭 <b>Bajo la tormenta</b> (Comedia de la Provincia) — sáb 21:00 y dom 20:00, Sala Armando Discépolo (12 e/ 62 y 63). Gratis. Función habitual de fin de semana; no vi confirmación puntual para esta fecha. <a href="https://www.eldia.com/espectaculos/bajo-la-tormenta-retoma-sus-funciones-en-la-sala-discepolo-espectaculos_1786084887">fuente</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-<div class="card hi">
-  <div class="t"><span class="n">3</span>🎷 JAZZ — Habana Tropic All-Star, homenaje a Benny Moré</div>
-  <div class="row"><div class="k">Día</div><div class="v">📅 <b>Sábado 19/9</b></div></div>
-  <div class="row"><div class="k">Horario</div><div class="v">🕗 20:00</div></div>
-  <div class="row"><div class="k">Precio</div><div class="v">💵 A confirmar <span class="tag tbc">TBC</span></div></div>
-  <div class="row"><div class="k">Dónde</div><div class="v">📍 Bebop Club — Uriarte 1658, Palermo Soho, CABA</div></div>
-  <div class="row"><div class="k">Llegar</div><div class="v">⏰ Comprar entrada anticipada en la ticketera; llegar 20-25 min antes</div></div>
-  <div class="note">Alternativa al Top 5 #2 en el mismo horario, si preferís jazz cubano a teatro. 🔗 <a href="https://ticketera.bebopclub.com.ar/">ticketera.bebopclub.com.ar</a></div>
-</div>
+<section id="calendario">
+  <h2>📆 Calendario del finde</h2>
+  <div class="cal-scroll"><div class="cal" id="cal"></div></div>
+  <div class="legend">
+    <span class="l-teatro">Teatro</span><span class="l-jazz">Jazz</span><span class="l-cine">Cine</span><span class="l-futbol">Fútbol</span><span class="l-tango">Tango</span><span class="l-rock">Clásica / folclore / fiestas</span>
+  </div>
+  <p class="note">Selección curada. Los bloques son semitransparentes: donde se superponen, hay choque de horario. La duración es estimada salvo donde la fuente la informa. Tocá un bloque para ver el detalle.</p>
+  <div id="detail">Tocá una entrada del calendario para ver dirección, precio, cuánto antes llegar y la fuente.</div>
+  <div class="btns">
+    <a class="btn" href="https://www.alternativateatral.com/cartelera.asp">🎭 Cartelera de espectáculos CABA — Alternativa Teatral ↗</a>
+    <a class="btn" href="https://agendalaplata.ar/">🏙️ Espectáculos La Plata — agendalaplata.ar ↗</a>
+  </div>
+</section>
 
-<div class="card hi">
-  <div class="t"><span class="n">4</span>🎬 CINE — «El viento» (The Wind, 1928, Victor Sjöström, con Lillian Gish) — IMDB 8.0</div>
-  <div class="row"><div class="k">Día</div><div class="v">📅 <b>Domingo 20/9</b></div></div>
-  <div class="row"><div class="k">Horario</div><div class="v">🕗 20:00</div></div>
-  <div class="row"><div class="k">Precio</div><div class="v">💵 A confirmar <span class="tag tbc">TBC</span></div></div>
-  <div class="row"><div class="k">Dónde</div><div class="v">📍 Sala Leopoldo Lugones, Teatro San Martín — Av. Corrientes 1530, CABA</div></div>
-  <div class="row"><div class="k">Llegar</div><div class="v">⏰ 20-25 min antes; función especial, conviene anticipar</div></div>
-  <div class="note">Clásico mudo dentro del primer Festival de Cine y Música de la Lugones, con acompañamiento en vivo de la Nueva Orquesta de Cámara de Hurlingham. 🔗 <a href="https://www.funcinema.com.ar/2026/09/la-sala-lugones-presenta-su-primer-festival-de-cine-y-musica/">funcinema.com.ar</a> · <a href="https://www.imdb.com/title/tt0019585/">IMDB</a></div>
-</div>
+<section id="escapada">
+  <h2>🚗 Escapada corta</h2>
+  <div class="item">
+    <h3>49ª Fiesta Provincial del Inmigrante — Berisso <span class="tag free">GRATIS</span></h3>
+    <div class="row"><div class="k">Cuándo</div><div class="v">📅 Vie 2 desde 18:00 · Sáb 3 y dom 4 desde 12:00</div></div>
+    <div class="row"><div class="k">Dónde</div><div class="v">📍 Carpa de las Colectividades — Av. Montevideo e/ 10 y 11, Parque Cívico, Berisso</div></div>
+    <div class="row"><div class="k">Qué hay</div><div class="v">Patio gastronómico de colectividades, danzas y ballet; sáb 20:00 elección de la Embajadora y Ballet Intercolectividades</div></div>
+    <p class="note">Se combina bien con los conciertos gratuitos del Teatro Argentino a las 18:00. Con el pronóstico, el domingo es el mejor día. 🔗 <a href="https://www.infocielo.com/la-plata/berisso-vive-la-fiesta-del-inmigrante-con-la-eleccion-de-embajadores-culturales">Infocielo</a></p>
+  </div>
+</section>
 
-<div class="card hi">
-  <div class="t"><span class="n">5</span>🎭 TEATRO — «La lluvia de fuego» (Silvina Ocampo / J.J. Hernández, dir. Marilú Marini)</div>
-  <div class="row"><div class="k">Día</div><div class="v">📅 <b>Sábado 19</b> y <b>domingo 20</b></div></div>
-  <div class="row"><div class="k">Horario</div><div class="v">🕗 Sáb 20:30 · Dom 19:30</div></div>
-  <div class="row"><div class="k">Precio</div><div class="v">💵 A confirmar <span class="tag tbc">TBC</span></div></div>
-  <div class="row"><div class="k">Dónde</div><div class="v">📍 Sala Casacuberta, Teatro San Martín — Av. Corrientes 1530, CABA</div></div>
-  <div class="row"><div class="k">Llegar</div><div class="v">⏰ 25-30 min antes</div></div>
-  <div class="note">Dirigida por Marilú Marini, sobre textos de Silvina Ocampo. 🔗 <a href="https://complejoteatral.gob.ar/">complejoteatral.gob.ar</a></div>
-</div>
-
-<h2>🎟️ Teatro off</h2>
-
-<div class="card">
-  <div class="t">«Guillotina» — ciclo de obras cortas: Isla + Sexting + Sex</div>
-  <div class="row"><div class="k">Cuándo</div><div class="v">📅 <b>Sábado 19/9</b> · 🕗 23:15</div></div>
-  <div class="row"><div class="k">Dónde</div><div class="v">📍 Espacio Polonia — Fitz Roy 1477, Palermo, CABA</div></div>
-  <div class="row"><div class="k">Precio</div><div class="v">💵 A la gorra <span class="tag free">GRATIS</span></div></div>
-  <div class="note">No encontré crítica publicada para este ciclo puntual ni pude acceder a la cartelera completa de Alternativa Teatral (se renderiza con JavaScript). Queda como la única opción off con fecha, horario y dirección verificados esta semana. 🔗 <a href="https://quehayba.com.ar/evento/365262-guillotina-sabado-5-y-12-de-septiembre-22-hs-aero-felicidad/">quehayba.com.ar</a> — cartelera completa en <a href="https://www.alternativateatral.com/cartelera.asp">Alternativa Teatral</a></div>
-</div>
-
-<h2>💃 Tango</h2>
-
-<div class="card">
-  <div class="t">CAFF — ciclo «Tangos Inútiles»: Guitarras del Once + Cuarteto Chamuyo + Román Vergagni y Paula Martínez</div>
-  <div class="row"><div class="k">Cuándo</div><div class="v">📅 <b>Sábado 19/9</b> · 🕗 21:00</div></div>
-  <div class="row"><div class="k">Dónde</div><div class="v">📍 Club Atlético Fernández Fierro — Sánchez de Bustamante 772, Almagro, CABA</div></div>
-  <div class="row"><div class="k">Precio</div><div class="v">💵 A confirmar <span class="tag tbc">TBC</span></div></div>
-  <div class="row"><div class="k">Llegar</div><div class="v">⏰ Cupo limitado — conviene comprar anticipado</div></div>
-  <div class="note">Tango actual/alternativo, no repertorio tradicional. Fractura Expuesta no había publicado la agenda de septiembre al momento de esta consulta; en hoy-milonga.com no se confirmó música en vivo puntual en Torquato Tasso, El Boliche de Roberto, Los Laureles, La Viruta, Marabú, Salón Canning, El Zorzal ni Pasaje de la Luna para este finde. 🔗 <a href="https://caff.ar">caff.ar</a></div>
-</div>
-
-<h2>🏙️ La Plata</h2>
-
-<div class="card">
-  <div class="t">«Carmina Burana» — Orquesta y Coro Estables del Teatro Argentino</div>
-  <div class="row"><div class="k">Cuándo</div><div class="v">📅 Sáb 19 · 🕗 20:00 — Dom 20 · 🕗 17:00</div></div>
-  <div class="row"><div class="k">Dónde</div><div class="v">📍 Sala Ginastera, Teatro Argentino — Calle 51 e/ 9 y 10, La Plata</div></div>
-  <div class="row"><div class="k">Precio</div><div class="v">💵 Gratis, con reserva online <span class="tag free">GRATIS</span></div></div>
-  <div class="note">🔗 <a href="https://teatroargentino.gba.gob.ar/section/1/publication/206">teatroargentino.gba.gob.ar</a></div>
-</div>
-
-<div class="card">
-  <div class="t">«La nona» (Roberto Cossa)</div>
-  <div class="row"><div class="k">Cuándo</div><div class="v">📅 <b>Sábado 19/9</b> · 🕗 21:00</div></div>
-  <div class="row"><div class="k">Dónde</div><div class="v">📍 Teatro UNLP — Calle 10 e/ 54 y 55, La Plata</div></div>
-  <div class="row"><div class="k">Precio</div><div class="v">💵 Gratis <span class="tag free">GRATIS</span></div></div>
-  <div class="note">🔗 Fuente: agenda de espectáculos de El Día (18/9/2026)</div>
-</div>
-
-<div class="card">
-  <div class="t">«La solterona y el ladrón» (ópera, Compañía Ópera Joven)</div>
-  <div class="row"><div class="k">Cuándo</div><div class="v">📅 <b>Domingo 20/9</b> · 🕗 18:00</div></div>
-  <div class="row"><div class="k">Dónde</div><div class="v">📍 Teatro de Cámara City Bell — Diagonal 4 e/ 462 y 464, City Bell</div></div>
-  <div class="row"><div class="k">Precio</div><div class="v">💵 A confirmar <span class="tag tbc">TBC</span></div></div>
-  <div class="note">🔗 Fuente: agenda de espectáculos de El Día (18/9/2026)</div>
-</div>
-
-<div class="card">
-  <div class="t">Otras opciones relevadas en La Plata</div>
+<section id="fuentes">
+  <h2>ℹ️ Fuentes y notas</h2>
   <ul>
-    <li>🎭 <b>Narices negras</b> (Grupo Almas, Teatro x la Identidad) — vie 18, 20:00, Teatro UNLP — gratis.</li>
-    <li>🎭 <b>Campos de batalla</b> — vie 18, 22:30, Teatro Estudio (3 e/ 39 y 40) — gratis.</li>
-    <li>🎭 <b>Tita y Rodhesia</b> (Laura Azcurra, Valeria Stilman) — sáb 19, 21:00, La Nonna (47 esq. 3) — precio no encontrado.</li>
-    <li>🎭 <b>Génesis, así somos</b> (debut elenco juvenil) — sáb 19, 18:00 y dom 20, 19:00 y 20:45, Teatro Estudio.</li>
-    <li>🎭 <b>Santa Mesa</b> (teatro de objetos, Los Pompapetriyasos) — viernes 18, horario no encontrado, Sala Iris Scaccheri, TACEC/Teatro Argentino.</li>
+    <li><b>Fútbol:</b> <a href="https://www.diariouno.com.ar/ovacion/futbol/confirmadas-las-fechas-11-y-12-independiente-rivadavia-y-gimnasia-y-esgrima-n1600636">Diario UNO</a>, <a href="https://es.besoccer.com/equipo/partidos/gimnasia-plata">BeSoccer</a>, <a href="https://www.lanacion.com.ar/deportes/futbol/horarios-de-los-partidos-de-la-seleccion-argentina-uno-por-uno-asi-se-juegan-los-amistosos-nid28092026/">La Nación</a></li>
+    <li><b>Clima:</b> <a href="https://www.infobae.com/sociedad/2026/09/30/el-pronostico-del-tiempo-en-el-amba-cuando-llegan-las-lluvias-y-como-seguira-la-temperatura/">Infobae / SMN</a></li>
+    <li><b>Jazz y tango:</b> <a href="https://ticketera.bebopclub.com.ar/">Bebop Club</a>, <a href="https://jazzvoyeur.com.ar/agenda-de-shows/">Jazz Voyeur</a>, <a href="https://cafevinilo.com.ar/">Café Vinilo</a>, <a href="https://caff.ar">CAFF</a>, <a href="https://virasorobar.com.ar/eventos.php">Virasoro Bar</a></li>
+    <li><b>Folclore:</b> <a href="http://www.folkloreclub.com.ar/">folkloreclub.com.ar</a></li>
+    <li><b>Teatro y cine CABA:</b> <a href="https://complejoteatral.gob.ar/">Complejo Teatral</a>, <a href="https://www.alternativateatral.com/">Alternativa Teatral</a>, <a href="https://www.teatrocervantes.gob.ar/">Teatro Cervantes</a>, <a href="https://malba.org.ar/cine/">MALBA Cine</a></li>
+    <li><b>La Plata:</b> <a href="https://teatroargentino.gba.gob.ar">Teatro Argentino</a>, <a href="https://lumenartis.org/">Teatro de Cámara City Bell</a>, <a href="https://www.0221.com.ar/">0221</a>, <a href="https://www.eldia.com/espectaculos">El Día</a></li>
   </ul>
-</div>
-
-<h2>📆 Calendario del finde</h2>
-
-<div class="calrow">
-  <div class="axis">
-    <div class="spacer"></div>
-    <div class="track">
-      <div class="hr" style="top:0px">12</div>
-      <div class="hr" style="top:36px">13</div>
-      <div class="hr" style="top:72px">14</div>
-      <div class="hr" style="top:108px">15</div>
-      <div class="hr" style="top:144px">16</div>
-      <div class="hr" style="top:180px">17</div>
-      <div class="hr" style="top:216px">18</div>
-      <div class="hr" style="top:252px">19</div>
-      <div class="hr" style="top:288px">20</div>
-      <div class="hr" style="top:324px">21</div>
-      <div class="hr" style="top:360px">22</div>
-      <div class="hr" style="top:396px">23</div>
-      <div class="hr" style="top:432px">24</div>
-    </div>
-  </div>
-
-  <div class="daycol">
-    <div class="daytitle">Viernes 18/9</div>
-    <div class="dayweather">Clima: agradable, sin lluvia</div>
-    <div class="lanes">
-      <div class="lane">
-        <div class="lanehead">CABA</div>
-        <div class="track">
-          <div class="ev jazz" data-key="vie-virasoro1" style="top:306px; height:54px; left:2%; width:30%; z-index:1;"><span class="ti">Bruno Varela Cuarteto</span><span class="ve">Virasoro Bar</span><span class="tm">20:30 · $19.000</span></div>
-          <div class="ev jazz" data-key="vie-virasoro2" style="top:414px; height:18px; left:2%; width:30%; z-index:2;"><span class="ti">Juana Gramigna + J.C. de Urquiza</span><span class="ve">Virasoro Bar</span><span class="tm">23:30</span></div>
-          <div class="ev jazz" data-key="vie-bebop" style="top:288px; height:54px; left:35%; width:30%; z-index:3;"><span class="ti">Delfina Oliver — Ella &amp; Duke</span><span class="ve">Bebop Club</span><span class="tm">20:00</span></div>
-          <div class="ev tango" data-key="vie-caff" style="top:324px; height:54px; left:35%; width:30%; z-index:4;"><span class="ti">Violentango + M. Caliva Trío</span><span class="ve">CAFF</span><span class="tm">21:00 · Fest. Bandoneón</span></div>
-          <div class="ev rock" data-key="vie-anwandter" style="top:306px; height:54px; left:68%; width:30%; z-index:5;"><span class="ti">Alex Anwandter</span><span class="ve">Teatro Gran Rex</span><span class="tm">20:30 · $28.000</span></div>
-          <div class="ev rock" data-key="vie-culturaprofetica" style="top:270px; height:54px; left:68%; width:30%; z-index:6;"><span class="ti">Cultura Profética</span><span class="ve">Movistar Arena</span><span class="tm">~20:00 · $70.000</span></div>
-        </div>
-      </div>
-      <div class="lane">
-        <div class="lanehead">La Plata</div>
-        <div class="track">
-          <div class="ev teatro" data-key="lp-vie-narices" style="top:288px; height:54px; left:2%; width:96%; z-index:1;"><span class="ti">Narices negras</span><span class="ve">Teatro UNLP</span><span class="tm">20:00 · gratis</span></div>
-          <div class="ev teatro" data-key="lp-vie-campos" style="top:378px; height:54px; left:2%; width:96%; z-index:2;"><span class="ti">Campos de batalla</span><span class="ve">Teatro Estudio</span><span class="tm">22:30 · gratis</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="daycol">
-    <div class="daytitle">Sábado 19/9</div>
-    <div class="dayweather">Clima: 15°/23°C, sin lluvia</div>
-    <div class="lanes">
-      <div class="lane">
-        <div class="lanehead">CABA</div>
-        <div class="track">
-          <div class="ev teatro" data-key="sab-ricardo3" style="top:288px; height:54px; left:2%; width:30%; z-index:1;"><span class="ti">Ricardo III</span><span class="ve">S. Martín Coronado</span><span class="tm">20:00</span></div>
-          <div class="ev teatro" data-key="sab-guillotina" style="top:405px; height:27px; left:2%; width:30%; z-index:2;"><span class="ti">Guillotina (off)</span><span class="ve">Espacio Polonia</span><span class="tm">23:15 · gratis</span></div>
-          <div class="ev teatro" data-key="sab-lluviafuego" style="top:306px; height:54px; left:35%; width:30%; z-index:3;"><span class="ti">La lluvia de fuego</span><span class="ve">Sala Casacuberta</span><span class="tm">20:30</span></div>
-          <div class="ev jazz" data-key="sab-bebop-habana" style="top:288px; height:54px; left:35%; width:30%; z-index:4;"><span class="ti">Habana Tropic All-Star</span><span class="ve">Bebop Club</span><span class="tm">20:00</span></div>
-          <div class="ev jazz" data-key="sab-virasoro-barbie" style="top:306px; height:54px; left:68%; width:30%; z-index:5;"><span class="ti">Barbie Martinez cuarteto</span><span class="ve">Virasoro Bar</span><span class="tm">20:30 · $19.000</span></div>
-          <div class="ev tango" data-key="sab-caff-tanguinutiles" style="top:324px; height:54px; left:68%; width:30%; z-index:6;"><span class="ti">Tangos Inútiles</span><span class="ve">CAFF</span><span class="tm">21:00</span></div>
-        </div>
-      </div>
-      <div class="lane">
-        <div class="lanehead">La Plata</div>
-        <div class="track">
-          <div class="ev futbol" data-key="lp-sab-futbol" style="top:54px; height:72px; left:2%; width:96%; z-index:1;"><span class="ti">Gimnasia vs Banfield</span><span class="ve">Estadio Zerillo</span><span class="tm">13:30 · TBC</span></div>
-          <div class="ev teatro" data-key="lp-sab-carmina" style="top:288px; height:54px; left:2%; width:47%; z-index:2;"><span class="ti">Carmina Burana</span><span class="ve">Sala Ginastera</span><span class="tm">20:00 · gratis</span></div>
-          <div class="ev teatro" data-key="lp-sab-nona" style="top:324px; height:54px; left:51%; width:47%; z-index:3;"><span class="ti">La nona</span><span class="ve">Teatro UNLP</span><span class="tm">21:00 · gratis</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="daycol">
-    <div class="daytitle">Domingo 20/9</div>
-    <div class="dayweather">Clima: templado, viento fuerte</div>
-    <div class="lanes">
-      <div class="lane">
-        <div class="lanehead">CABA</div>
-        <div class="track">
-          <div class="ev teatro" data-key="dom-ricardo3" style="top:252px; height:54px; left:2%; width:30%; z-index:1;"><span class="ti">Ricardo III</span><span class="ve">S. Martín Coronado</span><span class="tm">19:00</span></div>
-          <div class="ev jazz" data-key="dom-bebop-laginha" style="top:252px; height:54px; left:35%; width:30%; z-index:2;"><span class="ti">Mario Laginha — Retorno</span><span class="ve">Bebop Club</span><span class="tm">19:00</span></div>
-          <div class="ev teatro" data-key="dom-lluviafuego" style="top:270px; height:54px; left:2%; width:30%; z-index:3;"><span class="ti">La lluvia de fuego</span><span class="ve">Sala Casacuberta</span><span class="tm">19:30</span></div>
-          <div class="ev cine" data-key="dom-elviento" style="top:288px; height:54px; left:35%; width:30%; z-index:4;"><span class="ti">El viento (1928)</span><span class="ve">Sala Lugones</span><span class="tm">20:00 · IMDB 8.0</span></div>
-          <div class="ev tango" data-key="dom-caff-quiero24" style="top:288px; height:54px; left:68%; width:30%; z-index:5;"><span class="ti">Quiero 24 + otros</span><span class="ve">CAFF</span><span class="tm">20:00</span></div>
-          <div class="ev jazz" data-key="dom-bebop-elistom" style="top:342px; height:54px; left:68%; width:30%; z-index:6;"><span class="ti">Elis &amp; Tom</span><span class="ve">Bebop Club</span><span class="tm">21:30</span></div>
-        </div>
-      </div>
-      <div class="lane">
-        <div class="lanehead">La Plata</div>
-        <div class="track">
-          <div class="ev teatro" data-key="lp-dom-carmina" style="top:180px; height:54px; left:2%; width:96%; z-index:1;"><span class="ti">Carmina Burana</span><span class="ve">Sala Ginastera</span><span class="tm">17:00 · gratis</span></div>
-          <div class="ev teatro" data-key="lp-dom-solterona" style="top:216px; height:54px; left:2%; width:96%; z-index:2;"><span class="ti">La solterona y el ladrón</span><span class="ve">T. de Cámara City Bell</span><span class="tm">18:00 · ópera</span></div>
-          <div class="ev teatro" data-key="lp-dom-genesis" style="top:252px; height:54px; left:2%; width:96%; z-index:3;"><span class="ti">Génesis, así somos</span><span class="ve">Teatro Estudio</span><span class="tm">19:00 y 20:45</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="legend">
-  <span><i class="lteatro"></i>Teatro / danza</span>
-  <span><i class="ljazz"></i>Jazz</span>
-  <span><i class="lcine"></i>Cine</span>
-  <span><i class="lfutbol"></i>Fútbol</span>
-  <span><i class="ltango"></i>Tango</span>
-  <span><i class="lrock"></i>Rock / folclore</span>
-</div>
-<div class="cap">Los bloques semitransparentes se mezclan donde hay superposición de horario. Tocá cualquier bloque para ver el detalle abajo. Selección curada, no exhaustiva.</div>
-
-<div class="btnrow">
-  <a href="https://www.alternativateatral.com/cartelera.asp" target="_blank" rel="noopener">🎭 Cartelera de espectáculos CABA — Alternativa Teatral ↗</a>
-  <a href="https://agendalaplata.ar/" target="_blank" rel="noopener">🏙️ Agenda de espectáculos La Plata — agendalaplata.ar ↗</a>
-</div>
-
-<div class="detail empty" id="detail">Tocá una entrada del calendario para ver el detalle completo: dirección, precio, cuánto antes llegar y la fuente.</div>
-
-<h2>ℹ️ Fuentes y notas</h2>
-
-<div class="card">
-  <div class="t">Fuentes consultadas</div>
+  <h3 style="margin-top:14px">Qué quedó sin verificar</h3>
   <ul>
-    <li><b>Fútbol:</b> <a href="https://es.besoccer.com/equipo/partidos/gimnasia-plata">BeSoccer</a>, <a href="https://www.gimnasia.org.ar/">gimnasia.org.ar</a></li>
-    <li><b>Clima:</b> <a href="https://www.canal26.com/clima/2026/09/16/aire-libre-o-planes-bajo-techo-como-estara-el-clima-este-fin-de-semana-en-el-amba/">Canal 26</a>, <a href="https://www.meteored.com.ar/fin-de-semana/tiempo-en_La+Plata-America+Sur-Argentina-Provincia+de+Buenos+Aires-SADL-1-16930.html">Meteored La Plata</a></li>
-    <li><b>Jazz:</b> <a href="https://ticketera.bebopclub.com.ar/">Bebop Club</a>, <a href="https://virasorobar.com.ar/eventos.php">Virasoro Bar</a></li>
-    <li><b>Tango:</b> <a href="https://caff.ar">CAFF</a>, <a href="https://hoy-milonga.com">hoy-milonga.com</a>, <a href="https://www.fracturaexpuesta.com.ar/gotan/agenda-de-tango/">Fractura Expuesta</a></li>
-    <li><b>Folclore:</b> <a href="https://folkloreclub.com.ar">folkloreclub.com.ar</a></li>
-    <li><b>Rock:</b> indiehoy.com, quehacemos.com.ar</li>
-    <li><b>Cine:</b> <a href="https://www.funcinema.com.ar/2026/09/la-sala-lugones-presenta-su-primer-festival-de-cine-y-musica/">funcinema.com.ar</a>, <a href="https://complejoteatral.gob.ar/pdf/programa-pdf-espanoramas.pdf">programa Espanoramas (Sala Lugones)</a>, IMDB</li>
-    <li><b>Teatro CABA:</b> <a href="https://complejoteatral.gob.ar/">Complejo Teatral de Buenos Aires</a>, <a href="https://quehayba.com.ar">quehayba.com.ar</a></li>
-    <li><b>La Plata:</b> agenda de espectáculos de El Día (18/9/2026), <a href="https://teatroargentino.gba.gob.ar">teatroargentino.gba.gob.ar</a></li>
+    <li><b>Joshua Redman Quartet</b> en Bebop (sáb 3 y dom 4): figura <b>agotado</b>. Además el club muestra horarios distintos en la portada y en la ficha del evento.</li>
+    <li><b>Virasoro Bar:</b> todavía no publicó la agenda de octubre.</li>
+    <li><b>Tango, otros venues:</b> no hallé programación puntual de El Boliche de Roberto, Los Laureles, La Viruta, Marabú, Salón Canning, El Zorzal ni Pasaje de la Luna; Fractura Expuesta y hoy-milonga no cargaron.</li>
+    <li><b>una.edu.ar/agenda:</b> no aparecieron actividades para el 2–4/10.</li>
+    <li><b>La Plata:</b> no encontré la columna «Séptimo Día» de El Día para este finde (se publica día a día); agendalaplata.ar y el sitio de Desafinado Club no cargaron. Jazz en La Plata: nada confirmado; lo próximo en Desafinado es Darío Boente el sábado 10/10.</li>
+    <li><b>Cine:</b> las otras películas de la Lugones y de MALBA este finde no llegan a IMDb 7,5 o no pude verificar el puntaje.</li>
+    <li>Más opciones de este finde, fuera del Top 5: Epumer–Machi–Judurcha (Bebop, vie 22:30), Delfina Sings the Standards (Jazz Voyeur, vie 20:30), Ernesto Snajer (Café Vinilo, vie 21:00), Guillo Espel Cuarteto (Café Vinilo, sáb 21:00), «La lluvia de fuego» (Sala Casacuberta, vie y sáb 20:30, dom 19:30), «Santos Vega» (Cervantes, vie a dom 20:00).</li>
   </ul>
-</div>
-
-<div class="card warn">
-  <div class="t">Qué quedó sin verificar esta semana <span class="tag tbc">LEER</span></div>
-  <ul>
-    <li><b>Selección Argentina:</b> no juega este finde — la próxima ventana FIFA arranca el 21/9, con el primer amistoso (vs. Bolivia) recién el 30/9. Por eso no aparece en este reporte.</li>
-    <li><b>Horario de Gimnasia-Banfield:</b> BeSoccer (fuente en vivo) indica 13:30, pero otras búsquedas generales mostraron horarios distintos, aparentemente por mezclar con un partido de marzo ya jugado entre los mismos equipos — quedó marcado TBC.</li>
-    <li><b>Precios de Bebop Club:</b> la cartelera lista los shows pero no expone precio en el listado general (hay que entrar a cada evento en la ticketera).</li>
-    <li><b>Cine:</b> además de «El viento» (IMDB 8.0), en el mismo ciclo de la Sala Lugones hay otra función con Almodóvar que rondaría IMDB 7.8, pero la fuente tenía una inconsistencia de fecha (decía «sábado» con la fecha del domingo) — preferí omitirla antes que arriesgar un dato mal cruzado. Tampoco pude confirmar si el reestreno de Terminator 2 (IMDB 8.6) seguía en cartelera comercial este finde puntual.</li>
-    <li><b>Folclore:</b> folkloreclub.com.ar no mostró resultados para CABA/GBA en estas tres fechas — sección omitida.</li>
-    <li><b>Rock sábado y domingo:</b> no se pudo confirmar cartelera específica (indiehoy.com usa carga dinámica que no se pudo extraer completa) — solo quedó cubierto el viernes.</li>
-    <li><b>Tango — otros venues:</b> Torquato Tasso, Los Laureles, La Viruta, Marabú, Salón Canning, El Zorzal y Pasaje de la Luna no tenían música en vivo confirmada para este finde puntual en las fuentes consultadas.</li>
-    <li><b>Teatro off:</b> no se pudo acceder a la cartelera completa de Alternativa Teatral (carga dinámica vía JavaScript) ni a reseñas de crítica fechadas para este finde — «Guillotina» quedó como única opción off verificable.</li>
-    <li><b>Instagram de La Plata</b> (teatro.abierto, teatrounlp, teatroestudiolp, teatrodecamarcitybell): no accesible directamente; la cobertura de La Plata se apoyó en la nota de agenda de El Día del 18/9.</li>
-    <li><b>una.edu.ar/agenda:</b> no se encontraron actividades confirmadas para este finde puntual (el próximo evento relevado es del 25-27/9).</li>
-    <li><b>Escapada corta:</b> no se encontró una opción verificable para esta semana — se omite la sección antes que forzar una sugerencia sin fuente.</li>
-  </ul>
-</div>
-
-<div class="foot">
-  <p>Relevamiento asistido por Claude a partir de fuentes públicas argentinas. <b>Confirmar precios y horarios en boletería</b> antes de comprar o viajar. Lo marcado «a confirmar» / «TBC» no está verificado en fuente primaria.</p>
+  <p class="disc" style="margin-top:14px">Relevamiento asistido por Claude a partir de fuentes públicas argentinas. Confirmá precios y horarios en boletería antes de comprar o viajar. Lo marcado «a confirmar» no está verificado en fuente primaria.</p>
+</section>
 </div>
 
 <script>
-const EVENTS = {
-  "vie-virasoro1": { title: "Bruno Varela + Román Ostrowski + Pablo Raposo + Ricardo Cavalli", venue: "Virasoro Bar", address: "Guatemala 4328, Palermo, CABA", when: "Viernes 18/9, 20:30", duration: "No verificado", price: "$19.000", arrival: "Capacidad limitada; conviene reservar con anticipación", note: "Batería, guitarra, piano y saxo.", url: "https://virasorobar.com.ar/eventos.php" },
-  "vie-virasoro2": { title: "Juana Gramigna + Juan Cruz de Urquiza", venue: "Virasoro Bar", address: "Guatemala 4328, Palermo, CABA", when: "Viernes 18/9, 23:30", duration: "No verificado", price: "$19.000", arrival: "Segunda función de la noche", note: "Buen after de trasnoche.", url: "https://virasorobar.com.ar/eventos.php" },
-  "vie-bebop": { title: "Delfina Oliver + Antigua Jazz Band — «Ella & Duke»", venue: "Bebop Club", address: "Uriarte 1658, Palermo Soho, CABA", when: "Viernes 18/9, 20:00 (también 22:30)", duration: "No verificado", price: "A confirmar", arrival: "Comprar entrada anticipada en la ticketera", note: "Repertorio dedicado a Ella Fitzgerald y Duke Ellington.", url: "https://ticketera.bebopclub.com.ar/" },
-  "vie-caff": { title: "Violentango + Milagros Caliva Trío", venue: "Club Atlético Fernández Fierro (CAFF)", address: "Sánchez de Bustamante 772, Almagro, CABA", when: "Viernes 18/9, 21:00", duration: "No verificado", price: "A confirmar", arrival: "Cupo limitado", note: "Dentro del Festival del Bandoneón.", url: "https://caff.ar" },
-  "vie-anwandter": { title: "Alex Anwandter", venue: "Teatro Gran Rex", address: "Av. Corrientes 857, CABA", when: "Viernes 18/9, 20:30", duration: "No verificado", price: "Desde $28.000", arrival: "Comprar con anticipación", note: "Recital de pop/rock.", url: "https://www.eldestapeweb.com" },
-  "vie-culturaprofetica": { title: "Cultura Profética", venue: "Movistar Arena", address: "Humboldt 450, CABA", when: "Viernes 18/9, ~19-21 h (fuentes difieren en el horario exacto)", duration: "No verificado", price: "Desde $70.000", arrival: "Recital masivo, comprar con anticipación", note: "Reggae, no rock estricto, pero gran convocatoria.", url: "https://www.quehacemos.com.ar/eventos/cultura-profetica-29944" },
-  "lp-vie-narices": { title: "Narices negras (Grupo Almas)", venue: "Teatro UNLP", address: "Calle 10 e/ 54 y 55, La Plata", when: "Viernes 18/9, 20:00", duration: "No verificado", price: "Gratis", arrival: "Teatro x la Identidad", note: "Entrada gratuita.", url: "https://www.eldia.com/espectaculos" },
-  "lp-vie-campos": { title: "Campos de batalla", venue: "Teatro Estudio", address: "Calle 3 e/ 39 y 40, La Plata", when: "Viernes 18/9, 22:30", duration: "No verificado", price: "Gratis", arrival: "-", note: "Entrada gratuita.", url: "https://www.eldia.com/espectaculos" },
-  "sab-ricardo3": { title: "La verdadera historia de Ricardo III (Calixto Bieito)", venue: "Sala Martín Coronado, Teatro San Martín", address: "Av. Corrientes 1530, CABA", when: "Sábado 19/9, 20:00", duration: "No verificado", price: "A confirmar (Ticketek)", arrival: "25-30 min antes", note: "Versión de Calixto Bieito sobre Shakespeare.", url: "https://complejoteatral.gob.ar/" },
-  "sab-guillotina": { title: "Guillotina — Isla + Sexting + Sex (ciclo de obras cortas)", venue: "Espacio Polonia", address: "Fitz Roy 1477, Palermo, CABA", when: "Sábado 19/9, 23:15", duration: "No verificado", price: "A la gorra", arrival: "-", note: "Teatro off. Sin reseñas de crítica confirmadas para esta fecha.", url: "https://quehayba.com.ar/evento/365262-guillotina-sabado-5-y-12-de-septiembre-22-hs-aero-felicidad/" },
-  "sab-lluviafuego": { title: "La lluvia de fuego (Silvina Ocampo / J.J. Hernández, dir. Marilú Marini)", venue: "Sala Casacuberta, Teatro San Martín", address: "Av. Corrientes 1530, CABA", when: "Sábado 19/9, 20:30", duration: "No verificado", price: "A confirmar", arrival: "25-30 min antes", note: "Dirigida por Marilú Marini.", url: "https://complejoteatral.gob.ar/" },
-  "sab-bebop-habana": { title: "Habana Tropic All-Star — homenaje a Benny Moré", venue: "Bebop Club", address: "Uriarte 1658, Palermo Soho, CABA", when: "Sábado 19/9, 20:00", duration: "No verificado", price: "A confirmar", arrival: "Comprar entrada anticipada", note: "Alternativa a Ricardo III en el mismo horario.", url: "https://ticketera.bebopclub.com.ar/" },
-  "sab-virasoro-barbie": { title: "Barbie Martinez + Mariana Iturri + Abel Rogantini + Ezequiel Dutil", venue: "Virasoro Bar", address: "Guatemala 4328, Palermo, CABA", when: "Sábado 19/9, 20:30", duration: "No verificado", price: "$19.000", arrival: "Capacidad limitada", note: "Voz, flauta traversa, piano y contrabajo.", url: "https://virasorobar.com.ar/eventos.php" },
-  "sab-caff-tanguinutiles": { title: "Ciclo «Tangos Inútiles»: Guitarras del Once + Cuarteto Chamuyo + Román Vergagni y Paula Martínez", venue: "Club Atlético Fernández Fierro (CAFF)", address: "Sánchez de Bustamante 772, Almagro, CABA", when: "Sábado 19/9, 21:00", duration: "No verificado", price: "A confirmar", arrival: "Cupo limitado", note: "Tango actual/alternativo.", url: "https://caff.ar" },
-  "lp-sab-futbol": { title: "Gimnasia y Esgrima La Plata vs Banfield", venue: "Estadio Juan Carmelo Zerillo", address: "La Plata", when: "Sábado 19/9, 13:30 (TBC)", duration: "~2 h", price: "-", arrival: "Horario a confirmar", note: "Torneo Clausura 2026, jornada 10. Gimnasia de local. No se superpone con ningún plan del Top 5.", url: "https://es.besoccer.com/partido/gimnasia-plata/ca-banfield/2026239914" },
-  "lp-sab-carmina": { title: "Carmina Burana — Orquesta y Coro Estables del Teatro Argentino", venue: "Sala Ginastera, Teatro Argentino", address: "Calle 51 e/ 9 y 10, La Plata", when: "Sábado 19/9, 20:00", duration: "No verificado", price: "Gratis, con reserva online", arrival: "Reservar entrada online con anticipación", note: "También función el domingo a las 17:00.", url: "https://teatroargentino.gba.gob.ar/section/1/publication/206" },
-  "lp-sab-nona": { title: "La nona (Roberto Cossa)", venue: "Teatro UNLP", address: "Calle 10 e/ 54 y 55, La Plata", when: "Sábado 19/9, 21:00", duration: "No verificado", price: "Gratis", arrival: "-", note: "Clásico del teatro argentino.", url: "https://www.eldia.com/espectaculos" },
-  "dom-ricardo3": { title: "La verdadera historia de Ricardo III (Calixto Bieito)", venue: "Sala Martín Coronado, Teatro San Martín", address: "Av. Corrientes 1530, CABA", when: "Domingo 20/9, 19:00", duration: "No verificado", price: "A confirmar (Ticketek)", arrival: "25-30 min antes", note: "Función dominical.", url: "https://complejoteatral.gob.ar/" },
-  "dom-bebop-laginha": { title: "Mario Laginha — Solo Piano, «Retorno»", venue: "Bebop Club", address: "Uriarte 1658, Palermo Soho, CABA", when: "Domingo 20/9, 19:00", duration: "No verificado", price: "A confirmar", arrival: "Comprar entrada anticipada", note: "Pianista portugués, formato solista.", url: "https://ticketera.bebopclub.com.ar/" },
-  "dom-lluviafuego": { title: "La lluvia de fuego (Silvina Ocampo / J.J. Hernández, dir. Marilú Marini)", venue: "Sala Casacuberta, Teatro San Martín", address: "Av. Corrientes 1530, CABA", when: "Domingo 20/9, 19:30", duration: "No verificado", price: "A confirmar", arrival: "25-30 min antes", note: "Función dominical.", url: "https://complejoteatral.gob.ar/" },
-  "dom-elviento": { title: "El viento (The Wind, 1928, Victor Sjöström)", venue: "Sala Leopoldo Lugones, Teatro San Martín", address: "Av. Corrientes 1530, CABA", when: "Domingo 20/9, 20:00", duration: "No verificado", price: "A confirmar", arrival: "20-25 min antes; función especial", note: "IMDB 8.0. Con acompañamiento en vivo de la Nueva Orquesta de Cámara de Hurlingham, dentro del primer Festival de Cine y Música de la Lugones.", url: "https://www.funcinema.com.ar/2026/09/la-sala-lugones-presenta-su-primer-festival-de-cine-y-musica/" },
-  "dom-caff-quiero24": { title: "Quiero 24 + Cinzarazi y la Banda Calavera + Criminal Tango", venue: "Club Atlético Fernández Fierro (CAFF)", address: "Sánchez de Bustamante 772, Almagro, CABA", when: "Domingo 20/9, 20:00", duration: "No verificado", price: "A confirmar", arrival: "Cupo limitado", note: "Tango actual/alternativo.", url: "https://caff.ar" },
-  "dom-bebop-elistom": { title: "Elis & Tom — x Josi Dias + Iván Buraschi", venue: "Bebop Club", address: "Uriarte 1658, Palermo Soho, CABA", when: "Domingo 20/9, 21:30", duration: "No verificado", price: "A confirmar", arrival: "Comprar entrada anticipada", note: "Repertorio de bossa nova/MPB (Elis Regina y Tom Jobim).", url: "https://ticketera.bebopclub.com.ar/" },
-  "lp-dom-carmina": { title: "Carmina Burana — Orquesta y Coro Estables del Teatro Argentino", venue: "Sala Ginastera, Teatro Argentino", address: "Calle 51 e/ 9 y 10, La Plata", when: "Domingo 20/9, 17:00", duration: "No verificado", price: "Gratis, con reserva online", arrival: "Reservar entrada online con anticipación", note: "También función el sábado a las 20:00.", url: "https://teatroargentino.gba.gob.ar/section/1/publication/206" },
-  "lp-dom-solterona": { title: "La solterona y el ladrón (ópera, Compañía Ópera Joven)", venue: "Teatro de Cámara City Bell", address: "Diagonal 4 e/ 462 y 464, City Bell", when: "Domingo 20/9, 18:00", duration: "No verificado", price: "A confirmar", arrival: "-", note: "Ópera breve.", url: "https://www.eldia.com/espectaculos" },
-  "lp-dom-genesis": { title: "Génesis, así somos (debut elenco juvenil)", venue: "Teatro Estudio", address: "Calle 3 e/ 39 y 40, La Plata", when: "Domingo 20/9, 19:00 y 20:45", duration: "No verificado", price: "A confirmar", arrival: "-", note: "Dos funciones el domingo.", url: "https://www.eldia.com/espectaculos" }
-};
-
-function renderDetail(key) {
-  const d = EVENTS[key];
-  const panel = document.getElementById("detail");
-  if (!d) return;
-  panel.classList.remove("empty");
-  panel.innerHTML =
-    '<h3>' + d.title + '</h3>' +
-    '<div class="venue-line"><b>' + d.venue + '</b> · ' + d.address + '</div>' +
-    '<div class="grid">' +
-      '<div class="k">Día y hora</div><div>' + d.when + '</div>' +
-      '<div class="k">Duración</div><div>' + d.duration + '</div>' +
-      '<div class="k">Precio</div><div>' + d.price + '</div>' +
-      '<div class="k">Llegar</div><div>' + d.arrival + '</div>' +
-    '</div>' +
-    '<div class="note">' + d.note + '</div>' +
-    '<a class="src" href="' + d.url + '" target="_blank" rel="noopener">Ver fuente ↗</a>';
-}
-
-document.querySelectorAll(".ev").forEach(function (el) {
-  el.addEventListener("click", function () {
-    document.querySelectorAll(".ev.selected").forEach(function (s) { s.classList.remove("selected"); });
-    el.classList.add("selected");
-    renderDetail(el.dataset.key);
+(function(){
+  var START=12, END=24;
+  var days=[
+    {name:"Viernes 2/10", wx:"Máx 18°C, nublado, sin lluvia", ev:[
+      {l:"CABA",c:"teatro",t:"El precipicio",p:"Cunill Cabanellas",s:19.5,e:20.33,d:"Teatro San Martín, Av. Corrientes 1530 · $21.000 · 50 min · llegar 20–25 min antes.",u:"https://complejoteatral.gob.ar/ver/el-precipicio"},
+      {l:"CABA",c:"jazz",t:"Ella & Louis",p:"Bebop Club",s:20,e:21.5,d:"Uriarte 1658, Palermo · desde $20.000 + consumición $15.000 · llegar 30 min antes. Termina cerca del inicio de Gimnasia.",u:"https://ticketera.bebopclub.com.ar/evento/b42297fb-21ee-456f-8581-d274ceee25b1"},
+      {l:"CABA",c:"tango",t:"Quena Taborda + Y. Burich",p:"CAFF",s:21,e:23.5,d:"Sánchez de Bustamante 772, Almagro · anticipada $17.000 / general $20.000 · abre 20:00. Pisa el partido.",u:"https://caff.ar/shows/864"},
+      {l:"CABA",c:"futbol",t:"📺 Ind. Rivadavia–Gimnasia",p:"TNT Sports",s:21.5,e:23.4,d:"Fecha 11 Clausura, Gimnasia visitante en Mendoza · 21:30 según Diario UNO, 20:30 según BeSoccer: confirmar.",u:"https://www.diariouno.com.ar/ovacion/futbol/confirmadas-las-fechas-11-y-12-independiente-rivadavia-y-gimnasia-y-esgrima-n1600636"},
+      {l:"CABA",c:"jazz",t:"Epumer–Machi–Judurcha",p:"Bebop Club",s:22.5,e:24,d:"Uriarte 1658 · desde $18.000 + consumición $15.000 · trío de jazz-rock.",u:"https://ticketera.bebopclub.com.ar/evento/e68b63d9-8a93-488a-84cd-375c6d1cd935"},
+      {l:"La Plata",c:"rock",t:"Fiesta del Inmigrante",p:"Berisso",s:18,e:23,d:"Carpa de las Colectividades, Av. Montevideo e/ 10 y 11 · gratis · patio gastronómico y elección del Embajador (20:00).",u:"https://www.infocielo.com/la-plata/berisso-vive-la-fiesta-del-inmigrante-con-la-eleccion-de-embajadores-culturales"},
+      {l:"La Plata",c:"teatro",t:"Pajarita",p:"TACEC",s:20,e:21.25,d:"Sala Iris Scaccheri, Teatro Argentino, Av. 51 e/ 9 y 10 · precio a confirmar (Alternativa).",u:"https://teatroargentino.gba.gob.ar/section/1/publication/210"}
+    ]},
+    {name:"Sábado 3/10", wx:"11°/19°C, lluvia posible a la mañana", ev:[
+      {l:"CABA",c:"teatro",t:"La imaginación enferma",p:"Teatro del Pueblo",s:16.5,e:17.67,d:"Lavalle 3636, Almagro · desde $15.000 · 70 min · ÚLTIMA FUNCIÓN.",u:"https://www.alternativateatral.com/obra100102-la-imaginacion-enferma"},
+      {l:"CABA",c:"teatro",t:"El precipicio",p:"Cunill Cabanellas",s:19.5,e:20.33,d:"Teatro San Martín · $21.000 · 50 min · llegás a casa para la Selección.",u:"https://complejoteatral.gob.ar/ver/el-precipicio"},
+      {l:"CABA",c:"jazz",t:"So in Love",p:"Jazz Voyeur",s:20.5,e:22,d:"Posadas 1557, Recoleta · $16.000 · reservar.",u:"https://jazzvoyeur.com.ar/agenda-de-shows/"},
+      {l:"CABA",c:"futbol",t:"Argentina–Burkina Faso",p:"Monumental",s:21,e:22.9,d:"Amistoso · 21:00 · TV Telefe y TyC Sports (a confirmar).",u:"https://www.lanacion.com.ar/deportes/futbol/horarios-de-los-partidos-de-la-seleccion-argentina-uno-por-uno-asi-se-juegan-los-amistosos-nid28092026/"},
+      {l:"CABA",c:"cine",t:"Kanal (Wajda)",p:"Sala Lugones",s:21,e:22.6,d:"Av. Corrientes 1530 · $9.000 · IMDb 7,9 · pisa la Selección; el domingo hay otra función.",u:"https://complejoteatral.gob.ar/ver/Andrzej-Wajda:-entre-el-mito-y-la-historia"},
+      {l:"CABA",c:"jazz",t:"Hot Shooters",p:"Jazz Voyeur",s:23.5,e:24,d:"Posadas 1557 · $11.000 · trasnoche, después del partido.",u:"https://jazzvoyeur.com.ar/agenda-de-shows/"},
+      {l:"La Plata",c:"rock",t:"Fiesta del Inmigrante",p:"Berisso",s:12,e:17.9,d:"Festival de colectividades desde las 12:00 · gratis · 20:00 elección de la Embajadora.",u:"https://www.infocielo.com/la-plata/berisso-vive-la-fiesta-del-inmigrante-con-la-eleccion-de-embajadores-culturales"},
+      {l:"La Plata",c:"rock",t:"P. Palazzo, piano",p:"Teatro Argentino",s:18,e:19.25,d:"Sala Astor Piazzolla, Av. 51 e/ 9 y 10 · gratis con reserva online.",u:"https://teatroargentino.gba.gob.ar/section/1/publication/212"},
+      {l:"La Plata",c:"rock",t:"Cuarteto UNNOBA + Bugallo",p:"T. de Cámara City Bell",s:20,e:21.5,d:"Diagonal 4 (Urquiza) 327 · bono contribución, monto a confirmar · Shostakóvich y Ginastera.",u:"https://lumenartis.org/?post_type=funcion&p=2878"}
+    ]},
+    {name:"Domingo 4/10", wx:"10°/17°C, parcialmente nublado", ev:[
+      {l:"CABA",c:"cine",t:"Kanal (Wajda)",p:"Sala Lugones",s:18,e:19.6,d:"Av. Corrientes 1530 · $9.000 · IMDb 7,9 · llegar 20 min antes.",u:"https://complejoteatral.gob.ar/ver/Andrzej-Wajda:-entre-el-mito-y-la-historia"},
+      {l:"CABA",c:"teatro",t:"Maldición eterna… (Puig)",p:"Hasta Trilce",s:18,e:19.5,d:"Maza 177, Almagro · precio a confirmar · 90 min · crítica La Nación: Muy buena.",u:"https://www.alternativateatral.com/obra100381-maldicion-eterna-a-quien-lea-estas-paginas"},
+      {l:"CABA",c:"teatro",t:"A cielo abierto",p:"Teatro Regio",s:20,e:21.6,d:"Av. Córdoba 6056 · $18.000 · llegar 20–30 min antes.",u:"https://complejoteatral.gob.ar/ver/a-cielo-abierto"},
+      {l:"CABA",c:"jazz",t:"Yamile Burich · Jazz Tango",p:"Jazz Voyeur",s:20.5,e:22,d:"Posadas 1557 · $11.000 · reservar mesa.",u:"https://jazzvoyeur.com.ar/agenda-de-shows/"},
+      {l:"La Plata",c:"rock",t:"Fiesta del Inmigrante",p:"Berisso",s:12,e:17.9,d:"Desde las 12:00 · gratis · 16:00 representantes culturales infantiles.",u:"https://www.infocielo.com/la-plata/berisso-vive-la-fiesta-del-inmigrante-con-la-eleccion-de-embajadores-culturales"},
+      {l:"La Plata",c:"rock",t:"Guastavino, voz y piano",p:"Teatro Argentino",s:18,e:19.25,d:"Sala Astor Piazzolla · gratis con reserva online desde el vie 2, 12:00.",u:"https://teatroargentino.gba.gob.ar/section/1/publication/213"},
+      {l:"La Plata",c:"cine",t:"Fitzcarraldo (Herzog)",p:"T. de Cámara City Bell",s:18,e:20.6,d:"Diagonal 4 (Urquiza) 327 · bono $6.000 en boletería.",u:"https://lumenartis.org/?post_type=funcion&p=2890"}
+    ]}
+  ];
+  var cal=document.getElementById('cal'), det=document.getElementById('detail');
+  function pct(h){return ((h-START)/(END-START)*100)}
+  function hh(h){var m=Math.round((h%1)*60);return Math.floor(h)+":"+(m<10?"0":"")+m}
+  days.forEach(function(day){
+    var box=document.createElement('div');box.className='cal-day';
+    box.innerHTML='<header><b>'+day.name+'</b><span>'+day.wx+'</span></header>';
+    var ax=document.createElement('div');ax.className='axis';
+    for(var h=START;h<=END;h+=2){var i=document.createElement('i');i.style.left=pct(h)+'%';i.textContent=h+'h';ax.appendChild(i)}
+    box.appendChild(ax);
+    ["CABA","La Plata"].forEach(function(lane){
+      var evs=day.ev.filter(function(e){return e.l===lane});
+      if(!evs.length)return;
+      // asignar filas para que no se tapen del todo
+      var rows=[];evs.sort(function(a,b){return a.s-b.s});
+      evs.forEach(function(e){var r=0;while(rows[r]!==undefined&&rows[r]>e.s)r++;rows[r]=e.e;e.row=r});
+      var ln=document.createElement('div');ln.className='lane';ln.style.height=(rows.length*31+8)+'px';
+      ln.innerHTML='<span class="lane-label">'+lane+'</span>';
+      evs.forEach(function(e){
+        var b=document.createElement('button');b.type='button';b.className='ev c-'+e.c;
+        b.style.left=pct(e.s)+'%';b.style.width=Math.max(pct(e.e)-pct(e.s),7)+'%';b.style.top=(4+e.row*31)+'px';
+        b.innerHTML=e.t+'<small>'+e.p+' · '+hh(e.s)+'</small>';
+        b.addEventListener('click',function(){
+          det.innerHTML='<b>'+e.t+'</b> — '+day.name+', '+hh(e.s)+' · '+e.p+'<br>'+e.d+'<br>🔗 <a href="'+e.u+'" target="_blank" rel="noopener">fuente</a>';
+        });
+        ln.appendChild(b);
+      });
+      box.appendChild(ln);
+    });
+    cal.appendChild(box);
   });
-});
+})();
 </script>
 
 </body>
