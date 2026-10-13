@@ -1,378 +1,57 @@
-<!doctype html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Propuestas Finde</title>
-<style>
-/* Layout: single reading column of cards; the weekend calendar is the one wide, visual moment. Single light look by choice. */
-:root{
-  color-scheme: light;
-  --paper:#F4F6F9; --card:#FFFFFF; --ink:#1B2230; --muted:#5A6475; --line:#DCE1E8;
-  --accent:#1F3A8A; --accent-soft:#E3EAF7;
-  --c-teatro:#9B3D7A; --c-jazz:#13807A; --c-cine:#4F5BD5; --c-futbol:#1F3A8A; --c-tango:#C2562F; --c-otros:#8A6D1E;
-  --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
-  --body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
-.wrap{max-width:900px;margin:0 auto;padding-inline:16px;padding-block:24px 48px;display:flex;flex-direction:column;gap:22px}
-header h1{font-family:var(--display);font-size:2rem;margin:0;text-wrap:balance;letter-spacing:.2px}
-header p{margin:4px 0 0;color:var(--muted)}
-h2{font-family:var(--display);font-size:1.35rem;margin:0 0 10px;text-wrap:balance}
-h3{font-size:1.02rem;margin:0 0 8px;text-wrap:balance}
-a{color:var(--accent)}
-a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-section{display:flex;flex-direction:column;gap:12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
-.card.prio{border-color:var(--accent);box-shadow:0 1px 0 var(--accent-soft)}
-.row{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:baseline}
-.row>span:first-child{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.row>span:last-child{min-width:0}
-.note{color:var(--muted);font-size:.93rem;margin:2px 0 0}
-.tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:999px;margin-left:4px;vertical-align:1px;white-space:nowrap}
-.t-tbc{background:#FFF1D6;color:#8A5A00}
-.t-last{background:#FDE2E1;color:#A3201B}
-.t-free{background:#DDF3E4;color:#1D6B3A}
-.t-clash{background:#FFE6D1;color:#A9480B}
-.t-ok{background:var(--accent-soft);color:var(--accent)}
-.weather{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
-.weather .card{gap:2px}
-.weather b{font-family:var(--display);font-size:1.05rem}
-.temp{font-family:var(--mono);font-variant-numeric:tabular-nums}
-ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
-.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
-/* calendar */
-.legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:.82rem;color:var(--muted)}
-.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px;opacity:.75}
-.cal{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px}
-.day{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;min-width:0}
-.dayhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px}
-.dayhead b{font-family:var(--display);font-size:1.05rem}
-.dayhead span{font-size:.78rem;color:var(--muted);text-align:right}
-.lanes{display:grid;grid-template-columns:30px 1fr 1fr;gap:4px}
-.lanehead{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:center}
-.axis,.lane{position:relative;height:calc(var(--hours) * 40px)}
-.lane{background-image:repeating-linear-gradient(to bottom,var(--line) 0 1px,transparent 1px 40px);border-radius:6px}
-.axis span{position:absolute;right:2px;font-size:.66rem;color:var(--muted);transform:translateY(-50%);font-family:var(--mono)}
-.ev{position:absolute;border-radius:6px;padding:2px 4px;font-size:.68rem;line-height:1.2;color:var(--ink);overflow:hidden;cursor:pointer;border:1px solid transparent;text-align:left;font-family:var(--body)}
-.ev b{display:block;font-size:.66rem;font-family:var(--mono);font-weight:600}
-.ev:hover,.ev[aria-pressed="true"]{border-color:var(--ink)}
-#detail{min-height:64px}
-.btns{display:flex;flex-wrap:wrap;gap:10px}
-.btn{display:inline-block;padding:9px 14px;border-radius:999px;background:var(--accent);color:#FFFFFF;text-decoration:none;font-weight:600;font-size:.9rem}
-footer{color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padding-top:12px}
-@media (max-width:480px){.row{grid-template-columns:78px 1fr}header h1{font-size:1.6rem}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
-</style>
-</head>
-<body>
-
-
-<div class="wrap">
-<header>
-  <h1>🎭 Propuestas Finde</h1>
-  <p>Actualizado: miércoles 7/10/2026 — Finde viernes 9 al domingo 11 de octubre · CABA y La Plata. <b>El lunes 12 es feriado</b> (fin de semana largo).</p>
-</header>
-
-<section id="futbol">
-  <h2>⚽ Prioridad fútbol</h2>
-  <div class="card prio">
-    <h3>Gimnasia y Esgrima La Plata vs Atlético Tucumán</h3>
-    <div class="row"><span>Torneo</span><span>Torneo Clausura 2026, fecha 12 (Zona B)</span></div>
-    <div class="row"><span>Cuándo</span><span>📅 <b>Viernes 9/10</b> · 🕗 <b>18:00</b> <span class="tag t-tbc">Confirmar</span><br><small class="note">Minutouno (6/10) da 18:00 hora argentina. El fixture de BeSoccer muestra 17:00, probablemente por zona horaria (la semana pasada tuvo el mismo desfasaje de una hora).</small></span></div>
-    <div class="row"><span>Dónde</span><span>📍 Gimnasia <b>de local</b>, Estadio Juan Carmelo Zerillo (el Bosque), La Plata</span></div>
-    <div class="row"><span>TV</span><span>📺 ESPN Premium · encender 10 min antes. Si vas a la cancha, llegar 1 h antes.</span></div>
-    <p class="note"><b>Superposiciones:</b> el viernes de 18:00 a ~20:00 queda libre. <b>No se pisan</b> con el partido los planes de sábado y domingo del Top 5 (Cerávolo 4, El hombre de mármol, De Francisco, y La lluvia de fuego o A cielo abierto si elegís sáb/dom). El viernes, todo lo que arranca a las 20:00–20:30 en CABA queda <b>ajustado</b> si lo mirás por TV y es <b>inviable</b> si vas a la cancha. Lo más cómodo: partido el viernes y teatro/jazz el finde.</p>
-    <p class="note">🔗 <a href="https://www.minutouno.com/deportes/gimnasia-vs-atletico-tucuman-el-torneo-clausura-2026-horario-formaciones-y-tv-n6330334" target="_blank" rel="noopener">Minutouno — horario y TV</a> · <a href="https://es.besoccer.com/partido/gimnasia-plata/atletico-tucuman/2026239943" target="_blank" rel="noopener">BeSoccer — ficha</a></p>
-  </div>
-</section>
-
-<section id="clima">
-  <h2>🌦️ Clima</h2>
-  <div class="weather">
-    <div class="card"><b>Viernes 9</b><span class="temp">14° / 18°</span><span>Cubierto, lluvia débil (50%).</span></div>
-    <div class="card"><b>Sábado 10</b><span class="temp">13° / 17°</span><span>Lluvia débil (80%, ~3,5 mm), viento del SO hasta 43 km/h. <span class="tag t-tbc">Bajo techo</span></span></div>
-    <div class="card"><b>Domingo 11</b><span class="temp">12° / 17°</span><span>Cubierto, sin lluvia prevista. Mejor día para salir.</span></div>
-    <div class="card"><b>Lunes 12 (feriado)</b><span class="temp">12° / 17°</span><span>Parcialmente nublado.</span></div>
-  </div>
-  <p class="note">Meteored para CABA, actualizado el 6–7/10. Hoy miércoles rige alerta naranja por tormentas en AMBA; el pronóstico del finde puede cambiar: mirá el SMN el viernes. Para La Plata no relevé pronóstico propio; por cercanía, esperable algo parecido. Todo el Top 5 es en sala. 🔗 <a href="https://www.meteored.com.ar/tiempo-en_Buenos+Aires-America+Sur-Argentina-Ciudad+Autonoma+de+Buenos+Aires-SABE-1-13584.html" target="_blank" rel="noopener">Meteored</a> · <a href="https://www.smn.gob.ar/" target="_blank" rel="noopener">SMN</a></p>
-</section>
-
-<section id="top5">
-  <h2>⭐ Top 5</h2>
-
-  <div class="card">
-    <h3>1) 🎭 TEATRO — «La lluvia de fuego» (Silvina Ocampo y Juan José Hernández, dir. Marilú Marini)</h3>
-    <div class="row"><span>Día</span><span>📅 Viernes 9, sábado 10 y domingo 11 (mejor <b>sáb o dom</b>)</span></div>
-    <div class="row"><span>Horario</span><span>🕗 Vie y sáb 20:30 · dom 19:30 · 90 min <span class="tag t-ok">Sáb/dom no pisa el partido</span></span></div>
-    <div class="row"><span>Precio</span><span>💵 $26.000</span></div>
-    <div class="row"><span>Lugar</span><span>📍 Sala Casacuberta, Teatro San Martín — Av. Corrientes 1530, CABA</span></div>
-    <div class="row"><span>Llegar</span><span>⏰ Entrada anticipada; llegar 20–30 min antes</span></div>
-    <p class="note">Con Valeria Lois, Carolina Saade, Agustín Rittano, Damián Mai y Mercedes Beno Mendizábal. Humor negro y farsa sobre un texto de Ocampo. La Nación (1/9): «Muy buena». 🔗 <a href="https://complejoteatral.gob.ar/produccion/la_lluvia_de_fuego/" target="_blank" rel="noopener">complejoteatral.gob.ar</a> · <a href="https://www.lanacion.com.ar/espectaculos/teatro/con-direccion-de-marilu-marini-humor-negro-farsa-y-comedia-en-un-espectaculo-que-escribio-silvina-nid01092026/" target="_blank" rel="noopener">crítica</a></p>
-  </div>
-
-  <div class="card">
-    <h3>2) 🎷 JAZZ — Cerávolo 4, «Jazz Tango» (Odisea invisible)</h3>
-    <div class="row"><span>Día</span><span>📅 Sábado 10/10</span></div>
-    <div class="row"><span>Horario</span><span>🕗 20:30 <span class="tag t-ok">No pisa el partido</span></span></div>
-    <div class="row"><span>Precio</span><span>💵 $16.000 (según la agenda del club)</span></div>
-    <div class="row"><span>Lugar</span><span>📍 Jazz Voyeur Club — Posadas 1557, Recoleta, CABA</span></div>
-    <div class="row"><span>Llegar</span><span>⏰ Reservar mesa; llegar 30 min antes</span></div>
-    <p class="note">Luis Cerávolo (batería; tocó con Piazzolla y Spinetta), Cristian Zárate (piano), Mariano Rey (clarinete) y Pablo Motta (contrabajo). Buen plan bajo techo para el sábado de lluvia. 🔗 <a href="https://jazzvoyeur.com.ar/events/ceravolo-4-jazz-tango-4/" target="_blank" rel="noopener">jazzvoyeur.com.ar</a></p>
-  </div>
-
-  <div class="card">
-    <h3>3) 🎭 TEATRO — «A cielo abierto» (David Hare, dir. Mey Scápola)</h3>
-    <div class="row"><span>Día</span><span>📅 Viernes 9, sábado 10 y domingo 11 (mejor <b>sáb o dom</b>)</span></div>
-    <div class="row"><span>Horario</span><span>🕗 20:00 · 80 min <span class="tag t-clash">Vie: ajustado con el partido</span></span></div>
-    <div class="row"><span>Precio</span><span>💵 Platea $22.500</span></div>
-    <div class="row"><span>Lugar</span><span>📍 Teatro Regio — Av. Córdoba 6056, Chacarita, CABA</span></div>
-    <div class="row"><span>Llegar</span><span>⏰ Entrada anticipada; llegar 20–30 min antes</span></div>
-    <p class="note">Con Luis Bermejo, Paula Reca y Felipe Saade. El finde que viene (16–18/10) no hay funciones, así que conviene ahora. La Nación (26/9): «Muy buena». 🔗 <a href="https://complejoteatral.gob.ar/produccion/a-cielo-abierto/" target="_blank" rel="noopener">complejoteatral.gob.ar</a> · <a href="https://www.lanacion.com.ar/espectaculos/teatro/a-cielo-abierto-una-acertada-mirada-sobre-la-fragilidad-humana-nid26092026/" target="_blank" rel="noopener">crítica</a></p>
-  </div>
-
-  <div class="card">
-    <h3>4) 🎬 CINE — «El hombre de mármol» (Andrzej Wajda, 1977) — IMDb 7,7</h3>
-    <div class="row"><span>Día</span><span>📅 Sábado 10 y domingo 11</span></div>
-    <div class="row"><span>Horario</span><span>🕗 Sáb 20:00 · dom 17:00 · 164 min <span class="tag t-ok">No pisa el partido</span></span></div>
-    <div class="row"><span>Precio</span><span>💵 $12.000 · estudiantes y jubilados $7.000 (solo presencial)</span></div>
-    <div class="row"><span>Lugar</span><span>📍 Sala Leopoldo Lugones, Teatro San Martín — Av. Corrientes 1530, CABA</span></div>
-    <div class="row"><span>Llegar</span><span>⏰ Comprar con anticipación; llegar 20 min antes</span></div>
-    <p class="note">Ciclo «Andrzej Wajda: entre el mito y la historia», que termina el 14/10. Con Krystyna Janda y Jerzy Radziwiłowicz. La del domingo 17:00 se combina con La lluvia de fuego (19:30) en el mismo edificio, aunque queda justo. 🔗 <a href="https://complejoteatral.gob.ar/produccion/andrzej-wajda-entre-el-mito-y-la-historia/" target="_blank" rel="noopener">complejoteatral.gob.ar</a> · <a href="https://www.imdb.com/title/tt0075902/" target="_blank" rel="noopener">IMDb</a></p>
-  </div>
-
-  <div class="card">
-    <h3>5) 🎷 JAZZ — Hermanos De Francisco, «Swing to Bop»</h3>
-    <div class="row"><span>Día</span><span>📅 Domingo 11/10 (víspera de feriado)</span></div>
-    <div class="row"><span>Horario</span><span>🕗 20:30 <span class="tag t-ok">No pisa el partido</span></span></div>
-    <div class="row"><span>Precio</span><span>💵 $20.000 por set</span></div>
-    <div class="row"><span>Lugar</span><span>📍 Virasoro Bar — Guatemala 4328, Palermo, CABA</span></div>
-    <div class="row"><span>Llegar</span><span>⏰ Reservar; llegar 20–30 min antes (sala chica)</span></div>
-    <p class="note">Sexteto con los De Francisco en trombón, saxo y trompeta, más Pablo Raposo en piano. Si preferís el viernes y no vas a la cancha: <b>Sebastián Loiacono Quintet, «The Music of Sonny Rollins»</b>, Bebop Club (Uriarte 1658), vie 20:00, desde $20.000 + consumición mínima $15.000 <span class="tag t-clash">Pisa el partido</span> (<a href="https://ticketera.bebopclub.com.ar/evento/f6e8ff58-b8b9-4788-8cea-40e4e359e079" target="_blank" rel="noopener">ticketera</a>). 🔗 <a href="https://www.virasorobar.com.ar/eventos.php" target="_blank" rel="noopener">virasorobar.com.ar</a></p>
-  </div>
-</section>
-
-<section id="off">
-  <h2>🎟️ Teatro off</h2>
-  <div class="card">
-    <h3>«Maldición eterna a quien lea estas páginas» (Manuel Puig; adapt. Claudia Piñeiro y Marcelo Moncarz)</h3>
-    <div class="row"><span>Cuándo</span><span>📅 Domingo 11 · 🕗 18:00 · 90 min</span></div>
-    <div class="row"><span>Dónde</span><span>📍 Hasta Trilce — Maza 177, Almagro, CABA</span></div>
-    <div class="row"><span>Precio</span><span>💵 <span class="tag t-tbc">A confirmar</span></span></div>
-    <div class="row"><span>Llegar</span><span>⏰ Reservar por Alternativa; llegar 20 min antes</span></div>
-    <p class="note">Con Luis Campos, Mateo Chiarino y Luz Miraldi. La Nación (2/9): «Muy buena». En cartel hasta el 29/11. 🔗 <a href="https://www.alternativateatral.com/obra100381-maldicion-eterna-a-quien-lea-estas-paginas" target="_blank" rel="noopener">Alternativa Teatral</a></p>
-  </div>
-  <div class="card">
-    <h3>«El centroforward murió al amanecer» (Agustín Cuzzani; adapt. y dir. Pablo Gorlero)</h3>
-    <div class="row"><span>Cuándo</span><span>📅 Viernes 9 · 🕗 20:30 · 95 min <span class="tag t-clash">Ajustado con el partido</span></span></div>
-    <div class="row"><span>Dónde</span><span>📍 Andamio 90 — Paraná 660, CABA</span></div>
-    <div class="row"><span>Precio</span><span>💵 General $24.000 <span class="tag t-tbc">A confirmar</span></span></div>
-    <div class="row"><span>Llegar</span><span>⏰ Entrada anticipada; solo hay función los viernes</span></div>
-    <p class="note">Sátira sobre el poder, con un crack de fútbol subastado. Con Junior Pisanú, Marcelo Rodríguez, Mariel Rueda y Enrique Iturralde; voz en off de Víctor Hugo Morales. La Nación (7/10): «Muy buena». 🔗 <a href="https://www.lanacion.com.ar/espectaculos/teatro/el-centroforward-murio-al-amanecer-una-feroz-y-esclarecedora-satira-sobre-el-sometimiento-del-poder-nid07102026/" target="_blank" rel="noopener">crítica La Nación</a></p>
-  </div>
-  <p class="note">Una más: <b>«Aurelia escribe»</b> (Adriana Tursi, dir. Marcelo Velázquez, con Carolina Tejeda), sáb 10 a las 17:00, Teatro del Pueblo (Lavalle 3636), 60 min, precio a confirmar. La Nación (3/10): «Muy buena». <a href="https://www.lanacion.com.ar/espectaculos/teatro/aurelia-escribe-un-atractivo-acto-de-rescate-de-una-mujer-olvidada-por-la-historia-nid03102026/" target="_blank" rel="noopener">crítica</a></p>
-</section>
-
-<section id="tango">
-  <h2>💃 Tango</h2>
-  <div class="card">
-    <h3>«Sinfonía popular» — conciertos de tango y música latinoamericana <span class="tag t-free">Gratis</span></h3>
-    <div class="row"><span>Cuándo</span><span>📅 Vie 9 15:00 · sáb 10 y dom 11 17:00 <span class="tag t-ok">No pisa el partido</span> (sáb/dom)</span></div>
-    <div class="row"><span>Dónde</span><span>📍 Teatro de la Ribera — Av. Pedro de Mendoza 1821, La Boca, CABA</span></div>
-    <div class="row"><span>Entradas</span><span>Gratuitas · modo de retiro <span class="tag t-tbc">A confirmar</span></span></div>
-    <p class="note">Programa del Complejo Teatral. No encontré tango de orquesta ni milonga con orquesta en vivo confirmada para este finde en los venues de siempre (CAFF tiene a Fernández Fierro recién el 20/11). 🔗 <a href="https://complejoteatral.gob.ar/produccion/sinfonia-popular/" target="_blank" rel="noopener">complejoteatral.gob.ar</a></p>
-  </div>
-</section>
-
-<section id="laplata">
-  <h2>🏙️ La Plata</h2>
-  <div class="card">
-    <h3>🎭 «Bajo la tormenta» (Comedia de la Provincia) <span class="tag t-free">Gratis</span> <span class="tag t-last">Últimas funciones</span></h3>
-    <div class="row"><span>Cuándo</span><span>📅 Sáb 10 y dom 11 · 🕗 20:00 <span class="tag t-tbc">Confirmar</span></span></div>
-    <div class="row"><span>Dónde</span><span>📍 Sala Armando Discépolo — calle 12 e/ 62 y 63</span></div>
-    <div class="row"><span>Entradas</span><span>Retiro en boletería una hora antes</span></div>
-    <p class="note">Dir. Toni Lorenzo y César Barella; octubre es el mes despedida. La ficha dice «sábados 21 h» y el listado 20:00. 🔗 <a href="https://agendalaplata.ar/evento/bajo-la-tormenta-sala-armando-discepolo-20261002190637" target="_blank" rel="noopener">agendalaplata.ar</a></p>
-  </div>
-  <div class="card">
-    <h3>🎶 Dúo Coplanacu (folclore)</h3>
-    <div class="row"><span>Cuándo</span><span>📅 Sábado 10 · 🕗 21:00</span></div>
-    <div class="row"><span>Dónde</span><span>📍 Casa Metro, La Plata</span></div>
-    <div class="row"><span>Precio</span><span>💵 <span class="tag t-tbc">A confirmar</span></span></div>
-    <p class="note">🔗 <a href="https://agendalaplata.ar/evento/duo-coplanacu-casa-metro-20260521223138" target="_blank" rel="noopener">agendalaplata.ar</a></p>
-  </div>
-  <div class="card">
-    <h3>🎻 Torre 7 Ensamble — Festival de Primavera de Música de Cámara</h3>
-    <div class="row"><span>Cuándo</span><span>📅 Sábado 10 · 🕗 20:00</span></div>
-    <div class="row"><span>Dónde</span><span>📍 Teatro de Cámara City Bell — Diagonal 4 (Urquiza) 327 e/ 462 y 464</span></div>
-    <div class="row"><span>Precio</span><span>💵 Bono contribución <span class="tag t-tbc">Monto a confirmar</span></span></div>
-    <p class="note">Quinteto de vientos: Ton ter Doest, Satie, Ravel y Gershwin. El link de Eventbrite de la página tiene otro título; verificalo antes de comprar. 🔗 <a href="https://lumenartis.org/?post_type=funcion&amp;p=2892" target="_blank" rel="noopener">lumenartis.org</a></p>
-  </div>
-  <h3>Otras opciones relevadas</h3>
-  <ul>
-    <li>🎭 <b>Pajarita</b> (sobre «300 millones» de Arlt) — vie 9 y sáb 10, 20:00, Sala Iris Scaccheri (TACEC), Teatro Argentino (51 e/ 9 y 10). Precio a confirmar, venta por Alternativa. El viernes queda ajustado con el partido. <a href="https://agendalaplata.ar/evento/pajarita-teatro-argentino-centro-provincial-de-las-artes-20260924025036" target="_blank" rel="noopener">fuente</a></li>
-    <li>🎭 <b>El principio de Arquímedes</b> (Josep Maria Miró, dir. Sara Mon) — vie 9, 21:00, Teatro Abierto (38 e/ 20 y 21). Precio a confirmar. <a href="https://agendalaplata.ar/evento/el-principio-de-arquimedes-teatro-abierto-20260922015341" target="_blank" rel="noopener">fuente</a></li>
-    <li>🎭 <b>Calígula</b> — sáb 10, 21:30, Teatro Estudio. Precio a confirmar. <a href="https://agendalaplata.ar/?fecha=2026-10-10" target="_blank" rel="noopener">fuente</a></li>
-    <li>🎻 <b>Concierto de premiación, VII Concurso Lumen Artis de canto y piano</b> — lunes feriado 12, 18:00, Teatro de Cámara City Bell. <span class="tag t-free">Gratis</span> <a href="https://lumenartis.org/?post_type=funcion&amp;p=2901" target="_blank" rel="noopener">fuente</a></li>
-    <li>🎉 <b>49ª Fiesta Provincial del Inmigrante, Berisso</b> — vie 9 20:00 tango y folclore; sáb y dom desde 12:00 colectividades; dom 15:00 desfile de clausura por av. Montevideo. Parque Cívico (Montevideo y 11). <span class="tag t-free">Gratis</span> <a href="https://infobonaerenses.com.ar/nota/44662/fin-de-semana-largo-32-fiestas-y-eventos-para-recorrer-la-provincia-de-buenos-aires" target="_blank" rel="noopener">fuente</a></li>
-  </ul>
-</section>
-
-<section id="calendario">
-  <h2>📆 Calendario del finde</h2>
-  <div class="legend">
-    <span><i style="background:var(--c-teatro)"></i>Teatro</span>
-    <span><i style="background:var(--c-jazz)"></i>Jazz</span>
-    <span><i style="background:var(--c-cine)"></i>Cine</span>
-    <span><i style="background:var(--c-futbol)"></i>Fútbol</span>
-    <span><i style="background:var(--c-tango)"></i>Tango</span>
-    <span><i style="background:var(--c-otros)"></i>Folclore / clásica / fiestas</span>
-  </div>
-  <p class="note">Selección curada, de 15 a 24 h. Donde los bloques se superponen hay choque de horario; las duraciones sin dato en la fuente son estimadas. Tocá un bloque para ver el detalle.</p>
-  <div class="cal" id="cal"></div>
-  <div class="card" id="detail" aria-live="polite"><span class="note">Tocá una entrada del calendario para ver dirección, precio, cuánto antes llegar y la fuente.</span></div>
-  <div class="btns">
-    <a class="btn" href="https://www.alternativateatral.com/cartelera.asp" target="_blank" rel="noopener">🎭 Cartelera CABA — Alternativa Teatral ↗</a>
-    <a class="btn" href="https://agendalaplata.ar/" target="_blank" rel="noopener">🏙️ Espectáculos La Plata — agendalaplata.ar ↗</a>
-  </div>
-</section>
-
-<section id="escapada">
-  <h2>🚗 Escapada corta</h2>
-  <div class="card">
-    <h3>Chascomús: Posta de Sabores + Festival de Cine <span class="tag t-free">Gratis</span></h3>
-    <div class="row"><span>Cuándo</span><span>📅 Posta de Sabores: sáb 10 y dom 11, 10 a 21 h · Festival de Cine: vie 9 a dom 11</span></div>
-    <div class="row"><span>Dónde</span><span>📍 Parque Libres del Sur (Posta) · Teatro Municipal Brazzola (cine)</span></div>
-    <div class="row"><span>Qué hay</span><span>Más de 60 stands, food trucks, clases de cocina y música; proyecciones con entrada libre</span></div>
-    <div class="row"><span>Viaje</span><span>Unos 120 km por Ruta 2 (estimación propia, ~1 h 30)</span></div>
-    <p class="note">Por el pronóstico, mejor el <b>domingo</b>. Alternativa que incluye el lunes feriado: 15ª Fiesta Provincial de la Mozzarella en San Vicente (sáb 10 a lun 12, 10 a 21 h, Predio Ferial Vieja Estación; precio a confirmar). 🔗 <a href="https://infobonaerenses.com.ar/nota/44662/fin-de-semana-largo-32-fiestas-y-eventos-para-recorrer-la-provincia-de-buenos-aires" target="_blank" rel="noopener">Infobonaerenses — 32 fiestas del finde largo</a></p>
-  </div>
-</section>
-
-<section id="fuentes">
-  <h2>ℹ️ Fuentes y notas</h2>
-  <ul>
-    <li><b>Fútbol:</b> <a href="https://www.minutouno.com/deportes/gimnasia-vs-atletico-tucuman-el-torneo-clausura-2026-horario-formaciones-y-tv-n6330334" target="_blank" rel="noopener">Minutouno</a>, <a href="https://es.besoccer.com/equipo/partidos/gimnasia-plata" target="_blank" rel="noopener">BeSoccer</a></li>
-    <li><b>Clima:</b> <a href="https://www.meteored.com.ar/tiempo-en_Buenos+Aires-America+Sur-Argentina-Ciudad+Autonoma+de+Buenos+Aires-SABE-1-13584.html" target="_blank" rel="noopener">Meteored</a>, <a href="https://www.smn.gob.ar/" target="_blank" rel="noopener">SMN</a> · <b>Feriado 12/10:</b> <a href="https://www.perfil.com/noticias/amp/sociedad/feriado-del-12-de-octubre-2026-cuando-es-el-proximo-fin-de-semana-largo.phtml" target="_blank" rel="noopener">Perfil</a></li>
-    <li><b>Jazz:</b> <a href="https://ticketera.bebopclub.com.ar/" target="_blank" rel="noopener">Bebop Club</a>, <a href="https://jazzvoyeur.com.ar/agenda-de-shows/" target="_blank" rel="noopener">Jazz Voyeur</a>, <a href="https://www.virasorobar.com.ar/eventos.php" target="_blank" rel="noopener">Virasoro Bar</a></li>
-    <li><b>Tango y folclore:</b> <a href="https://caff.ar" target="_blank" rel="noopener">CAFF</a>, <a href="https://www.folkloreclub.com.ar/" target="_blank" rel="noopener">folkloreclub.com.ar</a></li>
-    <li><b>Teatro y cine CABA:</b> <a href="https://complejoteatral.gob.ar/" target="_blank" rel="noopener">Complejo Teatral</a>, <a href="https://www.teatrocervantes.gob.ar/" target="_blank" rel="noopener">Teatro Cervantes</a>, <a href="https://www.alternativateatral.com/" target="_blank" rel="noopener">Alternativa Teatral</a>, <a href="https://malba.org.ar/cine/" target="_blank" rel="noopener">MALBA Cine</a>, críticas de La Nación</li>
-    <li><b>La Plata:</b> <a href="https://agendalaplata.ar/" target="_blank" rel="noopener">agendalaplata.ar</a>, <a href="https://lumenartis.org/" target="_blank" rel="noopener">Teatro de Cámara City Bell</a>, <a href="https://www.eldia.com/espectaculos" target="_blank" rel="noopener">El Día</a></li>
-  </ul>
-  <h3>Qué quedó sin verificar</h3>
-  <ul>
-    <li><b>Darío Boente en Desafinado Club</b> (anunciado para el sáb 10/10): no figura en agendalaplata.ar para el finde. Consultar al club.</li>
-    <li><b>El Día, «Séptimo Día»:</b> todavía no salió la nota de este finde (la última es del 4/10). Conviene mirarla el jueves y el sábado.</li>
-    <li><b>Teatro Argentino:</b> el sitio no cargó; no pude ver si hay conciertos gratuitos en la Sala Piazzolla.</li>
-    <li><b>Tango:</b> sin programación puntual en Torquato Tasso, El Boliche de Roberto, Los Laureles, La Viruta, Marabú, Salón Canning, El Zorzal ni Pasaje de la Luna; hoy-milonga y Fractura Expuesta no cargaron.</li>
-    <li><b>una.edu.ar/agenda:</b> sin música ni teatro para el 9–11/10.</li>
-    <li><b>Cine:</b> en MALBA, «El príncipe de Nanawa» (Clarisa Navas, dom 11, 20:00, 210 min) figura con IMDb 8,3 pero con apenas ~23 votos; lo dejo fuera del Top por muestra chica. Los demás títulos de Wajda del finde están en 7,3 o menos.</li>
-    <li><b>Más opciones fuera del Top 5:</b> «Santos Vega» (Cervantes, vie a dom 20:00, precio a confirmar); «El precipicio» con Leonor Manso, ahora en el Cine Teatro El Plata, Mataderos (sáb y dom 18:00, $22.500); Agustín Grasso con organ group (Jazz Voyeur, vie 20:30, $16.000); Pablo Raposo Trio (Virasoro, sáb 20:30, $20.000); MaZaZo Trío + Cantoras del Sur (Hasta Trilce, vie 21:00, $30.000); Festival PUNTAL, «El violonchelo en las músicas populares» (Conservatorio Manuel de Falla, vie 19:00, gratis).</li>
-  </ul>
-</section>
-
-<footer>Relevamiento asistido por Claude a partir de fuentes públicas argentinas. Confirmá precios y horarios en boletería antes de comprar o viajar. Lo marcado «a confirmar» no está verificado en fuente primaria.</footer>
-</div>
-
-<script>
-(function(){
-  var START=15, END=24;
-  var days=[
-    {id:'vie', name:'Viernes 9', wx:'14°/18° · lluvia débil 50%'},
-    {id:'sab', name:'Sábado 10', wx:'13°/17° · lluvia 80% · bajo techo'},
-    {id:'dom', name:'Domingo 11', wx:'12°/17° · cubierto, sin lluvia'}
-  ];
-  var C={teatro:'var(--c-teatro)',jazz:'var(--c-jazz)',cine:'var(--c-cine)',futbol:'var(--c-futbol)',tango:'var(--c-tango)',otros:'var(--c-otros)'};
-  var E=[
-    {d:'vie',city:'lp',cat:'futbol',t:'Gimnasia vs Atl. Tucumán',s:18,e:20,v:'Estadio Juan Carmelo Zerillo (el Bosque), La Plata',p:'TV: ESPN Premium',a:'Encender 10 min antes; a la cancha, 1 h antes',n:'Clausura 2026, fecha 12. Horario a confirmar (BeSoccer muestra 17:00).',u:'https://www.minutouno.com/deportes/gimnasia-vs-atletico-tucuman-el-torneo-clausura-2026-horario-formaciones-y-tv-n6330334'},
-    {d:'vie',city:'caba',cat:'jazz',t:'Loiacono 5tet · Sonny Rollins',s:20,e:21.5,v:'Bebop Club — Uriarte 1658, Palermo',p:'Desde $20.000 + consumición mínima $15.000',a:'Anticipada; 30 min antes para mesa',n:'Pisa el final del partido. Duración estimada.',u:'https://ticketera.bebopclub.com.ar/evento/f6e8ff58-b8b9-4788-8cea-40e4e359e079'},
-    {d:'vie',city:'caba',cat:'teatro',t:'La lluvia de fuego',s:20.5,e:22,v:'Sala Casacuberta, Teatro San Martín — Av. Corrientes 1530',p:'$26.000',a:'20–30 min antes',n:'Dir. Marilú Marini. La Nación: «Muy buena».',u:'https://complejoteatral.gob.ar/produccion/la_lluvia_de_fuego/'},
-    {d:'vie',city:'caba',cat:'teatro',t:'El centroforward murió al amanecer',s:20.5,e:22.1,v:'Andamio 90 — Paraná 660',p:'General $24.000 (a confirmar)',a:'Anticipada; 20 min antes',n:'Teatro off. La Nación (7/10): «Muy buena». Solo viernes.',u:'https://www.lanacion.com.ar/espectaculos/teatro/el-centroforward-murio-al-amanecer-una-feroz-y-esclarecedora-satira-sobre-el-sometimiento-del-poder-nid07102026/'},
-    {d:'vie',city:'caba',cat:'otros',t:'MaZaZo Trío + Cantoras del Sur',s:21,e:22.5,v:'Hasta Trilce — Maza 177, Almagro',p:'$30.000',a:'20 min antes',n:'Folclore, tango y jazz en voces. Duración estimada.',u:'https://www.folkloreclub.com.ar/agenda.asp?idagenda=14667'},
-    {d:'vie',city:'lp',cat:'teatro',t:'Pajarita',s:20,e:21.25,v:'Sala Iris Scaccheri (TACEC), Teatro Argentino — 51 e/ 9 y 10',p:'A confirmar (Alternativa)',a:'20 min antes',n:'Sobre «300 millones» de Arlt. Duración estimada.',u:'https://agendalaplata.ar/evento/pajarita-teatro-argentino-centro-provincial-de-las-artes-20260924025036'},
-    {d:'vie',city:'lp',cat:'teatro',t:'El principio de Arquímedes',s:21,e:22.25,v:'Teatro Abierto — 38 e/ 20 y 21',p:'A confirmar',a:'20 min antes',n:'Josep Maria Miró, dir. Sara Mon. Duración estimada.',u:'https://agendalaplata.ar/evento/el-principio-de-arquimedes-teatro-abierto-20260922015341'},
-
-    {d:'sab',city:'caba',cat:'teatro',t:'Aurelia escribe',s:17,e:18,v:'Teatro del Pueblo — Lavalle 3636',p:'A confirmar',a:'20 min antes',n:'Unipersonal. La Nación (3/10): «Muy buena».',u:'https://www.lanacion.com.ar/espectaculos/teatro/aurelia-escribe-un-atractivo-acto-de-rescate-de-una-mujer-olvidada-por-la-historia-nid03102026/'},
-    {d:'sab',city:'caba',cat:'tango',t:'Sinfonía popular',s:17,e:18.25,v:'Teatro de la Ribera — Av. Pedro de Mendoza 1821, La Boca',p:'Gratis (retiro a confirmar)',a:'30 min antes',n:'Tango y música latinoamericana. Duración estimada.',u:'https://complejoteatral.gob.ar/produccion/sinfonia-popular/'},
-    {d:'sab',city:'caba',cat:'teatro',t:'A cielo abierto',s:20,e:21.33,v:'Teatro Regio — Av. Córdoba 6056',p:'$22.500',a:'20–30 min antes',n:'David Hare, dir. Mey Scápola. Sin funciones el finde siguiente.',u:'https://complejoteatral.gob.ar/produccion/a-cielo-abierto/'},
-    {d:'sab',city:'caba',cat:'cine',t:'El hombre de mármol (IMDb 7,7)',s:20,e:22.75,v:'Sala Lugones, Teatro San Martín — Av. Corrientes 1530',p:'$12.000 · est./jub. $7.000',a:'20 min antes',n:'Wajda, 1977, 164 min. Ciclo hasta el 14/10.',u:'https://complejoteatral.gob.ar/produccion/andrzej-wajda-entre-el-mito-y-la-historia/'},
-    {d:'sab',city:'caba',cat:'jazz',t:'Cerávolo 4 · Jazz Tango',s:20.5,e:22,v:'Jazz Voyeur Club — Posadas 1557, Recoleta',p:'$16.000',a:'Reservar mesa; 30 min antes',n:'Top 5. Duración estimada.',u:'https://jazzvoyeur.com.ar/events/ceravolo-4-jazz-tango-4/'},
-    {d:'sab',city:'lp',cat:'otros',t:'Torre 7 Ensamble',s:20,e:21.25,v:'Teatro de Cámara City Bell — Diag. 4 (Urquiza) 327',p:'Bono contribución (monto a confirmar)',a:'20 min antes',n:'Quinteto de vientos: Satie, Ravel, Gershwin. Duración estimada.',u:'https://lumenartis.org/?post_type=funcion&p=2892'},
-    {d:'sab',city:'lp',cat:'teatro',t:'Bajo la tormenta',s:20,e:21.25,v:'Sala Armando Discépolo — 12 e/ 62 y 63',p:'Gratis (boletería 1 h antes)',a:'1 h antes para retirar',n:'Últimas funciones. Horario 20 o 21 h: confirmar.',u:'https://agendalaplata.ar/evento/bajo-la-tormenta-sala-armando-discepolo-20261002190637'},
-    {d:'sab',city:'lp',cat:'otros',t:'Dúo Coplanacu',s:21,e:22.5,v:'Casa Metro, La Plata',p:'A confirmar',a:'30 min antes',n:'Folclore. Duración estimada.',u:'https://agendalaplata.ar/evento/duo-coplanacu-casa-metro-20260521223138'},
-
-    {d:'dom',city:'caba',cat:'cine',t:'El hombre de mármol (IMDb 7,7)',s:17,e:19.75,v:'Sala Lugones, Teatro San Martín — Av. Corrientes 1530',p:'$12.000 · est./jub. $7.000',a:'20 min antes',n:'Wajda, 1977, 164 min.',u:'https://complejoteatral.gob.ar/produccion/andrzej-wajda-entre-el-mito-y-la-historia/'},
-    {d:'dom',city:'caba',cat:'tango',t:'Sinfonía popular',s:17,e:18.25,v:'Teatro de la Ribera — Av. Pedro de Mendoza 1821, La Boca',p:'Gratis (retiro a confirmar)',a:'30 min antes',n:'Duración estimada.',u:'https://complejoteatral.gob.ar/produccion/sinfonia-popular/'},
-    {d:'dom',city:'caba',cat:'teatro',t:'Maldición eterna… (Puig)',s:18,e:19.5,v:'Hasta Trilce — Maza 177, Almagro',p:'A confirmar',a:'Reservar; 20 min antes',n:'Teatro off. La Nación: «Muy buena».',u:'https://www.alternativateatral.com/obra100381-maldicion-eterna-a-quien-lea-estas-paginas'},
-    {d:'dom',city:'caba',cat:'teatro',t:'La lluvia de fuego',s:19.5,e:21,v:'Sala Casacuberta, Teatro San Martín — Av. Corrientes 1530',p:'$26.000',a:'20–30 min antes',n:'Top 5.',u:'https://complejoteatral.gob.ar/produccion/la_lluvia_de_fuego/'},
-    {d:'dom',city:'caba',cat:'jazz',t:'De Francisco · Swing to Bop',s:20.5,e:22,v:'Virasoro Bar — Guatemala 4328, Palermo',p:'$20.000 por set',a:'Reservar; 20–30 min antes',n:'Top 5. Duración estimada.',u:'https://www.virasorobar.com.ar/eventos.php'},
-    {d:'dom',city:'lp',cat:'otros',t:'Desfile Fiesta del Inmigrante',s:15,e:17,v:'Av. Montevideo, Berisso',p:'Gratis',a:'Llegar temprano para ubicarse',n:'Cierre de la 49ª fiesta. Duración estimada.',u:'https://infobonaerenses.com.ar/nota/44662/fin-de-semana-largo-32-fiestas-y-eventos-para-recorrer-la-provincia-de-buenos-aires'},
-    {d:'dom',city:'lp',cat:'teatro',t:'Bajo la tormenta',s:20,e:21.25,v:'Sala Armando Discépolo — 12 e/ 62 y 63',p:'Gratis (boletería 1 h antes)',a:'1 h antes para retirar',n:'Últimas funciones.',u:'https://agendalaplata.ar/evento/bajo-la-tormenta-sala-armando-discepolo-20261002190637'}
-  ];
-  var H=40, hours=END-START;
-  function fmt(x){var h=Math.floor(x),m=Math.round((x-h)*60);return h+':'+(m<10?'0':'')+m;}
-  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-  function layout(list){
-    list.sort(function(a,b){return a.s-b.s||b.e-a.e;});
-    var clusters=[],cur=[],curEnd=-1;
-    list.forEach(function(ev){
-      if(ev.s>=curEnd&&cur.length){clusters.push(cur);cur=[];}
-      cur.push(ev);curEnd=Math.max(curEnd,ev.e);
-    });
-    if(cur.length)clusters.push(cur);
-    clusters.forEach(function(cl){
-      var cols=[];
-      cl.forEach(function(ev){
-        var i=0;while(cols[i]!==undefined&&cols[i]>ev.s)i++;
-        cols[i]=ev.e;ev._c=i;
-      });
-      cl.forEach(function(ev){ev._n=cols.length;});
-    });
-  }
-  var cal=document.getElementById('cal'), det=document.getElementById('detail');
-  var buttons=[];
-  days.forEach(function(day){
-    var box=document.createElement('div');box.className='day';
-    box.innerHTML='<div class="dayhead"><b>'+day.name+'</b><span>'+day.wx+'</span></div>';
-    var lanes=document.createElement('div');lanes.className='lanes';lanes.style.setProperty('--hours',hours);
-    lanes.innerHTML='<div></div><div class="lanehead">CABA</div><div class="lanehead">La Plata</div>';
-    var axis=document.createElement('div');axis.className='axis';
-    for(var h=START+1;h<END;h+=1){var sp=document.createElement('span');sp.style.top=((h-START)*H)+'px';sp.textContent=h;axis.appendChild(sp);}
-    lanes.appendChild(axis);
-    ['caba','lp'].forEach(function(city){
-      var lane=document.createElement('div');lane.className='lane';
-      var list=E.filter(function(x){return x.d===day.id&&x.city===city;});
-      layout(list);
-      list.forEach(function(ev){
-        var b=document.createElement('button');b.type='button';b.className='ev';
-        var w=100/ev._n;
-        b.style.top=((ev.s-START)*H)+'px';
-        b.style.height=Math.max(18,(ev.e-ev.s)*H-2)+'px';
-        b.style.left='calc('+(ev._c*w)+'% + 1px)';
-        b.style.width='calc('+w+'% - 2px)';
-        b.style.background='color-mix(in srgb, '+C[ev.cat]+' 26%, transparent)';
-        b.style.borderLeft='3px solid '+C[ev.cat];
-        b.setAttribute('aria-pressed','false');
-        b.innerHTML='<b>'+fmt(ev.s)+'</b>'+esc(ev.t);
-        b.addEventListener('click',function(){
-          buttons.forEach(function(x){x.setAttribute('aria-pressed','false');});
-          b.setAttribute('aria-pressed','true');
-          det.innerHTML='<h3>'+esc(ev.t)+'</h3>'+
-            '<div class="row"><span>Cuándo</span><span>'+day.name+' · '+fmt(ev.s)+'–'+fmt(ev.e)+'</span></div>'+
-            '<div class="row"><span>Dónde</span><span>📍 '+esc(ev.v)+'</span></div>'+
-            '<div class="row"><span>Precio</span><span>💵 '+esc(ev.p)+'</span></div>'+
-            '<div class="row"><span>Llegar</span><span>⏰ '+esc(ev.a)+'</span></div>'+
-            '<p class="note">'+esc(ev.n)+' 🔗 <a href="'+esc(ev.u)+'" target="_blank" rel="noopener">fuente</a></p>';
-        });
-        buttons.push(b);lane.appendChild(b);
-      });
-      lanes.appendChild(lane);
-    });
-    box.appendChild(lanes);cal.appendChild(box);
-  });
-})();
-</script>
-
-</body>
-</html>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Propuestas Finde</title><style>:root{color-scheme:light;--paper:#F4F6F9;--card:#FFFFFF;--ink:#1B2230;--muted:#5A6475;--line:#DCE1E8;--accent:#1F3A8A;--accent-soft:#E3EAF7;--c-teatro:#9B3D7A;--c-jazz:#13807A;--c-cine:#4F5BD5;--c-futbol:#1F3A8A;--c-tango:#C2562F;--c-otros:#8A6D1E;--display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}.wrap{max-width:900px;margin:0 auto;padding-inline:16px;padding-block:24px 48px;display:flex;flex-direction:column;gap:22px}header h1{font-family:var(--display);font-size:2rem;margin:0;text-wrap:balance}header p{margin:4px 0 0;color:var(--muted)}h2{font-family:var(--display);font-size:1.35rem;margin:0 0 10px;text-wrap:balance}h3{font-size:1.02rem;margin:0 0 8px;text-wrap:balance}a{color:var(--accent)}a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}section{display:flex;flex-direction:column;gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}.card.prio{border-color:var(--accent)}.row{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:baseline}.row>span:first-child{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.row>span:last-child{min-width:0}.note{color:var(--muted);font-size:.93rem;margin:2px 0 0}.tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:999px;margin-left:4px;vertical-align:1px;white-space:nowrap}.t-tbc{background:#FFF1D6;color:#8A5A00}.t-last{background:#FDE2E1;color:#A3201B}.t-free{background:#DDF3E4;color:#1D6B3A}.t-clash{background:#FFE6D1;color:#A9480B}.t-ok{background:var(--accent-soft);color:var(--accent)}.weather{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.weather .card{gap:2px}.weather b{font-family:var(--display);font-size:1.05rem}.temp{font-family:var(--mono);font-variant-numeric:tabular-nums}ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}.legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:.82rem;color:var(--muted)}.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px;opacity:.75}.cal{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px}.day{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;min-width:0}.dayhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px}.dayhead b{font-family:var(--display);font-size:1.05rem}.dayhead span{font-size:.78rem;color:var(--muted);text-align:right}.lanes{display:grid;grid-template-columns:30px 1fr 1fr;gap:4px}.lanehead{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:center}.axis,.lane{position:relative;height:calc(var(--hours) * 40px)}.lane{background-image:repeating-linear-gradient(to bottom,var(--line) 0 1px,transparent 1px 40px);border-radius:6px}.axis span{position:absolute;right:2px;font-size:.66rem;color:var(--muted);transform:translateY(-50%);font-family:var(--mono)}.ev{position:absolute;border-radius:6px;padding:2px 4px;font-size:.68rem;line-height:1.2;color:var(--ink);overflow:hidden;cursor:pointer;border:1px solid transparent;text-align:left;font-family:var(--body)}.ev b{display:block;font-size:.66rem;font-family:var(--mono);font-weight:600}.ev:hover,.ev[aria-pressed="true"]{border-color:var(--ink)}#detail{min-height:64px}.btns{display:flex;flex-wrap:wrap;gap:10px}.btn{display:inline-block;padding:9px 14px;border-radius:999px;background:var(--accent);color:#FFFFFF;text-decoration:none;font-weight:600;font-size:.9rem}footer{color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padding-top:12px}@media (max-width:480px){.row{grid-template-columns:78px 1fr}header h1{font-size:1.6rem}}</style></head><body><div class="wrap">
+<header><h1>🎭 Propuestas Finde</h1><p>Actualizado: martes 13/10/2026 — Finde viernes 16 al domingo 18 de octubre · CABA y La Plata. El domingo 18 es el Día de la Madre: conviene reservar con tiempo en bares y restaurantes.</p></header>
+<section id="futbol"><h2>⚽ Prioridad fútbol</h2><div class="card prio"><p style="margin:0">Gimnasia no juega este fin de semana (según BeSoccer jugó el jueves 15/10 de visitante ante Huracán, y vuelve el viernes 23/10 de local ante Sarmiento, 18:00 <span class="tag t-tbc">Confirmar</span>). Con la agenda libre, el finde queda abierto para cultura. 🔗 <a href="https://es.besoccer.com/equipo/partidos/gimnasia-plata" target="_blank" rel="noopener">BeSoccer</a></p></div></section>
+<section id="clima"><h2>🌦️ Clima</h2><div class="weather"><div class="card"><b>Viernes 16</b><span class="temp">11° / 17°</span><span>Lluvia débil (80%, ~0,7 mm), viento del sur. <span class="tag t-tbc">Bajo techo</span></span></div><div class="card"><b>Sábado 17</b><span class="temp">7° / 15°</span><span>Parcialmente nublado, fresco, viento sur.</span></div><div class="card"><b>Domingo 18</b><span class="temp">8° / 15°</span><span>Nubes y claros, viento del este.</span></div></div><p class="note">Meteored para CABA (captura del 13/10; puede cambiar, mirá el SMN el viernes). No relevé pronóstico propio para La Plata. Sábado y domingo secos: aprovechables para actividades al aire libre, pero el Top 5 es todo bajo techo. 🔗 <a href="https://www.meteored.com.ar/tiempo-en_Buenos+Aires-America+Sur-Argentina-Ciudad+Autonoma+de+Buenos+Aires-SABE-1-13584.html" target="_blank" rel="noopener">Meteored</a> · <a href="https://www.smn.gob.ar/" target="_blank" rel="noopener">SMN</a></p></section>
+<section id="top5"><h2>⭐ Top 5</h2>
+<div class="card"><h3>1) 🎷 JAZZ — Escalandrum presenta «Miles Cien»</h3><div class="row"><span>Día</span><span>📅 Viernes 16 y sábado 17</span></div><div class="row"><span>Horario</span><span>🕗 20:00 y 22:30 (dos funciones por noche)</span></div><div class="row"><span>Precio</span><span>💵 Desde $20.000 + consumición mínima $15.000 por persona</span></div><div class="row"><span>Lugar</span><span>📍 Bebop Club — Uriarte 1658, Palermo, CABA</span></div><div class="row"><span>Llegar</span><span>⏰ Entrada anticipada en la ticketera; llegar 30 min antes para elegir mesa</span></div><p class="note">Primera vez que Escalandrum interpreta la música de Miles Davis, centrada en el Segundo Gran Quinteto (1964–1969). Pipi Piazzolla (batería), Nicolás Guerschberg (piano), Mariano Sívori (contrabajo), Damián Fogiel, Gustavo Musso y Martín Pantyrer. Viernes con lluvia: buen plan bajo techo. 🔗 <a href="https://ticketera.bebopclub.com.ar/evento/3ea13fd7-5d09-4d82-b5f6-817f46cc37a4" target="_blank" rel="noopener">ticketera Bebop Club</a></p></div>
+<div class="card"><h3>2) 🎭 TEATRO — «La lluvia de fuego» (Silvina Ocampo y Juan José Hernández, dir. Marilú Marini)</h3><div class="row"><span>Día</span><span>📅 Viernes 16, sábado 17 y domingo 18</span></div><div class="row"><span>Horario</span><span>🕗 Vie y sáb 20:30 · dom 19:30 · 90 min</span></div><div class="row"><span>Precio</span><span>💵 $26.000 <span class="tag t-tbc">Confirmar</span> <small class="note">(el sitio muestra también $15.000 sin aclarar a qué corresponde)</small></span></div><div class="row"><span>Lugar</span><span>📍 Sala Casacuberta, Teatro San Martín — Av. Corrientes 1530, CABA</span></div><div class="row"><span>Llegar</span><span>⏰ Entrada anticipada (varias funciones salieron agotadas); llegar 20–30 min antes</span></div><p class="note">Humor negro y farsa. La Nación (1/9): «Muy buena». 🔗 <a href="https://complejoteatral.gob.ar/produccion/la_lluvia_de_fuego/" target="_blank" rel="noopener">complejoteatral.gob.ar</a></p></div>
+<div class="card"><h3>3) 🎬 CINE — «Paris, Texas» (Wim Wenders, 1984)</h3><div class="row"><span>Día</span><span>📅 Sábado 17</span></div><div class="row"><span>Horario</span><span>🕗 20:30 <span class="tag t-ok">Ciclo «En las rutas de Wim Wenders»</span></span></div><div class="row"><span>Precio</span><span>💵 <span class="tag t-tbc">A confirmar</span> (el sitio no lo publica)</span></div><div class="row"><span>Lugar</span><span>📍 Sala Leopoldo Lugones, Teatro San Martín — Av. Corrientes 1530, CABA</span></div><div class="row"><span>Llegar</span><span>⏰ Comprar con anticipación; llegar 20 min antes</span></div><p class="note">IMDb: no pude verificar el valor en esta corrida; la película figura entre las mejor valoradas de su director (revisar en <a href="https://www.imdb.com/title/tt0087884/" target="_blank" rel="noopener">IMDb</a> que supere 7,5). Otras funciones del ciclo: «El miedo del arquero al tiro penal» vie 18:00, «El amigo americano» vie 20:30, «Hasta el fin del mundo» sáb 14:30, «Buena Vista Social Club» dom 21:00. 🔗 <a href="https://cineueargentina.com/wim-wenders/" target="_blank" rel="noopener">programación</a></p></div>
+<div class="card"><h3>4) 🎷 JAZZ — Patricio Carpossi Quinteto</h3><div class="row"><span>Día</span><span>📅 Sábado 17</span></div><div class="row"><span>Horario</span><span>🕗 20:30 y 23:00</span></div><div class="row"><span>Precio</span><span>💵 $20.000</span></div><div class="row"><span>Lugar</span><span>📍 Virasoro Bar — Guatemala 4328, Palermo, CABA</span></div><div class="row"><span>Llegar</span><span>⏰ Reservar; llegar 20–30 min antes (sala chica)</span></div><p class="note">Viernes en el mismo bar: Moodin West (West Coast Jazz) 20:30 y Carola Gianni 23:30, $20.000. 🔗 <a href="https://www.virasorobar.com.ar/eventos.php" target="_blank" rel="noopener">virasorobar.com.ar</a></p></div>
+<div class="card"><h3>5) 🎷 JAZZ — «Elis &amp; Tom» · BA Jazz Experience (Josi Dias + Iván Buraschi 4tet)</h3><div class="row"><span>Día</span><span>📅 Domingo 18 (el día más seco del finde)</span></div><div class="row"><span>Horario</span><span>🕗 19:00</span></div><div class="row"><span>Precio</span><span>💵 <span class="tag t-tbc">A confirmar</span> en la ticketera</span></div><div class="row"><span>Lugar</span><span>📍 Bebop Club — Uriarte 1658, Palermo, CABA</span></div><div class="row"><span>Llegar</span><span>⏰ Entrada anticipada; llegar 30 min antes</span></div><p class="note">Homenaje a Elis Regina y Tom Jobim. Mismo domingo a las 21:30 en Bebop: «The Blue Hour» (Nina Portela, Denise Izaguirre y otros). Alternativa de sábado con precio confirmado: «Ella &amp; Louis» en Jazz Voyeur, 20:30, $17.000. 🔗 <a href="https://ticketera.bebopclub.com.ar/evento/839fcbca-b9ed-4918-b62f-549eadcea678" target="_blank" rel="noopener">ticketera</a> · <a href="https://jazzvoyeur.com.ar/events/ella-louis-3/" target="_blank" rel="noopener">Jazz Voyeur</a></p></div></section>
+<section id="off"><h2>🎟️ Teatro off</h2>
+<div class="card"><h3>«El centroforward murió al amanecer» (Agustín Cuzzani; dir. Pablo Gorlero)</h3><div class="row"><span>Cuándo</span><span>📅 Viernes 16 · 🕗 20:30 <span class="tag t-tbc">Confirmar</span></span></div><div class="row"><span>Dónde</span><span>📍 Andamio 90 — Paraná 660, CABA</span></div><div class="row"><span>Precio</span><span>💵 General ~$24.000 <span class="tag t-tbc">A confirmar</span></span></div><p class="note">Sátira sobre el poder con un crack de fútbol subastado. Función solo los viernes según la corrida anterior; verificar que siga en cartel. La Nación (7/10): «Muy buena». 🔗 <a href="https://www.lanacion.com.ar/espectaculos/teatro/el-centroforward-murio-al-amanecer-una-feroz-y-esclarecedora-satira-sobre-el-sometimiento-del-poder-nid07102026/" target="_blank" rel="noopener">crítica</a></p></div>
+<div class="card"><h3>«Maldición eterna a quien lea estas páginas» (Manuel Puig)</h3><div class="row"><span>Cuándo</span><span>📅 Domingo 18 · 🕗 18:00 <span class="tag t-tbc">Confirmar</span></span></div><div class="row"><span>Dónde</span><span>📍 Hasta Trilce — Maza 177, Almagro, CABA</span></div><div class="row"><span>Precio</span><span>💵 <span class="tag t-tbc">A confirmar</span></span></div><p class="note">En cartel hasta el 29/11 según la corrida anterior; el horario del domingo 18 no está verificado. La Nación (2/9): «Muy buena». 🔗 <a href="https://www.alternativateatral.com/obra100381-maldicion-eterna-a-quien-lea-estas-paginas" target="_blank" rel="noopener">Alternativa Teatral</a></p></div></section>
+<section id="laplata"><h2>🏙️ La Plata</h2>
+<div class="card"><h3>🎭 «Bajo la tormenta» (Comedia de la Provincia) <span class="tag t-free">Gratis</span></h3><div class="row"><span>Cuándo</span><span>📅 Sábado 17 y domingo 18 · 🕗 20:00</span></div><div class="row"><span>Dónde</span><span>📍 Sala Armando Discépolo — calle 12 e/ 62 y 63</span></div><div class="row"><span>Entradas</span><span>Retiro en boletería desde 1 h antes</span></div><p class="note">🔗 <a href="https://agendalaplata.ar/?fecha=2026-10-17" target="_blank" rel="noopener">agendalaplata.ar</a></p></div>
+<div class="card"><h3>🎷 Lara Fichera trío — Desafinado Club (City Bell)</h3><div class="row"><span>Cuándo</span><span>📅 Sábado 17 · 🕗 20:00</span></div><div class="row"><span>Precio</span><span>💵 <span class="tag t-tbc">A confirmar</span> · dirección a confirmar con el club</span></div><p class="note">Viernes 16, 20:00: «Viernes de Jazz en la Compost» (La Compostera, cena show; precio no informado). 🔗 <a href="https://agendalaplata.ar/?fecha=2026-10-17" target="_blank" rel="noopener">agendalaplata.ar</a></p></div>
+<h3>Otras opciones relevadas</h3><ul><li>🎶 «La Peña que baila llega a La Plata» (folclore) — sábado 17; hora y lugar a confirmar. <a href="https://www.folkloreclub.com.ar/agenda.asp?idagenda=14669" target="_blank" rel="noopener">folkloreclub.com.ar</a></li><li>🎭 «El principio de Arquímedes» — vie 16, 21:00, Teatro Abierto (38 e/ 20 y 21). Precio a confirmar.</li><li>🎭 «Calígula» — sáb 17, 21:30, Teatro Estudio. Precio a confirmar.</li><li>🎭 «Tango para tres» — dom 18, 19:00, Teatro Metro. Precio a confirmar.</li><li>📚 1ra Feria del Libro y la Cultura Indígena — vie 16, desde 9:30, Teatro Argentino. <span class="tag t-free">Gratis</span></li></ul></section>
+<section id="calendario"><h2>📆 Calendario del finde</h2><div class="legend"><span><i style="background:var(--c-teatro)"></i>Teatro</span><span><i style="background:var(--c-jazz)"></i>Jazz</span><span><i style="background:var(--c-cine)"></i>Cine</span><span><i style="background:var(--c-tango)"></i>Tango</span><span><i style="background:var(--c-otros)"></i>Folclore / otros</span></div><p class="note">Selección curada, de 15 a 24 h. Donde los bloques se superponen hay choque de horario; las duraciones sin dato en la fuente son estimadas. Tocá un bloque para ver el detalle.</p><div class="cal" id="cal"></div><div class="card" id="detail" aria-live="polite"><span class="note">Tocá una entrada del calendario para ver dirección, precio, cuánto antes llegar y la fuente.</span></div><div class="btns"><a class="btn" href="https://www.alternativateatral.com/cartelera.asp" target="_blank" rel="noopener">🎭 Cartelera CABA — Alternativa Teatral ↗</a><a class="btn" href="https://agendalaplata.ar/" target="_blank" rel="noopener">🏙️ Espectáculos La Plata — agendalaplata.ar ↗</a></div></section>
+<section id="fuentes"><h2>ℹ️ Fuentes y notas</h2><ul><li><b>Jazz:</b> <a href="https://ticketera.bebopclub.com.ar/" target="_blank" rel="noopener">Bebop Club</a>, <a href="https://jazzvoyeur.com.ar/agenda-de-shows/" target="_blank" rel="noopener">Jazz Voyeur</a>, <a href="https://www.virasorobar.com.ar/eventos.php" target="_blank" rel="noopener">Virasoro Bar</a></li><li><b>Teatro y cine:</b> <a href="https://complejoteatral.gob.ar/" target="_blank" rel="noopener">Complejo Teatral</a>, <a href="https://www.alternativateatral.com/" target="_blank" rel="noopener">Alternativa Teatral</a>, críticas de La Nación</li><li><b>La Plata:</b> <a href="https://agendalaplata.ar/" target="_blank" rel="noopener">agendalaplata.ar</a>, <a href="https://www.eldia.com/espectaculos" target="_blank" rel="noopener">El Día</a> · <b>Folclore:</b> <a href="https://www.folkloreclub.com.ar/" target="_blank" rel="noopener">folkloreclub.com.ar</a></li></ul><h3>Qué quedó sin verificar</h3><ul><li><b>IMDb:</b> no pude consultar las calificaciones; el cine del Top 5 requiere chequear que supere 7,5.</li><li><b>Tango:</b> sin programación confirmada. CAFF tiene a Piccolini (vie 21:00) y Me Darás Mil Hijos + Soneros del Calamaní (sáb 21:00), géneros no verificados. Otros venues de la lista no cargaron.</li><li><b>Domingo en La Plata:</b> El Día todavía no publicó la agenda de este finde (última nota: 11/10). Conviene mirar «Séptimo Día» el viernes y el sábado.</li><li>Más opciones: «A cielo abierto» (Teatro Regio, vie–dom 20:00; antes $22.500), «Cinema Kabuki» (Sala Lugones, dom 18:00, <span class="tag t-free">Gratis</span>, retirar entrada 2 h antes).</li></ul></section>
+<footer>Relevamiento asistido por Claude a partir de fuentes públicas argentinas. Confirmá precios y horarios en boletería antes de comprar o viajar. Lo marcado «a confirmar» no está verificado en fuente primaria.</footer></div>
+<script>(function(){var START=15,END=24;var days=[{id:'vie',name:'Viernes 16',wx:'11°/17° · lluvia débil 80%'},{id:'sab',name:'Sábado 17',wx:'7°/15° · parcial'},{id:'dom',name:'Domingo 18',wx:'8°/15° · nubes y claros'}];var C={teatro:'var(--c-teatro)',jazz:'var(--c-jazz)',cine:'var(--c-cine)',tango:'var(--c-tango)',otros:'var(--c-otros)'};
+var BB='Bebop Club — Uriarte 1658, Palermo',VB='Virasoro Bar — Guatemala 4328, Palermo',JV='Jazz Voyeur — Posadas 1557, Recoleta',TSM='Teatro San Martín — Av. Corrientes 1530',LU='https://cineueargentina.com/wim-wenders/',ESC='https://ticketera.bebopclub.com.ar/evento/3ea13fd7-5d09-4d82-b5f6-817f46cc37a4',LLF='https://complejoteatral.gob.ar/produccion/la_lluvia_de_fuego/',AL='https://agendalaplata.ar/?fecha=2026-10-17';
+var E=[
+{d:'vie',city:'caba',cat:'cine',t:'El miedo del arquero…',s:18,e:20,v:'Sala Lugones, '+TSM,p:'A confirmar',a:'20 min antes',n:'Ciclo Wenders. Duración estimada.',u:LU},
+{d:'vie',city:'caba',cat:'jazz',t:'Escalandrum · Miles Cien',s:20,e:21.5,v:BB,p:'Desde $20.000 + consumición mín. $15.000',a:'Anticipada; 30 min antes',n:'Segunda función 22:30. Duración estimada.',u:ESC},
+{d:'vie',city:'caba',cat:'teatro',t:'La lluvia de fuego',s:20.5,e:22,v:'Sala Casacuberta, '+TSM,p:'$26.000 (confirmar)',a:'20–30 min antes',n:'Dir. Marilú Marini. La Nación: «Muy buena».',u:LLF},
+{d:'vie',city:'caba',cat:'jazz',t:'Moodin West',s:20.5,e:22,v:VB,p:'$20.000',a:'Reservar; 20–30 min antes',n:'West Coast Jazz. Duración estimada.',u:'https://www.virasorobar.com.ar/eventos.php'},
+{d:'vie',city:'caba',cat:'jazz',t:'Antigua Jazz Band',s:20.5,e:22,v:JV,p:'$17.000',a:'Reservar; 30 min antes',n:'Clásicos. Duración estimada.',u:'https://jazzvoyeur.com.ar/events/antigua-jazz-band-2/'},
+{d:'vie',city:'caba',cat:'jazz',t:'Escalandrum (2ª función)',s:22.5,e:24,v:BB,p:'Desde $20.000 + consumición mín. $15.000',a:'Anticipada',n:'Duración estimada.',u:ESC},
+{d:'vie',city:'lp',cat:'jazz',t:'Viernes de Jazz en la Compost',s:20,e:22,v:'La Compostera, La Plata',p:'No informado',a:'Cena show; reservar',n:'Dirección a confirmar. Duración estimada.',u:'https://agendalaplata.ar/?fecha=2026-10-16'},
+{d:'vie',city:'lp',cat:'teatro',t:'El principio de Arquímedes',s:21,e:22.25,v:'Teatro Abierto — 38 e/ 20 y 21',p:'A confirmar',a:'20 min antes',n:'Duración estimada.',u:'https://agendalaplata.ar/?fecha=2026-10-16'},
+{d:'sab',city:'caba',cat:'cine',t:'Hasta el fin del mundo',s:15,e:18,v:'Sala Lugones, '+TSM,p:'A confirmar',a:'20 min antes',n:'Wenders, versión del director. Función 14:30; duración estimada.',u:LU},
+{d:'sab',city:'caba',cat:'teatro',t:'A cielo abierto',s:20,e:21.33,v:'Teatro Regio — Av. Córdoba 6056',p:'$22.500 (corrida anterior)',a:'20–30 min antes',n:'David Hare.',u:'https://complejoteatral.gob.ar/produccion/a-cielo-abierto/'},
+{d:'sab',city:'caba',cat:'jazz',t:'Escalandrum · Miles Cien',s:20,e:21.5,v:BB,p:'Desde $20.000 + consumición mín. $15.000',a:'Anticipada; 30 min antes',n:'Top 5. 2ª función 22:30.',u:ESC},
+{d:'sab',city:'caba',cat:'jazz',t:'Carpossi Quinteto',s:20.5,e:22,v:VB,p:'$20.000',a:'Reservar',n:'Top 5. 2ª función 23:00.',u:'https://www.virasorobar.com.ar/eventos.php'},
+{d:'sab',city:'caba',cat:'teatro',t:'La lluvia de fuego',s:20.5,e:22,v:'Sala Casacuberta, '+TSM,p:'$26.000 (confirmar)',a:'20–30 min antes',n:'Top 5.',u:LLF},
+{d:'sab',city:'caba',cat:'cine',t:'Paris, Texas',s:20.5,e:23,v:'Sala Lugones, '+TSM,p:'A confirmar',a:'20 min antes',n:'Top 5. Wenders, 1984. Duración estimada.',u:LU},
+{d:'sab',city:'caba',cat:'jazz',t:'Ella & Louis',s:20.5,e:22,v:JV,p:'$17.000',a:'Reservar; 30 min antes',n:'Classic! Duración estimada.',u:'https://jazzvoyeur.com.ar/events/ella-louis-3/'},
+{d:'sab',city:'caba',cat:'jazz',t:'Escalandrum (2ª)',s:22.5,e:24,v:BB,p:'Desde $20.000 + consumición mín. $15.000',a:'Anticipada',n:'Duración estimada.',u:ESC},
+{d:'sab',city:'lp',cat:'jazz',t:'Lara Fichera trío',s:20,e:21.5,v:'Desafinado Club, City Bell',p:'A confirmar',a:'30 min antes',n:'Dirección a confirmar. Duración estimada.',u:AL},
+{d:'sab',city:'lp',cat:'teatro',t:'Bajo la tormenta',s:20,e:21.25,v:'Sala Armando Discépolo — 12 e/ 62 y 63',p:'Gratis',a:'Retirar entrada 1 h antes',n:'Comedia de la Provincia. Duración estimada.',u:AL},
+{d:'sab',city:'lp',cat:'teatro',t:'Calígula',s:21.5,e:23,v:'Teatro Estudio, La Plata',p:'A confirmar',a:'20 min antes',n:'Duración estimada.',u:AL},
+{d:'dom',city:'caba',cat:'cine',t:'Cinema Kabuki',s:18,e:19.5,v:'Sala Lugones, '+TSM,p:'Gratis',a:'Retirar entrada desde 2 h antes',n:'Dos obras de kabuki filmadas, 91 min.',u:'https://complejoteatral.gob.ar/produccion/cinema-kabuki/'},
+{d:'dom',city:'caba',cat:'jazz',t:'Elis & Tom',s:19,e:20.5,v:BB,p:'A confirmar',a:'Anticipada; 30 min antes',n:'Top 5. BA Jazz Experience. Duración estimada.',u:'https://ticketera.bebopclub.com.ar/evento/839fcbca-b9ed-4918-b62f-549eadcea678'},
+{d:'dom',city:'caba',cat:'teatro',t:'La lluvia de fuego',s:19.5,e:21,v:'Sala Casacuberta, '+TSM,p:'$26.000 (confirmar)',a:'20–30 min antes',n:'Top 5.',u:LLF},
+{d:'dom',city:'caba',cat:'cine',t:'Buena Vista Social Club',s:21,e:23,v:'Sala Lugones, '+TSM,p:'A confirmar',a:'20 min antes',n:'Wenders, 1999. Duración estimada.',u:LU},
+{d:'dom',city:'caba',cat:'jazz',t:'The Blue Hour',s:21.5,e:23,v:BB,p:'A confirmar',a:'30 min antes',n:'Nina Portela, Denise Izaguirre y otros. Duración estimada.',u:'https://ticketera.bebopclub.com.ar/evento/e43026c6-b92b-4516-ae53-ca43d71f790f'},
+{d:'dom',city:'lp',cat:'teatro',t:'Tango para tres',s:19,e:20.25,v:'Teatro Metro, La Plata',p:'A confirmar',a:'20 min antes',n:'Duración estimada.',u:'https://agendalaplata.ar/?fecha=2026-10-18'},
+{d:'dom',city:'lp',cat:'teatro',t:'Bajo la tormenta',s:20,e:21.25,v:'Sala Armando Discépolo — 12 e/ 62 y 63',p:'Gratis',a:'Retirar entrada 1 h antes',n:'Duración estimada.',u:'https://agendalaplata.ar/?fecha=2026-10-18'}
+];
+var H=40,hours=END-START;function fmt(x){var h=Math.floor(x),m=Math.round((x-h)*60);return h+':'+(m<10?'0':'')+m}function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function layout(list){list.sort(function(a,b){return a.s-b.s||b.e-a.e});var cl=[],cur=[],ce=-1;list.forEach(function(ev){if(ev.s>=ce&&cur.length){cl.push(cur);cur=[]}cur.push(ev);ce=Math.max(ce,ev.e)});if(cur.length)cl.push(cur);cl.forEach(function(c){var cols=[];c.forEach(function(ev){var i=0;while(cols[i]!==undefined&&cols[i]>ev.s)i++;cols[i]=ev.e;ev._c=i});c.forEach(function(ev){ev._n=cols.length})})}
+var cal=document.getElementById('cal'),det=document.getElementById('detail'),buttons=[];
+days.forEach(function(day){var box=document.createElement('div');box.className='day';box.innerHTML='<div class="dayhead"><b>'+day.name+'</b><span>'+day.wx+'</span></div>';var lanes=document.createElement('div');lanes.className='lanes';lanes.style.setProperty('--hours',hours);lanes.innerHTML='<div></div><div class="lanehead">CABA</div><div class="lanehead">La Plata</div>';var axis=document.createElement('div');axis.className='axis';for(var h=START+1;h<END;h++){var sp=document.createElement('span');sp.style.top=((h-START)*H)+'px';sp.textContent=h;axis.appendChild(sp)}lanes.appendChild(axis);
+['caba','lp'].forEach(function(city){var lane=document.createElement('div');lane.className='lane';var list=E.filter(function(x){return x.d===day.id&&x.city===city});layout(list);list.forEach(function(ev){var b=document.createElement('button');b.type='button';b.className='ev';var w=100/ev._n;b.style.top=((ev.s-START)*H)+'px';b.style.height=Math.max(18,(ev.e-ev.s)*H-2)+'px';b.style.left='calc('+(ev._c*w)+'% + 1px)';b.style.width='calc('+w+'% - 2px)';b.style.background='color-mix(in srgb, '+C[ev.cat]+' 26%, transparent)';b.style.borderLeft='3px solid '+C[ev.cat];b.setAttribute('aria-pressed','false');b.innerHTML='<b>'+fmt(ev.s)+'</b>'+esc(ev.t);
+b.addEventListener('click',function(){buttons.forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');det.innerHTML='<h3>'+esc(ev.t)+'</h3><div class="row"><span>Cuándo</span><span>'+day.name+' · '+fmt(ev.s)+'–'+fmt(ev.e)+'</span></div><div class="row"><span>Dónde</span><span>📍 '+esc(ev.v)+'</span></div><div class="row"><span>Precio</span><span>💵 '+esc(ev.p)+'</span></div><div class="row"><span>Llegar</span><span>⏰ '+esc(ev.a)+'</span></div><p class="note">'+esc(ev.n)+' 🔗 <a href="'+esc(ev.u)+'" target="_blank" rel="noopener">fuente</a></p>'});buttons.push(b);lane.appendChild(b)});lanes.appendChild(lane)});box.appendChild(lanes);cal.appendChild(box)});})();</script></body></html>
